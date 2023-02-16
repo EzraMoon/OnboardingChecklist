@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom/client';
  * Notes:
  * Functions and class names must be uppercase in order to compile
  * Prop names must be completely lowercase.
+ * 'npm start' is the command to start
+ * Right click + inspect on the site will show any warnings
  */
 
 /**
@@ -17,7 +19,8 @@ class Title extends React.Component {
 }
 
 /**
- * 
+ * Function to return Login status, should be expanded when 
+ * we get it up and working
  * @param {*} props 
  * @returns 
  */
