@@ -54,6 +54,36 @@ class NameForm extends React.Component {
   }
 }
 
+class PassForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A password was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Password: 
+          <input type="password" value={this.state.value} onChange={this.handleChange}/>
+        </label>
+      </form>
+    )
+  }
+}
+
 /**
  * Class that renders the entire login screen
  * Will use it to organize the other classes/componenets
@@ -68,6 +98,9 @@ class LoginScreen extends React.Component {
         </div>
         <div className="textentry">
           <NameForm/>
+        </div>
+        <div className="passentry">
+          <PassForm/>
         </div>
       </div>
     )
