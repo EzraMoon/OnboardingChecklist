@@ -14,7 +14,7 @@ import ReactDOM from 'react-dom/client';
  */
 class Title extends React.Component {
   render() {
-    return <h1>Welcome to the login page!</h1>;
+    return <h1>Welcome to the login page!</h1>; // Login title message
   }
 }
 
@@ -34,17 +34,18 @@ class NameForm extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({value: event.target.value}); // changes the value of 'username'
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
+    alert('A name was submitted: ' + this.state.value); // gives user alert to let them know it works,
+                                                        // will replace with back end functionality
     event.preventDefault();
   }
 
-  render() {
+  render() { // deals with how this is rendered
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}> 
         <label>
           Username: 
           <input type="text" value={this.state.value} onChange={this.handleChange}/>
@@ -53,7 +54,11 @@ class NameForm extends React.Component {
     )
   }
 }
-
+/**
+ * Class for password-entry data
+ * Need to connect it to backend
+ * and also make more secure...
+ */
 class PassForm extends React.Component {
   constructor(props) {
     super(props);
