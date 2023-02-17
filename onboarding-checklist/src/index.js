@@ -19,23 +19,25 @@ class Title extends React.Component {
 }
 
 /**
- * Function to return Login status, should be expanded when 
- * we get it up and working
- * @param {*} props 
- * @returns 
+ * Class that renders the entire login screen
+ * Will use it to organize the other classes/componenets
+ * so that I can just do root.render(LoginScreen)
  */
-function LoginStatus(props) {
-  return <p>Login status: {props.loggedin}!</p>;
+class LoginScreen extends React.Component {
+  render() {
+    return (
+      <div className="loginscreen">
+        <div className="title">
+          <Title />
+        </div>
+      </div>
+    )
+  }
 }
-
 
 // Renders the title of the page, and then adds it to the root div in index.html
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Title />);
-
-// Renders subtext and adds it to the subtext div in index.html
-const subtext = ReactDOM.createRoot(document.getElementById('subtext'));
-subtext.render(<LoginStatus loggedin="Successful"/>);
+root.render(<LoginScreen />);
 
 
 
