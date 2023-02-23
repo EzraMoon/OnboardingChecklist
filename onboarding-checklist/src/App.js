@@ -39,8 +39,8 @@ class LoginScreen extends React.Component
 
   // click on button entry 
   handleEnterClick = () => {
-    console.log('Username/ email:', this.state.username);
-    console.log('Password:', this.state.password);
+    console.log('Username: ', this.state.username);
+    console.log('Password: ', this.state.password);
     let username = this.state.username;
     let password = this.state.password;
     console.log('server request::')
@@ -54,10 +54,15 @@ class LoginScreen extends React.Component
       },
       body: JSON.stringify([username, password]),
     }).then(response => {
-      // this needs to be fixed to print out 'success: True' not 'success: False' 
+      // this needs to be fixed to print out 'success: True' not 'success: False'
       return response.json()})
-    .then(data => console.log(data))
-    .catch(error => console.error(error))
+    .then(data => {
+      console.log(data)
+      console.log(data.success)
+      if (data.success == false) {
+        alert("Incorrect Username or Password.")
+      }
+    }).catch(error => console.error(error))
   }
 
 
@@ -69,7 +74,7 @@ class LoginScreen extends React.Component
           <Title />
         </div>
         <label>
-          Username/email:
+          Username:
           <input type="text" value={this.state.username} onChange={this.handleUserchange} />
         </label>
         <br />
