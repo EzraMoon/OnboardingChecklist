@@ -1,9 +1,16 @@
 import React from 'react';
 
 class Dashboard extends React.Component {
+    handleLogout = () => {
+        window.location.pathname = '/'
+    }
+
     render() {
         return(
-            <h1> Welcome to the Dashboard! </h1>
+            <div>
+                <h1> Welcome to the Dashboard! </h1>
+                <button onClick={this.handleLogout}>Logout</button>
+            </div>
         )
     }
 }
