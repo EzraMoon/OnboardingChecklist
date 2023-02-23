@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import LoginScreen from './App.js';
+import LoginScreen from './login.js';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 
 // runs the app/ login screen
 class App extends React.Component {

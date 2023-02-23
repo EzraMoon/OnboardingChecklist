@@ -57,10 +57,11 @@ class LoginScreen extends React.Component
       // this needs to be fixed to print out 'success: True' not 'success: False'
       return response.json()})
     .then(data => {
-      console.log(data)
-      console.log(data.success)
+      console.log(data) // Data -> {success : true or false}
       if (data.success == false) {
         alert("Incorrect Username or Password.")
+        this.state.username = '' // Clears out the username and password
+        this.state.password = ''
       }
     }).catch(error => console.error(error))
   }

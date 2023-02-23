@@ -17,7 +17,7 @@ def index():
 # validating connection between front end and backend
 @app.route('/validate', methods=['GET', 'POST'])
 def validate():
-    if request.method == 'POST':
+    if request.method == 'POST': # signifies that a form was submitted
         data = request.get_json()
         username, password = data
         #using this until we get database with soco users
