@@ -1,15 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import LoginScreen from './login.js';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import Dashboard from './dashboard.js';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 // runs the app/ login screen
 class App extends React.Component {
   render() {
+    let Component
+    switch(window.location.pathname) {
+      case "/":
+        Component = LoginScreen
+        break;
+      case "/dashboard":
+        Component = Dashboard
+        break
+    }
     return (
       // calls login screen
       <div>
-        <LoginScreen/>
+        <Component />
       </div>
     );
   }
