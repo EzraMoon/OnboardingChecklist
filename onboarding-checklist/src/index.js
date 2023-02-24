@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import LoginScreen from './login.js';
 import Dashboard from './dashboard.js';
+import "./index.css"
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
 // runs the app/ login screen

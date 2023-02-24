@@ -26,7 +26,7 @@ def validate():
         #if pass and user are in database then returns success or wrong info
         for i in database.keys():
             if username == i:
-                while password != database.get(i):
+                if password != database.get(i):
                     password = ("Wrong password!")
                 return {"success": True}
         return {"success": False}

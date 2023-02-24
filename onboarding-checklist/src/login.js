@@ -43,7 +43,7 @@ class LoginScreen extends React.Component
     console.log('Password: ', this.state.password);
     let username = this.state.username;
     let password = this.state.password;
-    console.log('server request::')
+    //console.log('server request::')
     console.log(JSON.stringify([username, password]))
 
     // validating frontend and backend connection
@@ -72,17 +72,17 @@ class LoginScreen extends React.Component
   //printing out the title, text, and other parts of the login screen and implementing them
   render() {
     return (
-      <div>
+      <div className="loginUI">
         <div className="title">
           <Title />
         </div>
         <label>
-          Username:
+          Username: 
           <input type="text" value={this.state.username} onChange={this.handleUserchange} />
         </label>
         <br />
         <label>
-          Password:
+          Password: 
           <input type="password" value={this.state.password} onChange={this.handlePassChange} />
         </label>
         <br />
