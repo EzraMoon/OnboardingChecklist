@@ -24,7 +24,8 @@ class App extends React.Component {
     }
     return (
       // calls the appropriate screen -> fills component with whatever screen the user has
-      // indicated on the searchbar, also allows us to redirect
+      // indicated on the searchbar, also allows us to redirect manually using
+      // window.location.pathname
       <div>
         <Component />
       </div>
