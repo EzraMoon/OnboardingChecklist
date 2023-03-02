@@ -11,7 +11,7 @@ from flask_login import *
 app = Flask(__name__, static_folder= "index.js", static_url_path="/")
 CORS(app, supports_credentials=True)
 database = {'sarah.obriennn': "1234", "socoTO": "5678", 'elise': '1234'}
-
+globalUser = "Testing"
 
 #incorporating css folder for text font
 @app.route('/')
@@ -21,9 +21,11 @@ def index():
 def check_credentials(user, passw):
     print('inside', flush=True)
     global database # make sure we are using the database outlined
+    global globalUser
 
     if user in database.keys():
         if passw == database[user]:
+            globalUser = user
             return True
         else:
             return False
@@ -44,6 +46,7 @@ def validate():
         #using this until we get database with soco users
         #if pass and user are in database then returns success or wrong info
         if (check_credentials(username, password) == True):
+            globalUser = username
             return {"success" : True}
         else:
             return {"success" : False}
@@ -55,12 +58,16 @@ def validate():
                     #password = ("Wrong password!")
                 #return {"success": True}
         #return {"success": False}
+    else:
+        return jsonify({"username" : globalUser})
     
-
+@app.route('/profile', methods=['GET'])
+def profile():
+    global globalUser
+    return jsonify({"username" : globalUser})
 
 #driver code
 if __name__ == '__main__':
-
     globalUser = "Testing"
     app.run(debug=True, port=3003)
 
