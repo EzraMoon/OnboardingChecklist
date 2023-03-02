@@ -9,6 +9,7 @@ from flask_login import *
 
 # calling index.js
 app = Flask(__name__, static_folder= "index.js", static_url_path="/")
+app.config['SECRET_KEY'] = 'secretkey'
 CORS(app, supports_credentials=True)
 database = {'sarah.obriennn': "1234", "socoTO": "5678", 'elise': '1234'}
 globalUser = "Testing"
