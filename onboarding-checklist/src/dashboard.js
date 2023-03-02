@@ -40,8 +40,8 @@ class Dashboard extends React.Component {
     render() {
         return(
             <div>
-                <h1> Welcome to the Dashboard! </h1>
-                <p>Hi {this.state.user}!</p>
+                <h1> Dashboard </h1>
+                <h3>Welcome, {this.state.user}!</h3>
                 <button onClick={this.handleLogout}>Logout</button>
             </div>
         )
