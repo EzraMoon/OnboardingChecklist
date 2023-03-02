@@ -59,7 +59,7 @@ class LoginScreen extends React.Component
     .then(data => {
       console.log(data) // Data -> {success : true or false}
       if (data.success == false) {
-        alert("Incorrect Username or Password.")
+        alert("Incorrect Username or Password")
         this.state.username = '' // Clears out the username and password
         this.state.password = ''
       } else { // if password is correct
