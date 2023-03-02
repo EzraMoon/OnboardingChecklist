@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import LoginScreen from './login.js';
 import Dashboard from './dashboard.js';
+import SignUp from './signup.js'
 import "./index.css"
 
 // runs the app/ login screen
@@ -10,16 +11,19 @@ class App extends React.Component {
     let Component // Initializes a component, which we can use to load any .js component on screen
     switch(window.location.pathname) {
       case "/": // default condition, basically the homepage
-        Component = LoginScreen 
+        Component = LoginScreen; 
         break;
       case "/dashboard": // localhost:3000/dashboard
-        Component = Dashboard
+        Component = Dashboard;
         break;
       case "/login": // another way to access login page localhost:3000/login
-        Component = LoginScreen
+        Component = LoginScreen;
+        break;
+      case "/signup":
+        Component = SignUp;
         break;
       default: // another default condition to appease javascript
-        Component = LoginScreen
+        Component = LoginScreen;
         break;
     }
     return (

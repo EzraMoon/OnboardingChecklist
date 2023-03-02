@@ -1,6 +1,6 @@
 import React from 'react';
 
-// title for the login screen
+// title for the login scree
 class Title extends React.Component 
 {
   render() 
@@ -47,11 +47,14 @@ class LoginScreen extends React.Component
     console.log(JSON.stringify([username, password]))
 
     // validating frontend and backend connection
-    fetch('http://localhost:5000/validate', {
+    fetch('http://localhost:5000/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
-      },
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": '*',
+        "Access-Control-Allow-Credentials" : true,
+        'Accept': 'application/json'
+    },
       body: JSON.stringify([username, password]),
     }).then(response => {
       // this needs to be fixed to print out 'success: True' not 'success: False'
@@ -68,6 +71,10 @@ class LoginScreen extends React.Component
     }).catch(error => console.error(error))
   }
 
+  handleSignUp = (event) => {
+    window.location.pathname = '/signup'
+  }
+
 
   //printing out the title, text, and other parts of the login screen and implementing them
   render() {
@@ -76,17 +83,17 @@ class LoginScreen extends React.Component
         <div className="title">
           <Title />
         </div>
-        <label>
-          Username: 
-          <input type="text" value={this.state.username} onChange={this.handleUserchange} />
-        </label>
-        <br />
-        <label>
-          Password: 
+        <form>
+          <label> Username: </label>
+            <input type="text" value={this.state.username} onChange={this.handleUserchange} />
+          <br />
+          <br />
+          <label> Password: </label>
           <input type="password" value={this.state.password} onChange={this.handlePassChange} />
-        </label>
+        </form>
         <br />
         <button onClick={this.handleEnterClick}>Enter</button>
+        <p>Not registed? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
       </div>
     );
   }

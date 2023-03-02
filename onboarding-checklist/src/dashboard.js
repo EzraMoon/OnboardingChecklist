@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
         return(
             <div>
                 <h1> Dashboard </h1>
-                <h3>Welcome, {this.state.user}!</h3>
+                <h3>Welcome user!</h3>
                 <button onClick={this.handleLogout}>Logout</button>
             </div>
         )
