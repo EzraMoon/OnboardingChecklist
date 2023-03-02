@@ -1,4 +1,5 @@
 import React from 'react';
+// Test
 
 class Dashboard extends React.Component {
 
@@ -16,21 +17,26 @@ class Dashboard extends React.Component {
 
     fetchUserData() { // connects with the backend to receive user data
         console.log("Getting user data from flask...")
-        fetch('http://localhost:5000/validate', {
+        fetch('http://localhost:5000/profile', {
             method: 'GET',
             dataType: 'json',
             headers: {
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Credentials" : true
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
             }
         }).then(r => {
-            return r.json()
-        }).then(d => {
-                console.log(d)
-                this.setState({user : d.username})
-                console.log(this.state.user)
+            return r.json()})
+            .then(d => {
+                console.log(d);
+                this.setState({user : d.username});
+                console.log(this.state.user);
             })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
     }
 
     componentDidMount() { // Allows us to initialize the states/do stuff before render()
