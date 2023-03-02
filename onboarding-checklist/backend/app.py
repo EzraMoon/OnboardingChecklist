@@ -72,8 +72,8 @@ def validate():
 @cross_origin
 @app.route('/register', methods=['POST'])
 def register_user():
-    username = request.json['username']
-    password = request.json['password']
+    data = request.get_json()
+    username, password = data
 
     # Checks if user exists in the database at all
     user_exists = User.query.filter_by(username=username).first() is not None
