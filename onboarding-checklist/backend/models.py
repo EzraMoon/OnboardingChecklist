@@ -12,3 +12,5 @@ class User(db.Model):
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     username = db.Column(db.String(345), unique=True)
     password = db.Column(db.Text, nullable=False)
+    first = db.Column(db.String(40), unique=False)
+    last = db.Column(db.String(40), unique=False)

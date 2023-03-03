@@ -7,6 +7,7 @@ from models import db, User
 from config import ApplicationConfig
 from flask_bcrypt import Bcrypt
 from flask_session import Session
+from flask_migrate import Migrate
 
 
 # calling index.js
@@ -15,16 +16,11 @@ CORS(app, supports_credentials=True)
 app.config.from_object(ApplicationConfig)
 app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 
-# Global Variables
-database = {'sarah.obriennn': "1234", "socoTO": "5678", 'elise': '1234'}
-globalUser = "Testing"
-
 # Database code
 db.init_app(app)
 bcrypt = Bcrypt(app)
 Session(app)
-with app.app_context():
-    db.create_all()
+migrate = Migrate(app, db) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
 
 #incorporating css folder for text font
 @app.route('/')
@@ -32,19 +28,6 @@ with app.app_context():
 def index():
     return app.send_static_file('index.css')
 
-def check_credentials(user, passw):
-    print('inside', flush=True)
-    global database # make sure we are using the database outlined
-    global globalUser
-
-    if user in database.keys():
-        if passw == database[user]:
-            globalUser = user
-            return True
-        else:
-            return False
-    else:
-        return False
 
 
 
@@ -60,13 +43,13 @@ def validate():
 
         #using this until we get database with soco users
         #if pass and user are in database then returns success or wrong info
-        if (check_credentials(username, password) == True):
-            globalUser = username
-            return {"success" : True}
-        else:
-            return {"success" : False}
-    else:
-        return jsonify({"username" : globalUser})
+        #if (check_credentials(username, password) == True):
+            #globalUser = username
+            #return {"success" : True}
+        #else:
+            #return {"success" : False}
+    #else:
+        #return jsonify({"username" : globalUser})
     
 
 # Register func to add new users to the database
@@ -74,7 +57,10 @@ def validate():
 @cross_origin(supports_credentials=True)
 def register_user():
     data = request.get_json()
-    username, password = data
+    username = data[0]
+    password = data[1]
+    first = data[2]
+    last = data[3]
 
     # Checks if user exists in the database at all
     user_exists = User.query.filter_by(username=username).first() is not None
@@ -85,7 +71,7 @@ def register_user():
     # Encoding password to be secure
     hashed_password = bcrypt.generate_password_hash(password)
     # Create new User
-    new_user = User(username=username, password=hashed_password)
+    new_user = User(username=username, password=hashed_password, first=first, last=last)
     # Add new user to the session
     db.session.add(new_user)
     db.session.commit()
