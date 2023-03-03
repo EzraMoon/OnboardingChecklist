@@ -13,6 +13,7 @@ from flask_session import Session
 app = Flask(__name__, static_folder= "index.js", static_url_path="/")
 CORS(app, supports_credentials=True)
 app.config.from_object(ApplicationConfig)
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 
 # Global Variables
 database = {'sarah.obriennn': "1234", "socoTO": "5678", 'elise': '1234'}
@@ -21,13 +22,13 @@ globalUser = "Testing"
 # Database code
 db.init_app(app)
 bcrypt = Bcrypt(app)
-server_session = Session(app)
+Session(app)
 with app.app_context():
     db.create_all()
 
 #incorporating css folder for text font
-@cross_origin
 @app.route('/')
+@cross_origin(supports_credentials=True)
 def index():
     return app.send_static_file('index.css')
 
@@ -48,8 +49,8 @@ def check_credentials(user, passw):
 
 
 # validating connection between front end and backend
-@cross_origin
 @app.route('/validate', methods=['GET', 'POST'])
+@cross_origin(supports_credentials=True)
 def validate():
     global globalUser
     if request.method == 'POST': # signifies that a form was submitted
@@ -69,8 +70,8 @@ def validate():
     
 
 # Register func to add new users to the database
-@cross_origin
 @app.route('/register', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def register_user():
     data = request.get_json()
     username, password = data
@@ -95,8 +96,8 @@ def register_user():
     })
 
 # Login func to validate credentials using the database
-@cross_origin
 @app.route('/login', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def login_user():
     # Get username and password entry
     data = request.get_json()
@@ -120,8 +121,8 @@ def login_user():
     })
 
 # Profile Data func
-@cross_origin
 @app.route("/@me")
+@cross_origin(supports_credentials=True)
 def get_current_user():
     # Gets the current user id based on session
     user_id = session.get("user_id")

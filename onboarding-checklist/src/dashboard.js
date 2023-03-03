@@ -17,8 +17,9 @@ class Dashboard extends React.Component {
 
     fetchUserData() { // connects with the backend to receive user data
         console.log("Getting user data from flask...")
-        fetch('http://localhost:5000/profile', {
+        fetch('http://localhost:5000/@me', {
             method: 'GET',
+            credentials: 'include',
             dataType: 'json',
             headers: {
                 "Content-Type": "application/json",

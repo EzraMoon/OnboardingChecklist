@@ -49,6 +49,7 @@ class LoginScreen extends React.Component
     // validating frontend and backend connection
     fetch('http://localhost:5000/login', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": '*',
