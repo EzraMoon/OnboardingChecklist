@@ -23,20 +23,20 @@ def login():
             if check_password_hash(user.password, password):
                 # Return true = match
                 flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                login_user(user, remember=True) #login user until session is over
+                return redirect(url_for('views.home')) #redirect to home page
             else:
                 # Return false = non-match
                 flash('Incorrect password, try again.', category='error')
         else:
             flash('Email does not exist.', category='error')
 
-    return render_template("login.html", user=current_user)
+    return render_template("login.html", user=current_user) #render login page
 
 
 #Logout Functionality
 @auth.route('/logout')
-@login_required
+@login_required #Cant logout unless logged in
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
@@ -44,17 +44,19 @@ def logout():
 #Signup Functionality
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
-    if request.method == 'POST':
+    if request.method == 'POST': #get all information from form and store in vars
         email = request.form.get('email')
         first_name = request.form.get('firstName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first() #Filter database to current user
         if user:
             flash('Email already exists.', category='error')
-        elif len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
+        elif "@southernco" not in email:
+            flash('Email must be a Southern Company Email', category='error')
+        elif len(email) < 10:
+            flash('Email must be greater than 9 characters.', category='error')
         elif len(first_name) < 2:
             flash('First name must be greater than 1 character.', category='error')
         elif password1 != password2:
@@ -62,12 +64,13 @@ def sign_up():
         elif len(password1) < 7:
             flash('Password must be at least 7 characters.', category='error')
         else:
+            #create account
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(
-                password1, method='sha256'))
-            db.session.add(new_user)
-            db.session.commit()
-            login_user(new_user, remember=True)
+                password1, method='sha256')) #Encrypt pass using SHA256
+            db.session.add(new_user) #that creates instances of .Session scoped to the current Flask application context.
+            db.session.commit() #add user to database and update the session
+            login_user(new_user, remember=True) #login user until session is over
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            return redirect(url_for('views.home')) #Redirect user to home page
 
-    return render_template("sign_up.html", user=current_user)
+    return render_template("sign_up.html", user=current_user) #render sign-up page
