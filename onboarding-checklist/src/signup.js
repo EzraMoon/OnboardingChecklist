@@ -63,7 +63,11 @@ class SignUp extends React.Component {
         console.log("Successfully signed up!")
         window.location.pathname = '/dashboard';
       } else {
-        alert("Incorrect Email or Password.")
+        if (data.error == "Email") {
+          alert("You can only sign up with a Southern Company email.");
+        } else {
+          alert("User already exists. Please sign in.")
+        }
       }
     }).catch(error => console.error(error))
   }

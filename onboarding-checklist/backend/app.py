@@ -3,7 +3,7 @@ from json import *
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 from flask_login import *
-from models import db, User
+from models import db, User, TaskList
 from config import ApplicationConfig
 from flask_bcrypt import Bcrypt
 from flask_session import Session
@@ -42,8 +42,11 @@ def register_user():
     user_exists = User.query.filter_by(username=email).first() is not None
 
     if user_exists:
-        return  jsonify({"error" : "User already exists"}, 409)
+        return  jsonify({"error" : "Exists"})
     
+    if "@southernco" not in email:
+        return jsonify({"error" : "Email"})
+
     # Encoding password to be secure
     hashed_password = bcrypt.generate_password_hash(password)
     # Create new User
@@ -99,6 +102,14 @@ def get_current_user():
         "email" : user.username,
         "name" : user.first
     }) 
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    if session.get('user_id'):
+        del session['user_id']
+    return jsonify({"logout" : True})
+    
 
 #driver code
 if __name__ == '__main__':

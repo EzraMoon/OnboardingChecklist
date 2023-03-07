@@ -13,6 +13,25 @@ class Dashboard extends React.Component {
     }
 
     handleLogout = () => { // logs the user out
+        fetch('http://localhost:5000/logout', {
+            method: 'GET',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            }
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d);
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
         window.location.pathname = '/'
     }
 
