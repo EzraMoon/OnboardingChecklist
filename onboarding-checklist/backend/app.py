@@ -103,7 +103,13 @@ def get_current_user():
         "name" : user.first
     }) 
 
+@app.route('/taskData')
+@cross_origin(supports_credentials=True)
+def get_user_task_data():
+    
+
 @app.route('/logout')
+@cross_origin(supports_credentials=True)
 def logout():
     logout_user()
     if session.get('user_id'):

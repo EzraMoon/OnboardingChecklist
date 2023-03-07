@@ -21,5 +21,6 @@ def get_taskid():
 class TaskList(db.Model):
     __tablename__ = "taskList"
     id = db.Column(db.String(8), unique=True, primary_key = True) # so that we can implement shared view with id
-    data = db.Column(db.String(10000))
+    title = db.Column(db.String(40), unique=False)
+    data = db.Column(db.String(10000), unique=False)
     author = db.Column(db.String(32), db.ForeignKey('user.id'))
