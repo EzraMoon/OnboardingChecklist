@@ -9,7 +9,7 @@ class SignUp extends React.Component {
     super(props);
     this.state = {
       // blanks for user and password, also declaring them for the code
-      username: '',
+      email: '',
       password: '',
       first: '',
       last: '',
@@ -17,8 +17,8 @@ class SignUp extends React.Component {
   }
 
    // username entry
-   handleUserChange = (event) => {
-    this.setState({ username: event.target.value });
+   handleEmailChange = (event) => {
+    this.setState({ email: event.target.value });
   }
 
   // password entry
@@ -35,14 +35,14 @@ class SignUp extends React.Component {
   }
 
   handleEnterClick = () => {
-    console.log('Username: ', this.state.username);
+    console.log('Email: ', this.state.email);
     console.log('Password: ', this.state.password);
-    let username = this.state.username;
+    let email = this.state.email;
     let password = this.state.password;
     let first = this.state.first;
     let last = this.state.last;
     //console.log('server request::')
-    console.log(JSON.stringify([username, password, first, last]))
+    console.log(JSON.stringify([email, password, first, last]))
 
     // validating frontend and backend connection
     fetch('http://localhost:5000/register', {
@@ -53,7 +53,7 @@ class SignUp extends React.Component {
         "Access-Control-Allow-Credentials" : true,
         'Accept': 'application/json'
     },
-      body: JSON.stringify([username, password, first, last]),
+      body: JSON.stringify([email, password, first, last]),
     }).then(response => {
       // this needs to be fixed to print out 'success: True' not 'success: False'
       return response.json()})
@@ -63,7 +63,7 @@ class SignUp extends React.Component {
         console.log("Successfully signed up!")
         window.location.pathname = '/dashboard';
       } else {
-        alert("Incorrect Username or Password.")
+        alert("Incorrect Email or Password.")
       }
     }).catch(error => console.error(error))
   }
@@ -72,6 +72,7 @@ class SignUp extends React.Component {
         return (
             <div>
                 <h1>Sign Up Here!</h1>
+                <p>You must sign up with a Southern Company email.</p>
         <form>
             <label>First Name: </label>
                 <input type="text" value={this.state.first} onChange={this.handleFirstChange} />
@@ -79,8 +80,8 @@ class SignUp extends React.Component {
                 <input type="text" value={this.state.last} onChange={this.handleLastChange} />
             <br />
             <br />
-          <label> Username: </label>
-            <input type="text" value={this.state.username} onChange={this.handleUserChange} />
+          <label> Email: </label>
+            <input type="text" value={this.state.email} onChange={this.handleEmailChange} />
             <br />
             <br />
           <label> Password: </label>

@@ -7,7 +7,8 @@ class Dashboard extends React.Component {
         super(props)
         this.state = {
             loginStatus: "",
-            user: ""
+            user: "",
+            name: ""
         }
     }
 
@@ -32,6 +33,7 @@ class Dashboard extends React.Component {
             .then(d => {
                 console.log(d);
                 this.setState({user : d.username});
+                this.setState({name : d.name})
                 console.log(this.state.user);
             })
         .catch(e => {
@@ -48,7 +50,7 @@ class Dashboard extends React.Component {
         return(
             <div>
                 <h1> Dashboard </h1>
-                <h3>Welcome user!</h3>
+                <h3>Welcome, {this.state.name}!</h3>
                 <button onClick={this.handleLogout}>Logout</button>
             </div>
         )

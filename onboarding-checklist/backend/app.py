@@ -27,43 +27,19 @@ migrate = Migrate(app, db) # Needed for every time we change the database https:
 @cross_origin(supports_credentials=True)
 def index():
     return app.send_static_file('index.css')
-
-
-
-
-# validating connection between front end and backend
-@app.route('/validate', methods=['GET', 'POST'])
-@cross_origin(supports_credentials=True)
-def validate():
-    global globalUser
-    if request.method == 'POST': # signifies that a form was submitted
-        data = request.get_json()
-        username, password = data
-        
-
-        #using this until we get database with soco users
-        #if pass and user are in database then returns success or wrong info
-        #if (check_credentials(username, password) == True):
-            #globalUser = username
-            #return {"success" : True}
-        #else:
-            #return {"success" : False}
-    #else:
-        #return jsonify({"username" : globalUser})
     
-
 # Register func to add new users to the database
 @app.route('/register', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def register_user():
     data = request.get_json()
-    username = data[0]
+    email = data[0]
     password = data[1]
     first = data[2]
     last = data[3]
 
     # Checks if user exists in the database at all
-    user_exists = User.query.filter_by(username=username).first() is not None
+    user_exists = User.query.filter_by(username=email).first() is not None
 
     if user_exists:
         return  jsonify({"error" : "User already exists"}, 409)
@@ -71,14 +47,14 @@ def register_user():
     # Encoding password to be secure
     hashed_password = bcrypt.generate_password_hash(password)
     # Create new User
-    new_user = User(username=username, password=hashed_password, first=first, last=last)
+    new_user = User(username=email, password=hashed_password, first=first, last=last)
     # Add new user to the session
     db.session.add(new_user)
     db.session.commit()
     # Return user info
     return jsonify({
         "id" : new_user.id,
-        "username" : new_user.username
+        "email" : new_user.username
     })
 
 # Login func to validate credentials using the database
@@ -87,9 +63,9 @@ def register_user():
 def login_user():
     # Get username and password entry
     data = request.get_json()
-    username, password = data
+    email, password = data
     # Search for user in the database
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=email).first()
 
     if user is None: # if user is not created already
         return  jsonify({"error" : "Unauthorized"}, 401)
@@ -103,7 +79,7 @@ def login_user():
     # Returns user ID and username
     return jsonify({
         "id" : user.id,
-        "username" : user.username
+        "email" : user.username
     })
 
 # Profile Data func
@@ -120,11 +96,11 @@ def get_current_user():
     user = User.query.filter_by(id=user_id).first()
     return jsonify({
         "id" : user.id,
-        "username" : user.username
+        "email" : user.username,
+        "name" : user.first
     }) 
 
 #driver code
 if __name__ == '__main__':
-    globalUser = "Testing"
     app.run(debug=True, port=3003)
 

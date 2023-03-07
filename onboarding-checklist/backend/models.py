@@ -14,3 +14,11 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     first = db.Column(db.String(40), unique=False)
     last = db.Column(db.String(40), unique=False)
+
+def get_taskid():
+    return uuid4().hex
+
+class TaskList(db.Model):
+    __tablename__ = "taskList"
+    id = db.Column(db.String(8), unique=True, primary_key = True) # so that we can implement shared view with id
+    data = db.Column(db.String(10000))

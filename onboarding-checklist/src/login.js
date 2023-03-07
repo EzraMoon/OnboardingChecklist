@@ -22,14 +22,14 @@ class LoginScreen extends React.Component
     super(props);
     this.state = {
       // blanks for user and password, also declaring them for the code
-      username: '',
+      email: '',
       password: '',
     };
   }
 
   // username entry
-  handleUserchange = (event) => {
-    this.setState({ username: event.target.value });
+  handleEmailChange = (event) => {
+    this.setState({ email: event.target.value });
   }
 
   // password entry
@@ -39,12 +39,12 @@ class LoginScreen extends React.Component
 
   // click on button entry 
   handleEnterClick = () => {
-    console.log('Username: ', this.state.username);
+    console.log('Email: ', this.state.email);
     console.log('Password: ', this.state.password);
-    let username = this.state.username;
+    let email = this.state.email;
     let password = this.state.password;
     //console.log('server request::')
-    console.log(JSON.stringify([username, password]))
+    console.log(JSON.stringify([email, password]))
 
     // validating frontend and backend connection
     fetch('http://localhost:5000/login', {
@@ -56,7 +56,7 @@ class LoginScreen extends React.Component
         "Access-Control-Allow-Credentials" : true,
         'Accept': 'application/json'
     },
-      body: JSON.stringify([username, password]),
+      body: JSON.stringify([email, password]),
     }).then(response => {
       // this needs to be fixed to print out 'success: True' not 'success: False'
       return response.json()})
@@ -65,7 +65,7 @@ class LoginScreen extends React.Component
       if (data.id != null) {
         window.location.pathname = '/dashboard';
       } else {
-        alert("Incorrect Username or Password.")
+        alert("Incorrect Email or Password.")
       }
     }).catch(error => console.error(error))
   }
@@ -83,8 +83,8 @@ class LoginScreen extends React.Component
           <Title />
         </div>
         <form>
-          <label> Username: </label>
-            <input type="text" value={this.state.username} onChange={this.handleUserchange} />
+          <label> Email: </label>
+            <input type="text" value={this.state.email} onChange={this.handleEmailChange} />
           <br />
           <br />
           <label> Password: </label>
