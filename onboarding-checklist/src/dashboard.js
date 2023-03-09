@@ -7,18 +7,39 @@ class Dashboard extends React.Component {
         super(props)
         this.state = {
             loginStatus: "",
-            user: ""
+            user: "",
+            name: ""
         }
     }
 
     handleLogout = () => { // logs the user out
+        fetch('http://localhost:5000/logout', {
+            method: 'GET',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            }
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d);
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
         window.location.pathname = '/'
     }
 
     fetchUserData() { // connects with the backend to receive user data
         console.log("Getting user data from flask...")
-        fetch('http://localhost:5000/profile', {
+        fetch('http://localhost:5000/@me', {
             method: 'GET',
+            credentials: 'include',
             dataType: 'json',
             headers: {
                 "Content-Type": "application/json",
@@ -31,6 +52,7 @@ class Dashboard extends React.Component {
             .then(d => {
                 console.log(d);
                 this.setState({user : d.username});
+                this.setState({name : d.name})
                 console.log(this.state.user);
             })
         .catch(e => {
@@ -47,7 +69,7 @@ class Dashboard extends React.Component {
         return(
             <div>
                 <h1> Dashboard </h1>
-                <h3>Welcome, {this.state.user}!</h3>
+                <h3>Welcome, {this.state.name}!</h3>
                 <button onClick={this.handleLogout}>Logout</button>
             </div>
         )

@@ -1,6 +1,6 @@
 import React from 'react';
 
-// title for the login screen
+// title for the login scree
 class Title extends React.Component 
 {
   render() 
@@ -22,14 +22,14 @@ class LoginScreen extends React.Component
     super(props);
     this.state = {
       // blanks for user and password, also declaring them for the code
-      username: '',
+      email: '',
       password: '',
     };
   }
 
   // username entry
-  handleUserchange = (event) => {
-    this.setState({ username: event.target.value });
+  handleEmailChange = (event) => {
+    this.setState({ email: event.target.value });
   }
 
   // password entry
@@ -39,33 +39,39 @@ class LoginScreen extends React.Component
 
   // click on button entry 
   handleEnterClick = () => {
-    console.log('Username: ', this.state.username);
+    console.log('Email: ', this.state.email);
     console.log('Password: ', this.state.password);
-    let username = this.state.username;
+    let email = this.state.email;
     let password = this.state.password;
     //console.log('server request::')
-    console.log(JSON.stringify([username, password]))
+    console.log(JSON.stringify([email, password]))
 
     // validating frontend and backend connection
-    fetch('http://localhost:5000/validate', {
+    fetch('http://localhost:5000/login', {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify([username, password]),
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": '*',
+        "Access-Control-Allow-Credentials" : true,
+        'Accept': 'application/json'
+    },
+      body: JSON.stringify([email, password]),
     }).then(response => {
       // this needs to be fixed to print out 'success: True' not 'success: False'
       return response.json()})
     .then(data => {
-      console.log(data) // Data -> {success : true or false}
-      if (data.success == false) {
-        alert("Incorrect Username or Password")
-        this.state.username = '' // Clears out the username and password
-        this.state.password = ''
-      } else { // if password is correct
-        window.location.pathname = '/dashboard'
+      console.log(data)
+      if (data.id != null) {
+        window.location.pathname = '/dashboard';
+      } else {
+        alert("Incorrect Email or Password.")
       }
     }).catch(error => console.error(error))
+  }
+
+  handleSignUp = (event) => {
+    window.location.pathname = '/signup'
   }
 
 
@@ -76,17 +82,17 @@ class LoginScreen extends React.Component
         <div className="title">
           <Title />
         </div>
-        <label>
-          Username: 
-          <input type="text" value={this.state.username} onChange={this.handleUserchange} />
-        </label>
-        <br />
-        <label>
-          Password: 
+        <form>
+          <label> Email: </label>
+            <input type="text" value={this.state.email} onChange={this.handleEmailChange} />
+          <br />
+          <br />
+          <label> Password: </label>
           <input type="password" value={this.state.password} onChange={this.handlePassChange} />
-        </label>
+        </form>
         <br />
         <button onClick={this.handleEnterClick}>Enter</button>
+        <p>Not registed? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
       </div>
     );
   }
