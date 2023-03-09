@@ -106,7 +106,7 @@ def get_current_user():
 @app.route('/taskData')
 @cross_origin(supports_credentials=True)
 def get_user_task_data():
-    
+    return True
 
 @app.route('/logout')
 @cross_origin(supports_credentials=True)

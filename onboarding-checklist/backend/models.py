@@ -18,9 +18,11 @@ class User(db.Model):
 def get_taskid():
     return uuid4().hex
 
+# List database. Idealy each list would be its own instance of TaskList
+# and the idea is that the ID could be used to share view with non-members of the site
 class TaskList(db.Model):
     __tablename__ = "taskList"
     id = db.Column(db.String(8), unique=True, primary_key = True) # so that we can implement shared view with id
-    title = db.Column(db.String(40), unique=False)
-    data = db.Column(db.String(10000), unique=False)
-    author = db.Column(db.String(32), db.ForeignKey('user.id'))
+    title = db.Column(db.String(40), unique=False) # name of list
+    data = db.Column(db.String(10000), unique=False) # the tasks themselves
+    author = db.Column(db.String(32), db.ForeignKey('user.id')) # author, connected to a User object
