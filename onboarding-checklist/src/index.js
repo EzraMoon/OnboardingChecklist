@@ -23,6 +23,9 @@ class App extends React.Component {
       case "/todo": // access to-do list screen 
         Component = Todo;
         break;
+      case "/signup":
+        Component = SignUp;
+        break;
       default: // another default condition to appease javascript
         Component = LoginScreen
         break;

@@ -114,7 +114,7 @@ class Todo extends React.Component {
       );
       
   }     
-} export default Todo;
+} export default Todo
 
 // some issues to fix, delete button isn't working, history is not being held when going to previous page, user is not showing up 'OnBoarding tasks for: ' should have inputted user, cannot
 // permanently delete added task by user. 
