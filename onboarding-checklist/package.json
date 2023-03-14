@@ -10,12 +10,7 @@
     "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
-    "react-router-dom": "^6.8.1",
-    "react-scripts": "^5.0.1",
-=======
     "react-router-dom": "^6.9.0",
->>>>>>> 502af12d4124670b8df4af95107a4b3931eb07cc
     "web-vitals": "^2.1.4"
   },
   "scripts": {
