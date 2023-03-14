@@ -1,7 +1,4 @@
 import React from 'react';
-import TodoList from './todo';
-
-// Test
 
 class Dashboard extends React.Component {
 
@@ -17,51 +14,46 @@ class Dashboard extends React.Component {
         window.location.pathname = '/'
     }
 
+    //event for to-do list
+    handleTodo = () => {
+        window.location.pathname = "/todo";
+      }
+
+
     fetchUserData() { // connects with the backend to receive user data
         console.log("Getting user data from flask...")
-        fetch('http://localhost:5000/profile', {
+        fetch('http://localhost:5000/validate', {
             method: 'GET',
             dataType: 'json',
             headers: {
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": '*',
-                "Access-Control-Allow-Credentials" : true,
-                'Accept': 'application/json'
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials" : true
             }
         }).then(r => {
-            return r.json()})
-            .then(d => {
-                console.log(d);
-                this.setState({user : d.username});
-                console.log(this.state.user);
+            return r.json()
+        }).then(d => {
+                console.log(d)
+                this.setState({user : d.username})
+                console.log(this.state.user)
             })
-        .catch(e => {
-            console.log(e);
-            return e;
-        })
     }
 
     componentDidMount() { // Allows us to initialize the states/do stuff before render()
         this.fetchUserData()
     }
 
-    //function when you click to-do button
-    handleTodoClick = () => {
-        window.location.pathname = '/todo';
-    };
-
-    //to-do and logout button
+    //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
     render() {
-        const { user } = this.state;
-        return (
+        return(
           <div>
-            <h1>Dashboard</h1>
-            <h3>Welcome, {user}!</h3>
+            <h1> Dashboard </h1>
+            <h3>Welcome, {this.state.user}!</h3>
             <button onClick={this.handleLogout}>Logout</button>
-            <button onClick={this.handleTodoClick}>To-Do Tasks</button>
+            <button onClick={this.handleTodo}>To-Do List</button>
           </div>
-        );
+        )
       }
 }
 
-export default Dashboard;
+export default Dashboard
