@@ -7,7 +7,17 @@ class Todo extends React.Component {
       super(props);
       this.state = {
         todos: [],
-        presetTodos: ["Complete I-9 Form", "Get username and password", "Make sure you have Office 365 access"],
+        presetTodos: ["Make sure to recieve Laptop and Quest Headset", 
+        "Obtain Badge: The Badging office is on the first floor, as a full-time employee for assistance",
+        "Complete your I-9 form: Call Tracy Gibby (404-925-6357) to complete",
+        "Obtain NTID and Email: Make sure you can sign into your Southern Company Microsoft Email account, if not call HR Direct",
+        "Make sure you can access TO Microsoft Teams Chat and channels: This is VERY important",
+        "Check access to mySOurce: This is for Southern Company Related apps, links, and personal information",
+        "Learn Time Input: Time is entered through Oracle HCM and can be found at the bottom of mySOurce, ask a full time employee",
+        "Complete LearningSOurce training",
+        "Take a building tour: ask a full-time employee to give you a building tour",
+        "Get your showcase shirts: ask a full-time employee to give you your showcase shirt",
+        "Request necessary access on COOL Compliance: parking deck, internet, tuiton reimbursement, etc"],
         completedTodos: [],
         newItem: ""
       };
@@ -122,4 +132,4 @@ export default Todo;
 // some issues to fix, delete button isn't working, history is not being held when going to previous page, user is not showing up 'OnBoarding tasks for: ' should have inputted user, cannot
 // permanently delete added task by user. 
 
-// things to still add, subtasks for user, ability to see onboarding tasks without having to click button, links to pages, also we need specific tasks from Ezra
+// things to still add, subtasks for user, ability to see onboarding tasks without having to click button, links to pages
