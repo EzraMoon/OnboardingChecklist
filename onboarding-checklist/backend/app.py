@@ -22,13 +22,30 @@ db.init_app(app)
 bcrypt = Bcrypt(app)
 Session(app)
 migrate = Migrate(app, db) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 #incorporating css folder for text font
 @app.route('/')
 @cross_origin(supports_credentials=True)
 def index():
     return app.send_static_file('index.css')
-    
+
+@app.route('/create', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def create_list():
+    data = request.get_json()
+    title = data[0]
+
+    list_exists = TaskList.query.filter_by(title=title).first() is not None
+
+    if list_exists:
+        return  jsonify({"error" : "Exists"})
+
+    return  jsonify({"author" : session["user_id"],
+                     "title" : title})
+
 # Register func to add new users to the database
 @app.route('/register', methods=['POST'])
 @cross_origin(supports_credentials=True)

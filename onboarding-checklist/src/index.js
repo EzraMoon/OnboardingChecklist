@@ -4,7 +4,7 @@ import LoginScreen from './login.js';
 import Dashboard from './dashboard.js';
 import SignUp from './signup.js'
 import Todo from './todo.js';
-import "./index.css"
+import "./index.css";
 
 // runs the app/ login screen
 class App extends React.Component {
