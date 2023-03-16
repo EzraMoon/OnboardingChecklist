@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import LoginScreen from './login.js';
 import Dashboard from './dashboard.js';
+import SignUp from './signup.js'
+import Todo from './todo.js';
 import "./index.css"
 
 // runs the app/ login screen
@@ -17,6 +19,12 @@ class App extends React.Component {
         break;
       case "/login": // another way to access login page localhost:3000/login
         Component = LoginScreen
+        break;
+      case "/todo": // access to-do list screen 
+        Component = Todo;
+        break;
+      case "/signup":
+        Component = SignUp;
         break;
       default: // another default condition to appease javascript
         Component = LoginScreen
