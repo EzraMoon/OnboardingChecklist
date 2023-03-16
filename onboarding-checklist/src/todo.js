@@ -18,11 +18,21 @@ class Todo extends React.Component {
         "Take a building tour: ask a full-time employee to give you a building tour",
         "Get your showcase shirts: ask a full-time employee to give you your showcase shirt",
         "Request necessary access on COOL Compliance: parking deck, internet, tuiton reimbursement, etc"],
-        completedTodos: [],
+        completedTodos: JSON.parse(localStorage.getItem("completedTodos")) || [],
         newItem: ""
       };
       this.populatePreset();
     }
+
+  //checks for preset item
+  componentDidMount() {
+    this.populatePreset();
+  }
+
+  //checks for updated added task
+  componentDidUpdate() {
+    localStorage.setItem("completedTodos", JSON.stringify(this.state.completedTodos));
+  }
 
   //add item to list by user
   addItem = () => {
@@ -80,6 +90,18 @@ class Todo extends React.Component {
     this.setState({todos});
   }
 
+  //deletes a completed item
+  deleteCompletedItem = (index) => {
+    const { completedTodos } = this.state;
+    completedTodos.splice(index, 1);
+    this.setState({ completedTodos });
+  }
+
+  //checks if preset task
+  isPresetTask = (task) => {
+    return this.state.presetTodos.includes(task);
+  }
+
   //render function that has completed and uncompleted tasks under their categories
   render() {
     const {todos, completedTodos, newItem} = this.state;
@@ -112,9 +134,12 @@ class Todo extends React.Component {
               <ul>
                 {completedTodos.map((todo, index) => (
                   <li key={index}>
-                    {todo}
-                    <button onClick={() => this.undoItem(index)}> Undo </button>
-                  </li>
+                  {todo}
+                  {!this.isPresetTask(todo) && (
+                    <button onClick={() => this.deleteCompletedItem(index)}> Delete </button>
+                  )}
+                  <button onClick={() => this.undoItem(index)}> Undo </button>
+                </li>
                 ))}
               </ul>
             )}
@@ -126,7 +151,6 @@ class Todo extends React.Component {
   }     
 } export default Todo
 
-// some issues to fix, delete button isn't working, history is not being held when going to previous page, user is not showing up 'OnBoarding tasks for: ' should have inputted user, cannot
-// permanently delete added task by user. 
+// some issues to fix: history needs to be held per user, user is not showing up 'OnBoarding tasks for: ' should have inputted user 
 
-// things to still add, subtasks for user, ability to see onboarding tasks without having to click button, links to pages
+// things to still add: subtasks for user, links to pages
