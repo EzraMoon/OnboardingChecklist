@@ -74,12 +74,10 @@ class Dashboard extends React.Component {
         return(
           <div>
             <h1> Dashboard </h1>
-            <h3>Welcome, {this.state.user}!</h3>
+            <h3>Welcome, {this.state.name}!</h3>
             <button onClick={this.handleLogout}>Logout</button>
             <button onClick={this.handleTodo}>To-Do List</button>
           </div>
         )
       }
-}
-
-export default Dashboard
+} export default Dashboard
