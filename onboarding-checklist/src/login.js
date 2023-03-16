@@ -39,8 +39,6 @@ class LoginScreen extends React.Component
 
   // click on button entry 
   handleEnterClick = () => {
-    console.log('Email: ', this.state.email);
-    console.log('Password: ', this.state.password);
     let email = this.state.email;
     let password = this.state.password;
     //console.log('server request::')
