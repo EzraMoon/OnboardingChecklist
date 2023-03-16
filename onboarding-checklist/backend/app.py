@@ -58,7 +58,8 @@ def register_user():
     # Return user info
     return jsonify({
         "id" : new_user.id,
-        "email" : new_user.username
+        "email" : new_user.username,
+        "name" : new_user.first
     })
 
 # Login func to validate credentials using the database
