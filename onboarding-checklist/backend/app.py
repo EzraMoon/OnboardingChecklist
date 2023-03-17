@@ -3,7 +3,7 @@ from json import *
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 from flask_login import *
-from models import db, User, TaskList
+from models import db, User, TaskList, Note
 from config import ApplicationConfig
 from flask_bcrypt import Bcrypt
 from flask_session import Session
@@ -21,7 +21,7 @@ app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 db.init_app(app)
 bcrypt = Bcrypt(app)
 Session(app)
-migrate = Migrate(app, db) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
+migrate = Migrate(app, db, render_as_batch=True) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
 @app.before_first_request
 def create_tables():
     db.create_all()
@@ -37,14 +37,23 @@ def index():
 def create_list():
     data = request.get_json()
     title = data[0]
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    new_list = TaskList(title=title, user=user)
+    user.tasklists.append(new_list)
 
-    list_exists = TaskList.query.filter_by(title=title).first() is not None
+    return  jsonify({"author" : new_list.user,
+                     "title" : new_list.title})
 
-    if list_exists:
-        return  jsonify({"error" : "Exists"})
+@app.route('/listdata', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def list_info():
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    list_items = TaskList.query.filter_by(user=user).all()
+    return jsonify(list_items)
 
-    return  jsonify({"author" : session["user_id"],
-                     "title" : title})
+    
 
 # Register func to add new users to the database
 @app.route('/register', methods=['POST'])
@@ -110,7 +119,7 @@ def login_user():
 def get_current_user():
     # Gets the current user id based on session
     user_id = session.get("user_id")
-
+    
     # Block unauthorized users
     if not user_id:
         return jsonify({"error" : "Unauthorized"}, 401)

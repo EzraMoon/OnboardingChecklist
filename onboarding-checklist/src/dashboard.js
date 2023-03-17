@@ -101,6 +101,29 @@ class Dashboard extends React.Component {
         })
     }
 
+    listInfo = (event) => {
+        event.preventDefault() // Prevents the page from reloading
+        fetch('http://localhost:5000/listdata', {
+            method: 'GET',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d);
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
+    }
+
     //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
     render() {
         return(
@@ -114,6 +137,7 @@ class Dashboard extends React.Component {
                 <button onClick={this.listCreate}>Create New List</button>
             </form>
             <br/>
+            <button onClick={this.listInfo}>Test</button>
             <button onClick={this.handleLogout}>Logout</button>
             <button onClick={this.handleTodo}>To-Do List</button>
           </div>
