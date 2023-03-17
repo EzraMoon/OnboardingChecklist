@@ -32,32 +32,43 @@ def create_tables():
 def index():
     return app.send_static_file('index.css')
 
+# Function to create a new task list attributed to the user
 @app.route('/create', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def create_list():
     data = request.get_json()
-    title = data[0]
+    title = data[0] # all we need is the title of the future list
 
-    user_id = session.get("user_id")
+    # getting info attributed to user so we can identify the author
+    user_id = session.get("user_id") 
     user = User.query.filter_by(id=user_id).first()
     if not user:
         return
 
+    # add the task list to the user, so they own it
     user.tasklists.append(TaskList(title=title, user=user))
-    db.session.commit()
+    db.session.commit() # IMPORTANT -> Assigns it to be saved between sessions
 
-    return  jsonify({"author" : user.first,
-                     "title" : user.tasklists[0].title})
+    return  jsonify({"Success" : True})
 
+# Function to return all the names of the existing tasklists
 @app.route('/listdata', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def list_info():
+    # get the current user based on the session
     user_id = session.get("user_id")
     user = User.query.filter_by(id=user_id).first()
     if not user:
         return
+    # create a list of the names of the user's created lists
+    list_of_lists = user.tasklists
+    nameList = []
+
+    for x in list_of_lists:
+        nameList.append(x.title)
     
-    return jsonify(user.tasklists[0].title)
+    # return a list of the names
+    return jsonify({"data" : nameList})
 
     
 

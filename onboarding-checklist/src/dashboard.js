@@ -8,7 +8,8 @@ class Dashboard extends React.Component {
         this.state = {
             user: "",
             name: "",
-            title: ""
+            title: "",
+            lists: []
         }
     }
 
@@ -71,6 +72,7 @@ class Dashboard extends React.Component {
 
     componentDidMount() { // Allows us to initialize the states/do stuff before render()
         this.fetchUserData()
+        this.listInfo()
     }
 
     listCreate = (event) => {
@@ -93,7 +95,7 @@ class Dashboard extends React.Component {
         }).then(r => {
             return r.json()})
             .then(d => {
-                console.log(d);
+                this.listInfo()
             })
         .catch(e => {
             console.log(e);
@@ -102,7 +104,6 @@ class Dashboard extends React.Component {
     }
 
     listInfo = (event) => {
-        event.preventDefault() // Prevents the page from reloading
         fetch('http://localhost:5000/listdata', {
             method: 'GET',
             credentials: 'include',
@@ -117,6 +118,8 @@ class Dashboard extends React.Component {
             return r.json()})
             .then(d => {
                 console.log(d);
+                this.setState({lists : d.data})
+                console.log(this.state.lists)
             })
         .catch(e => {
             console.log(e);
@@ -131,7 +134,11 @@ class Dashboard extends React.Component {
             <h1> Dashboard </h1>
             <h3>Welcome, {this.state.name}!</h3>
             <p>This is your list dashboard! Create a new to-do list or edit an existing one here.</p>
-            <p>Existing Lists will eventually go here.</p>
+            <ul>
+                {this.state.lists.map((item) => (
+                    <li key={item}>{item}</li>
+                ))}
+            </ul>
             <form>
                 <input type="text" placeholder="Title of list" value={this.state.title} onChange={this.handleTitle}></input>
                 <button onClick={this.listCreate}>Create New List</button>
