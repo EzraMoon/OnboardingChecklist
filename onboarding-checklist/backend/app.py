@@ -37,21 +37,27 @@ def index():
 def create_list():
     data = request.get_json()
     title = data[0]
+
     user_id = session.get("user_id")
     user = User.query.filter_by(id=user_id).first()
-    new_list = TaskList(title=title, user=user)
-    user.tasklists.append(new_list)
+    if not user:
+        return
 
-    return  jsonify({"author" : new_list.user,
-                     "title" : new_list.title})
+    user.tasklists.append(TaskList(title=title, user=user))
+    db.session.commit()
+
+    return  jsonify({"author" : user.first,
+                     "title" : user.tasklists[0].title})
 
 @app.route('/listdata', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def list_info():
     user_id = session.get("user_id")
     user = User.query.filter_by(id=user_id).first()
-    list_items = TaskList.query.filter_by(user=user).all()
-    return jsonify(list_items)
+    if not user:
+        return
+    
+    return jsonify(user.tasklists[0].title)
 
     
 

@@ -38,6 +38,7 @@ class TaskList(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key = True, default=get_listid) # so that we can implement shared view with id
     title = db.Column(db.String(40), unique=False) # name of list
     user = db.relationship("User", back_populates="tasklists")
+    user_id = db.Column(db.String(32), db.ForeignKey('users.id'))
     notes = db.relationship("Note", back_populates="tasklist")
 
 # Items within a task list
@@ -46,4 +47,5 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     number = db.Column(db.Integer)
     tasklist = db.relationship("TaskList", back_populates="notes")
+    tasklist_id = db.Column(db.Integer, db.ForeignKey('taskList.id'))
     text = db.Column(db.String(250))
