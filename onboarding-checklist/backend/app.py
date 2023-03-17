@@ -70,6 +70,14 @@ def list_info():
     # return a list of the names
     return jsonify({"data" : nameList})
 
+@app.route('/addnote', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_to_list():
+    # somehow choose which list we are selecting
+    # I'm asuming by creating a list-specific page
+    # list.append(Note(...))
+    # db.session.commit() 
+    return
     
 
 # Register func to add new users to the database
