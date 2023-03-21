@@ -22,6 +22,7 @@ class App extends React.Component {
           <Route path="/signup" element={<SignUp/>}/>
           <Route path="/login" element={<LoginScreen/>}/>
           <Route exact path="/" element={<LoginScreen/>}/>
+          <Route path="/list/:listId" element={<Todo/>}/>
         </Routes>
     </Router>
     );

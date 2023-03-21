@@ -7,6 +7,7 @@ class Todo extends React.Component {
       super(props);
       this.state = {
         todos: [],
+        listId: window.location.href.split('/')[4],
         presetTodos: ["Make sure to recieve Laptop and Quest Headset", 
         "Obtain Badge: The Badging office is on the first floor, as a full-time employee for assistance",
         "Complete your I-9 form: Call Tracy Gibby (404-925-6357) to complete",
@@ -27,12 +28,36 @@ class Todo extends React.Component {
   //checks for preset item
   componentDidMount() {
     this.populatePreset();
+    console.log(this.state.listId);
   }
 
   //checks for updated added task
   componentDidUpdate() {
     localStorage.setItem("completedTodos", JSON.stringify(this.state.completedTodos));
   }
+
+  grabList = (event) => {
+    fetch('http://localhost:5000/getlist', {
+        method: 'POST',
+        credentials: 'include',
+        dataType: 'json',
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Credentials" : true,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(this.state.listId),
+    }).then(r => {
+        return r.json()})
+        .then(d => {
+            console.log(d);
+        })
+    .catch(e => {
+        console.log(e);
+        return e;
+    })
+}
 
   //add item to list by user
   addItem = () => {

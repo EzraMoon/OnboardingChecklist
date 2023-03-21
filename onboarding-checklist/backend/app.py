@@ -78,6 +78,22 @@ def add_to_list():
     # list.append(Note(...))
     # db.session.commit() 
     return
+
+# Grabs the info from a specific list
+# identififed by the corresponding list code 
+@app.route('/getlist', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def get_list():
+    id = request.get_json()
+    iden_list = TaskList.query.filter_by(id=id).first()
+
+    if not iden_list:
+        return jsonify({"Error" : "List does not exist"})
+    
+    return jsonify({"Title" : iden_list.title,
+                    "Author" : iden_list.user,
+                    "Data" : iden_list.notes})
+
     
 
 # Register func to add new users to the database
