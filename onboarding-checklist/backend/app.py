@@ -63,12 +63,15 @@ def list_info():
     # create a list of the names of the user's created lists
     list_of_lists = user.tasklists
     nameList = []
+    namedict = {list_of_lists[i].id : list_of_lists[i].title for i in range(0, len(list_of_lists))}
+
 
     for x in list_of_lists:
-        nameList.append(x.title)
+        nameList.append((x.title))
+
     
     # return a list of the names
-    return jsonify({"data" : nameList})
+    return jsonify({"data" : nameList, "dict" : namedict})
 
 @app.route('/addnote', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -91,7 +94,7 @@ def get_list():
         return jsonify({"Error" : "List does not exist"})
     
     return jsonify({"Title" : iden_list.title,
-                    "Author" : iden_list.user,
+                    "Author" : iden_list.user.first,
                     "Data" : iden_list.notes})
 
     

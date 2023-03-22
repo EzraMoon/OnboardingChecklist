@@ -9,7 +9,8 @@ class Dashboard extends React.Component {
             user: "",
             name: "",
             title: "",
-            lists: []
+            lists: [],
+            dict: {}
         }
     }
 
@@ -120,6 +121,7 @@ class Dashboard extends React.Component {
                 console.log(d);
                 this.setState({lists : d.data})
                 console.log(this.state.lists)
+                this.setState({dict : d.dict})
             })
         .catch(e => {
             console.log(e);
@@ -134,10 +136,10 @@ class Dashboard extends React.Component {
             <h1> Dashboard </h1>
             <h3>Welcome, {this.state.name}!</h3>
             <p>This is your list dashboard! Create a new to-do list or edit an existing one here.</p>
-            <ul>
-                {this.state.lists.map((item) => (
-                    <li key={item}>{item}</li>
-                ))}
+                <ul>
+                {
+                    Object.entries(this.state.dict).map(([key, value]) => <li> <a href={'/list/'+ key}>{value}</a></li>)
+                }
             </ul>
             <form>
                 <input type="text" placeholder="Title of list" value={this.state.title} onChange={this.handleTitle}></input>

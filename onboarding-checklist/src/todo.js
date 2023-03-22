@@ -29,6 +29,7 @@ class Todo extends React.Component {
   componentDidMount() {
     this.populatePreset();
     console.log(this.state.listId);
+    this.grabList();
   }
 
   //checks for updated added task
