@@ -146,7 +146,6 @@ class Dashboard extends React.Component {
                 <button onClick={this.listCreate}>Create New List</button>
             </form>
             <br/>
-            <button onClick={this.listInfo}>Test</button>
             <button onClick={this.handleLogout}>Logout</button>
             <button onClick={this.handleTodo}>To-Do List</button>
           </div>

@@ -80,6 +80,14 @@ def add_to_list():
     # I'm asuming by creating a list-specific page
     # list.append(Note(...))
     # db.session.commit() 
+    listID, data = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+
+    if not cList:
+        return
+    
+    cList.notes.append(Note(text=data,tasklist=cList))
+    db.session.commit()
     return
 
 # Grabs the info from a specific list
