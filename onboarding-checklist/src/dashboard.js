@@ -147,7 +147,6 @@ class Dashboard extends React.Component {
             </form>
             <br/>
             <button onClick={this.handleLogout}>Logout</button>
-            <button onClick={this.handleTodo}>To-Do List</button>
           </div>
         )
       }

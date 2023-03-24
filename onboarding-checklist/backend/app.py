@@ -84,11 +84,11 @@ def add_to_list():
     cList = TaskList.query.filter_by(id=listID).first()
 
     if not cList:
-        return
+        return None
     
     cList.notes.append(Note(text=data,tasklist=cList))
     db.session.commit()
-    return
+    return jsonify({"data" : data})
 
 # Grabs the info from a specific list
 # identififed by the corresponding list code 
@@ -99,11 +99,15 @@ def get_list():
     iden_list = TaskList.query.filter_by(id=id).first()
 
     if not iden_list:
-        return jsonify({"Error" : "List does not exist"})
+        return jsonify({"Error" : "List does not exist"}, 404)
+    
+    noteList = []
+    for x in iden_list.notes:
+        noteList.append(x.text)
     
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,
-                    "Data" : iden_list.notes})
+                    "Data" : noteList})
 
     
 

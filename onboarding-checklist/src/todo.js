@@ -22,7 +22,8 @@ class Todo extends React.Component {
         completedTodos: JSON.parse(localStorage.getItem("completedTodos")) || [],
         newItem: "",
         author: "",
-        title: ""
+        title: "",
+        valid: true
       };
       this.populatePreset();
     }
@@ -56,11 +57,16 @@ class Todo extends React.Component {
         return r.json()})
         .then(d => {
             console.log(d);
+            if (d.Author == null) {
+              this.setState({valid: false})
+            }
             this.setState({author : d.Author})
             this.setState({title : d.Title})
         })
     .catch(e => {
         console.log(e);
+        window.location.pathname = '*';
+        this.setState({valid: false})
         return e;
     })
 }
@@ -71,6 +77,7 @@ class Todo extends React.Component {
     if (newItem.trim() !== "") {
       todos.push(newItem);
       this.setState({ todos, newItem: "" });
+      this.addTaskGlobal()
     }
   }
 
@@ -155,6 +162,7 @@ class Todo extends React.Component {
             })
         .catch(e => {
             console.log(e);
+            
             return e;
         })
   }
@@ -164,7 +172,8 @@ class Todo extends React.Component {
     const {todos, completedTodos, newItem} = this.state;
     const { user } = this.props;
   
-    return (
+    if (this.state.valid == true) {
+      return (
         <div>
           <h1>To-Do List </h1>
           <h2>{this.state.title}</h2>
@@ -205,6 +214,15 @@ class Todo extends React.Component {
           <button onClick={this.goBack}> Go Back </button>
         </div>
       );
+    } else {
+      return(
+        <div>
+          <h1>Invalid list code.</h1>
+          <button onClick={this.goBack}> Go Back </button>
+        </div>
+      )
+    }
+    
       
   }     
 } export default Todo
