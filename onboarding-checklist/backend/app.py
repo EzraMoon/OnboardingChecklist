@@ -43,13 +43,34 @@ def create_list():
     user_id = session.get("user_id") 
     user = User.query.filter_by(id=user_id).first()
     if not user:
-        return
+        return jsonify({"Error" : "User does not exist"})
 
     # add the task list to the user, so they own it
     user.tasklists.append(TaskList(title=title, user=user))
     db.session.commit() # IMPORTANT -> Assigns it to be saved between sessions
 
     return  jsonify({"Success" : True})
+
+@app.route('/delete', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def delete_list():
+    listid = request.get_json()
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if not user:
+        return jsonify({"Error" : "User does not exist"})
+    
+    cList = TaskList.query.filter_by(id=listid).first()
+
+    if not cList:
+        return jsonify({"Error" : "List does not exist"})
+    
+    user.tasklists.remove(cList)
+    db.session.commit()
+    return jsonify({"Success" : True})
+
 
 # Function to return all the names of the existing tasklists
 @app.route('/listdata', methods=['GET'])

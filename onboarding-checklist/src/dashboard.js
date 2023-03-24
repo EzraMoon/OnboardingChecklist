@@ -129,6 +129,31 @@ class Dashboard extends React.Component {
         })
     }
 
+    delList(event, code) {
+        event.preventDefault()
+        fetch('http://localhost:5000/delete', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(code),
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d);
+                this.listInfo();
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
+    }
+
     //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
     render() {
         return(
@@ -138,9 +163,10 @@ class Dashboard extends React.Component {
             <p>This is your list dashboard! Create a new to-do list or edit an existing one here.</p>
                 <ul>
                 {
-                    Object.entries(this.state.dict).map(([key, value]) => <li> <a href={'/list/'+ key}>{value}</a></li>)
+                    Object.entries(this.state.dict).map(([key, value]) => <li> <a href={'/list/'+ key}>{value}</a><button onClick={(e) => {
+                        this.delList(e, key)}}>Delete</button></li>)
                 }
-            </ul>
+                </ul>
             <form>
                 <input type="text" placeholder="Title of list" value={this.state.title} onChange={this.handleTitle}></input>
                 <button onClick={this.listCreate}>Create New List</button>
