@@ -84,11 +84,28 @@ def add_to_list():
     cList = TaskList.query.filter_by(id=listID).first()
 
     if not cList:
-        return None
+        return jsonify({"Error" : "List not found"}, 404)
     
     cList.notes.append(Note(text=data,tasklist=cList))
     db.session.commit()
     return jsonify({"data" : data})
+
+@app.route('/deletenote', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def remove_from_list():
+    listID, noteID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    if not cNote:
+        return jsonify({"Error" : "Note not found"}, 404)
+    
+    cList.notes.remove(cNote)
+    return jsonify({"Success" : True})
+
 
 # Grabs the info from a specific list
 # identififed by the corresponding list code 

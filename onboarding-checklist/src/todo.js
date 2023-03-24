@@ -22,8 +22,7 @@ class Todo extends React.Component {
         completedTodos: JSON.parse(localStorage.getItem("completedTodos")) || [],
         newItem: "",
         author: "",
-        title: "",
-        valid: true
+        title: ""
       };
       this.populatePreset();
     }
@@ -57,16 +56,11 @@ class Todo extends React.Component {
         return r.json()})
         .then(d => {
             console.log(d);
-            if (d.Author == null) {
-              this.setState({valid: false})
-            }
             this.setState({author : d.Author})
             this.setState({title : d.Title})
         })
     .catch(e => {
         console.log(e);
-        window.location.pathname = '*';
-        this.setState({valid: false})
         return e;
     })
 }
@@ -172,7 +166,7 @@ class Todo extends React.Component {
     const {todos, completedTodos, newItem} = this.state;
     const { user } = this.props;
   
-    if (this.state.valid == true) {
+    if (parseInt(this.state.listId) >= 100000) {
       return (
         <div>
           <h1>To-Do List </h1>
