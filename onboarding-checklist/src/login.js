@@ -1,4 +1,5 @@
 import React from 'react';
+import "./login.css"
 
 // title for the login screen
 class Title extends React.Component 
@@ -7,8 +8,8 @@ class Title extends React.Component
   {
     return (
       <div>
-        <h1> Welcome to the login page! </h1>
-        <h2> *Must be a registered Southern Company Email Address* </h2>
+        <h1> Southern Company Onboarding Checklist </h1>
+        <h2> Secure Log In </h2>
     </div>
     );
   }
@@ -91,8 +92,8 @@ class LoginScreen extends React.Component
           <input type="password" value={this.state.password} onChange={this.handlePassChange} />
         </form>
         <br />
-        <button onClick={this.handleEnterClick}>Enter</button>
-        <p>Not registed? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
+        <button onClick={this.handleEnterClick}>LOG IN</button>
+        <p>Not Registed? <a href='/signup' onClick={this.handleSignUp}>Sign Up Here!</a></p>
       </div>
     );
   }
