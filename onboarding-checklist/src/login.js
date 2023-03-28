@@ -7,8 +7,9 @@ class Title extends React.Component
   {
     return (
       <div>
-        <h1> Welcome to the login page! </h1>
-        <h2> *Must be a registered Southern Company Email Address* </h2>
+        <h1> Welcome to the Onboarding Checklist! </h1>
+        <h2> Create and share checklists relating to onboarding new hires and interns! </h2>
+        <p>** Admin accounts must use a Southern Company email **</p>
     </div>
     );
   }
@@ -24,6 +25,7 @@ class LoginScreen extends React.Component
       // blanks for user and password, also declaring them for the code
       email: '',
       password: '',
+      code: ''
     };
   }
 
@@ -35,6 +37,10 @@ class LoginScreen extends React.Component
   // password entry
   handlePassChange = (event) => {
     this.setState({ password: event.target.value });
+  }
+
+  handleCodeChange = (event) => {
+    this.setState({ code : event.target.value });
   }
 
   // click on button entry 
@@ -69,7 +75,14 @@ class LoginScreen extends React.Component
   }
 
   handleSignUp = (event) => {
-    window.location.pathname = '/signup'
+    window.location.pathname = '/signup';
+  }
+
+  handleCodeEntry = (event) => {
+    event.preventDefault()
+    console.log(this.state.code);
+    let test = window.location.href = '/list/' + this.state.code;
+    console.log(test)
   }
 
 
@@ -91,6 +104,16 @@ class LoginScreen extends React.Component
         <br />
         <button onClick={this.handleEnterClick}>Enter</button>
         <p>Not registed? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
+        <br/>
+        <div className="codeEntry">
+          <h1>Accessing a list?</h1>
+          <p>Enter the six-digit list code you received here:</p>
+          <form>
+            <label>Code: </label>
+            <input type="text" value={this.state.code} onChange={this.handleCodeChange}/>
+            <button onClick={this.handleCodeEntry}>Enter</button>
+          </form>
+        </div>
       </div>
     );
   }

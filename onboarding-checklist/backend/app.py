@@ -43,13 +43,34 @@ def create_list():
     user_id = session.get("user_id") 
     user = User.query.filter_by(id=user_id).first()
     if not user:
-        return
+        return jsonify({"Error" : "User does not exist"})
 
     # add the task list to the user, so they own it
     user.tasklists.append(TaskList(title=title, user=user))
     db.session.commit() # IMPORTANT -> Assigns it to be saved between sessions
 
     return  jsonify({"Success" : True})
+
+@app.route('/delete', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def delete_list():
+    listid = request.get_json()
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if not user:
+        return jsonify({"Error" : "User does not exist"})
+    
+    cList = TaskList.query.filter_by(id=listid).first()
+
+    if not cList:
+        return jsonify({"Error" : "List does not exist"})
+    
+    user.tasklists.remove(cList)
+    db.session.commit()
+    return jsonify({"Success" : True})
+
 
 # Function to return all the names of the existing tasklists
 @app.route('/listdata', methods=['GET'])
@@ -84,11 +105,28 @@ def add_to_list():
     cList = TaskList.query.filter_by(id=listID).first()
 
     if not cList:
-        return
+        return jsonify({"Error" : "List not found"}, 404)
     
     cList.notes.append(Note(text=data,tasklist=cList))
     db.session.commit()
-    return
+    return jsonify({"data" : data})
+
+@app.route('/deletenote', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def remove_from_list():
+    listID, noteID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    if not cNote:
+        return jsonify({"Error" : "Note not found"}, 404)
+    
+    cList.notes.remove(cNote)
+    return jsonify({"Success" : True})
+
 
 # Grabs the info from a specific list
 # identififed by the corresponding list code 
@@ -99,11 +137,15 @@ def get_list():
     iden_list = TaskList.query.filter_by(id=id).first()
 
     if not iden_list:
-        return jsonify({"Error" : "List does not exist"})
+        return jsonify({"Error" : "List does not exist"}, 404)
+    
+    noteList = []
+    for x in iden_list.notes:
+        noteList.append(x.text)
     
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,
-                    "Data" : iden_list.notes})
+                    "Data" : noteList})
 
     
 

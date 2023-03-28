@@ -20,7 +20,9 @@ class Todo extends React.Component {
         "Get your showcase shirts: ask a full-time employee to give you your showcase shirt",
         "Request necessary access on COOL Compliance: parking deck, internet, tuiton reimbursement, etc"],
         completedTodos: JSON.parse(localStorage.getItem("completedTodos")) || [],
-        newItem: ""
+        newItem: "",
+        author: "",
+        title: ""
       };
       this.populatePreset();
     }
@@ -37,6 +39,7 @@ class Todo extends React.Component {
     localStorage.setItem("completedTodos", JSON.stringify(this.state.completedTodos));
   }
 
+  // Gets the info for the selected list based on the code in the link
   grabList = (event) => {
     fetch('http://localhost:5000/getlist', {
         method: 'POST',
@@ -53,6 +56,8 @@ class Todo extends React.Component {
         return r.json()})
         .then(d => {
             console.log(d);
+            this.setState({author : d.Author})
+            this.setState({title : d.Title})
         })
     .catch(e => {
         console.log(e);
@@ -66,6 +71,7 @@ class Todo extends React.Component {
     if (newItem.trim() !== "") {
       todos.push(newItem);
       this.setState({ todos, newItem: "" });
+      this.addTaskGlobal()
     }
   }
 
@@ -150,6 +156,7 @@ class Todo extends React.Component {
             })
         .catch(e => {
             console.log(e);
+            
             return e;
         })
   }
@@ -159,10 +166,12 @@ class Todo extends React.Component {
     const {todos, completedTodos, newItem} = this.state;
     const { user } = this.props;
   
-    return (
+    if (parseInt(this.state.listId) >= 100000) {
+      return (
         <div>
           <h1>To-Do List </h1>
-          <h2> OnBoarding Tasks for: {user}</h2>
+          <h2>{this.state.title}</h2>
+          <h3>Author: {this.state.author}</h3>
           <input type="text" value={newItem} onChange={this.handleChange} />
           <button onClick={this.addItem}> Add Task </button>
           <h3> Uncompleted Tasks: </h3>
@@ -199,6 +208,15 @@ class Todo extends React.Component {
           <button onClick={this.goBack}> Go Back </button>
         </div>
       );
+    } else {
+      return(
+        <div>
+          <h1>Invalid list code.</h1>
+          <button onClick={this.goBack}> Go Back </button>
+        </div>
+      )
+    }
+    
       
   }     
 } export default Todo

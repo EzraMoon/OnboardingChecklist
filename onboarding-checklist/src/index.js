@@ -5,6 +5,7 @@ import LoginScreen from './login.js';
 import Dashboard from './dashboard.js';
 import SignUp from './signup.js'
 import Todo from './todo.js';
+import GoBack from './goback.js';
 import "./index.css";
 
 // runs the app/ login screen
@@ -22,6 +23,7 @@ class App extends React.Component {
           <Route path="/signup" element={<SignUp/>}/>
           <Route path="/login" element={<LoginScreen/>}/>
           <Route exact path="/" element={<LoginScreen/>}/>
+          <Route path='*' element={<GoBack/>}/>
           <Route path="/list/:listId" element={<Todo/>}/>
         </Routes>
     </Router>
