@@ -116,7 +116,6 @@ def logout():
     if session.get('user_id'):
         del session['user_id']
     return jsonify({"logout" : True})
-    
 
 #driver code
 if __name__ == '__main__':
