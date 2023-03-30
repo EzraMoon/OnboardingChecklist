@@ -154,6 +154,12 @@ class Dashboard extends React.Component {
         })
     }
 
+    copyCode(event, code) {
+        event.preventDefault();
+        navigator.clipboard.writeText(code);
+        console.log("Copied list code")
+    }
+
     //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
     render() {
         return(
@@ -164,7 +170,8 @@ class Dashboard extends React.Component {
                 <ul>
                 {
                     Object.entries(this.state.dict).map(([key, value]) => <li> <a href={'/list/'+ key}>{value}</a><button onClick={(e) => {
-                        this.delList(e, key)}}>Delete</button></li>)
+                        this.delList(e, key)}}>Delete</button><button onClick={(e) => {
+                            this.copyCode(e, key)}}>Copy Code</button></li>)
                 }
                 </ul>
             <form>

@@ -53,6 +53,9 @@ class Note(db.Model):
     tasklist_id = db.Column(db.Integer, db.ForeignKey('taskList.id')) # required for the list ownership
     text = db.Column(db.String(250)) # actual content of the item
     title = db.Column(db.String(50)) # title of the task
+
+    # Points to parent note
     parentID = db.Column(db.Integer, db.ForeignKey('note.id'))
-    parent = db.relationship('Note', remote_side=[id])
+    parent = db.relationship('Note', remote_side=[id]) # the note that is a parent of this one
+
     complete = db.Column(db.Boolean, unique=False, default=False) # whether or not the task is complete
