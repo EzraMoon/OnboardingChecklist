@@ -88,7 +88,9 @@ class Todo extends React.Component {
         newItem: "",
         newDescription: "",
         newSubtask: "",
-        presetTodos
+        listId: window.location.href.split('/')[4],
+        author: "",
+        title: ""
       };
     }
 
@@ -100,6 +102,8 @@ class Todo extends React.Component {
   //checks for preset item
   componentDidMount() {
     this.populatePreset();
+    console.log(this.state.listId);
+    this.grabList();
   }
 
   //checks for updated added task
@@ -107,12 +111,39 @@ class Todo extends React.Component {
     localStorage.setItem(`completedTodos-${this.props.user}`, JSON.stringify(this.state.completedTodos));
   }
 
+  // Gets the info for the selected list based on the code in the link
+  grabList = (event) => {
+    fetch('http://localhost:5000/getlist', {
+        method: 'POST',
+        credentials: 'include',
+        dataType: 'json',
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Credentials" : true,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(this.state.listId),
+    }).then(r => {
+        return r.json()})
+        .then(d => {
+            console.log(d);
+            this.setState({author : d.Author})
+            this.setState({title : d.Title})
+        })
+    .catch(e => {
+        console.log(e);
+        return e;
+    })
+}
+
   //add item to list by user
   addItem = () => {
     const { todos, newItem, newDescription } = this.state;
     if (newItem.trim() !== "") {
     todos.push({ title: newItem, description: newDescription, subtasks: [], completed: false });
     this.setState({ todos, newItem: "", newDescription: "" });
+    this.addTaskGlobal();
     }
   }
 
@@ -213,6 +244,33 @@ class Todo extends React.Component {
     this.setState({ todos });
   }
   
+  // Adds task to the selected tasklist
+  // which is connected to the database/the user
+  // who created it.
+  addTaskGlobal = () => {
+    fetch('http://localhost:5000/addnote', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify([this.state.listId, this.state.newItem]), // get listcode from link
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d)
+            })
+        .catch(e => {
+            console.log(e);
+            
+            return e;
+        })
+  }
+
   //render function that has completed and uncompleted tasks under their categories
   render() {
     const { todos, completedTodos, newItem, newDescription, newSubtask } = this.state;
@@ -220,8 +278,8 @@ class Todo extends React.Component {
   
     return (
       <div>
-      <h1>To-Do List</h1>
-      <h2>OnBoarding Tasks for: {user}</h2>
+      <h2>{this.state.title}</h2>
+      <h3>Author: {this.state.author}</h3>
       <input type="text" value={newItem} onChange={this.handleChange} placeholder="Task title" />
       <input type="text" value={newDescription} onChange={this.handleDescriptionChange} placeholder="Task description" />
       <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />

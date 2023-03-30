@@ -3,7 +3,7 @@ from json import *
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 from flask_login import *
-from models import db, User, TaskList
+from models import db, User, TaskList, Note
 from config import ApplicationConfig
 from flask_bcrypt import Bcrypt
 from flask_session import Session
@@ -21,14 +21,134 @@ app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 db.init_app(app)
 bcrypt = Bcrypt(app)
 Session(app)
-migrate = Migrate(app, db) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
+migrate = Migrate(app, db, render_as_batch=True) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 #incorporating css folder for text font
 @app.route('/')
 @cross_origin(supports_credentials=True)
 def index():
     return app.send_static_file('index.css')
+
+# Function to create a new task list attributed to the user
+@app.route('/create', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def create_list():
+    data = request.get_json()
+    title = data[0] # all we need is the title of the future list
+
+    # getting info attributed to user so we can identify the author
+    user_id = session.get("user_id") 
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"Error" : "User does not exist"})
+
+    # add the task list to the user, so they own it
+    user.tasklists.append(TaskList(title=title, user=user))
+    db.session.commit() # IMPORTANT -> Assigns it to be saved between sessions
+
+    return  jsonify({"Success" : True})
+
+@app.route('/delete', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def delete_list():
+    listid = request.get_json()
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if not user:
+        return jsonify({"Error" : "User does not exist"})
     
+    cList = TaskList.query.filter_by(id=listid).first()
+
+    if not cList:
+        return jsonify({"Error" : "List does not exist"})
+    
+    user.tasklists.remove(cList)
+    db.session.commit()
+    return jsonify({"Success" : True})
+
+
+# Function to return all the names of the existing tasklists
+@app.route('/listdata', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def list_info():
+    # get the current user based on the session
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return
+    # create a list of the names of the user's created lists
+    list_of_lists = user.tasklists
+    nameList = []
+    namedict = {list_of_lists[i].id : list_of_lists[i].title for i in range(0, len(list_of_lists))}
+
+
+    for x in list_of_lists:
+        nameList.append((x.title))
+
+    
+    # return a list of the names
+    return jsonify({"data" : nameList, "dict" : namedict})
+
+@app.route('/addnote', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_to_list():
+    # somehow choose which list we are selecting
+    # I'm asuming by creating a list-specific page
+    # list.append(Note(...))
+    # db.session.commit() 
+    listID, data = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    cList.notes.append(Note(text=data,tasklist=cList))
+    db.session.commit()
+    return jsonify({"data" : data})
+
+@app.route('/deletenote', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def remove_from_list():
+    listID, noteID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    if not cNote:
+        return jsonify({"Error" : "Note not found"}, 404)
+    
+    cList.notes.remove(cNote)
+    return jsonify({"Success" : True})
+
+
+# Grabs the info from a specific list
+# identififed by the corresponding list code 
+@app.route('/getlist', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def get_list():
+    id = request.get_json()
+    iden_list = TaskList.query.filter_by(id=id).first()
+
+    if not iden_list:
+        return jsonify({"Error" : "List does not exist"}, 404)
+    
+    noteList = []
+    for x in iden_list.notes:
+        noteList.append(x.text)
+    
+    return jsonify({"Title" : iden_list.title,
+                    "Author" : iden_list.user.first,
+                    "Data" : noteList})
+
+    
+
 # Register func to add new users to the database
 @app.route('/register', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -58,7 +178,8 @@ def register_user():
     # Return user info
     return jsonify({
         "id" : new_user.id,
-        "email" : new_user.username
+        "email" : new_user.username,
+        "name" : new_user.first
     })
 
 # Login func to validate credentials using the database
@@ -92,7 +213,7 @@ def login_user():
 def get_current_user():
     # Gets the current user id based on session
     user_id = session.get("user_id")
-
+    
     # Block unauthorized users
     if not user_id:
         return jsonify({"error" : "Unauthorized"}, 401)
