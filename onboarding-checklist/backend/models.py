@@ -52,4 +52,7 @@ class Note(db.Model):
     tasklist = db.relationship("TaskList", back_populates="notes") # list that the note is a part of
     tasklist_id = db.Column(db.Integer, db.ForeignKey('taskList.id')) # required for the list ownership
     text = db.Column(db.String(250)) # actual content of the item
+    title = db.Column(db.String(50)) # title of the task
+    parentID = db.Column(db.Integer, db.ForeignKey('note.id'))
+    parent = db.relationship('Note', remote_side=[id])
     complete = db.Column(db.Boolean, unique=False, default=False) # whether or not the task is complete
