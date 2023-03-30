@@ -91,6 +91,8 @@ class Todo extends React.Component {
         listId: window.location.href.split('/')[4],
         author: "",
         title: "",
+        presetTodos: [],
+        tasks: {},
       };
       this.populatePreset();
     }
@@ -131,6 +133,7 @@ class Todo extends React.Component {
             console.log(d);
             this.setState({author : d.Author})
             this.setState({title : d.Title})
+            this.setState({tasks : d.Data})
         })
     .catch(e => {
         console.log(e);
@@ -142,7 +145,7 @@ class Todo extends React.Component {
   addItem = () => {
     const { todos, newItem, newDescription } = this.state;
     if (newItem.trim() !== "") {
-    todos?.push({ title: newItem, description: newDescription, subtasks: [], completed: false });
+    todos.push({ title: newItem, description: newDescription, subtasks: [], completed: false });
     this.setState({ todos, newItem: "", newDescription: "" });
     this.addTaskGlobal();
     }
@@ -259,11 +262,12 @@ class Todo extends React.Component {
                 "Access-Control-Allow-Credentials" : true,
                 'Accept': 'application/json'
             },
-            body: JSON.stringify([this.state.listId, this.state.newItem]), // get listcode from link
+            body: JSON.stringify([this.state.listId, this.state.newItem, this.state.newDescription, this.state.newSubtask]), // get listcode from link
         }).then(r => {
             return r.json()})
             .then(d => {
                 console.log(d)
+                console.log(this.state.tasks)
             })
         .catch(e => {
             console.log(e);
@@ -279,19 +283,21 @@ class Todo extends React.Component {
   
     return (
       <div>
-      <h2>{this.state.title}</h2>
+      <h1>{this.state.title}</h1>
       <h3>Author: {this.state.author}</h3>
+      <p>Share this list with other users using the code <b>{this.state.listId}</b></p>
       <input type="text" value={newItem} onChange={this.handleChange} placeholder="Task title" />
       <input type="text" value={newDescription} onChange={this.handleDescriptionChange} placeholder="Task description" />
       <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />
       <button onClick={this.addItem}>Add Task</button>
         <h3>Uncompleted Tasks:</h3>
+
         <button onClick={this.populatePreset}>OnBoarding Tasks</button>
         <ul>
-          {todos?.map((task, taskIndex) => (
+          {todos.map((task, taskIndex) => (
             <li key={taskIndex}>
               <strong>{task.title}</strong>
-              {taskIndex >= this.state.todos.length && (
+              {taskIndex >= this.state.presetTodos.length && (
                 <button onClick={() => this.deleteItem(taskIndex)}>Delete</button>
               )}
               {!task.completed && (
@@ -301,7 +307,7 @@ class Todo extends React.Component {
               <div>
                 <h4>Subtasks:</h4>
                 <ul>
-                  {task.subtasks?.map((subtask, subtaskIndex) => (
+                  {task.subtasks.map((subtask, subtaskIndex) => (
                     <li key={subtaskIndex}>
                       {subtask.title}
                       <button onClick={() => this.completeSubtask(taskIndex, subtaskIndex)}>
@@ -319,7 +325,7 @@ class Todo extends React.Component {
         <p>*No Tasks Completed*</p>
       ) : (
         <ul>
-          {completedTodos?.map((task, taskIndex) => (
+          {completedTodos.map((task, taskIndex) => (
             <li key={taskIndex}>
               {task.title}
               <button onClick={() => this.deleteCompletedItem(taskIndex)}>Delete</button>

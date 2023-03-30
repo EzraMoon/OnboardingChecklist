@@ -42,14 +42,20 @@ class TaskList(db.Model):
     notes = db.relationship("Note", back_populates="tasklist") # list of notes within the list
 
 def get_taskid(): # required to identify specific notes
-    return randint(0, 999999)
+    return randint(0, 999999) + randint(0, 999999)
 
 # Items within a task list
 class Note(db.Model):
     __tablename__ = "note"
-    id = db.Column(db.Integer, primary_key=True, unique=True, default=get_taskid()) # id used to identify
+    id = db.Column(db.Integer, primary_key=True, unique=True, default=get_taskid) # id used to identify
     number = db.Column(db.Integer) # number position on the list
     tasklist = db.relationship("TaskList", back_populates="notes") # list that the note is a part of
     tasklist_id = db.Column(db.Integer, db.ForeignKey('taskList.id')) # required for the list ownership
     text = db.Column(db.String(250)) # actual content of the item
+    title = db.Column(db.String(50)) # title of the task
+
+    # Points to parent note
+    parentID = db.Column(db.Integer, db.ForeignKey('note.id'))
+    parent = db.relationship('Note', remote_side=[id]) # the note that is a parent of this one
+
     complete = db.Column(db.Boolean, unique=False, default=False) # whether or not the task is complete
