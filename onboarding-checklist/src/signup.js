@@ -61,7 +61,7 @@ class SignUp extends React.Component {
       console.log(data)
       if (data.id != null) {
         console.log("Successfully signed up!")
-        window.location.pathname = '/dashboard';
+        window.location.pathname = '/login';
       } else {
         if (data.error === "Email") {
           alert("Must be a registered Southern Company Email Address");
@@ -72,11 +72,16 @@ class SignUp extends React.Component {
     }).catch(error => console.error(error))
   }
 
+  goBack = () => {
+    window.history.back();
+  }
+
     render() {
         return (
             <div>
                 <h1>Sign Up Here!</h1>
                 <p>You must sign up with a Southern Company email.</p>
+                <p>It is reccomended to not use the same credentials as your SO account.</p>
         <form>
             <label>First Name: </label>
                 <input type="text" value={this.state.first} onChange={this.handleFirstChange} />
@@ -94,6 +99,7 @@ class SignUp extends React.Component {
         <br />
         <br />
             <button onClick={this.handleEnterClick}>Enter</button>
+            <button onClick={this.goBack}>Go Back</button>
         </div>
         )
     }

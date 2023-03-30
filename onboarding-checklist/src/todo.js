@@ -5,62 +5,182 @@ import ReactDOM from 'react-dom';
 class Todo extends React.Component {
     constructor(props) {
       super(props);
+      const presetTodos = [
+          {
+            title: "Make sure to recieve Laptop and Quest Headset", 
+            description: "Collect your laptop and VR headset from the IT department.",
+            subtasks: [
+              { title: "Setup headset/ META account", completed: false },
+              { title: "Get bag for headset", completed: false },
+              { title: "Get bag for laptop", completed: false },
+            ]
+          },
+          {
+            title: "Obtain Badge",
+            description: "The badging office is on the first floor, ask a full time employee for assistance",
+            subtasks: [
+              { title: "Make sure badge can access building", completed: false },
+            ]
+          },
+          {
+            title: "Complete your I-9 form",
+            description: "Have ID and SSN ready",
+            subtasks: [
+              { title: "Call Tracy Gibby (404-925-6357) to complete", completed: false },
+            ]
+          },
+          {
+            title: "Obtain NTID and Email",
+            description: "Call HR direct if needed",
+            subtasks: [
+              { title: "Verify ability to login to SOCO email", completed: false },
+            ]
+          },
+          {
+            title: "Make sure you can access TO Microsoft Teams Chat and channels",
+            description: "This is very important, and where all communication occurs",
+            subtasks: [
+              { title: "Join TO Innovations channel", completed: false },
+              { title: "Join Emerging Technologies channel", completed: false },
+            ]
+          },
+          {
+            title: "Check access to mySOurce",
+            description: "This is for Southern Company Related apps, links, and personal information",
+            subtasks: []
+          },
+          {
+            title: "Access Time Input on Oracle HQ on mySOurce",
+            description: "Time Type (Regular), Project (10120163), Task (19.09)",
+            subtasks: [
+              { title: "Write down information", completed: false },
+            ]
+          },
+          {
+            title: "Complete LearningSOurce training",
+            description: "This is due within the first month of employment",
+            subtasks: []
+          },
+          {
+            title: "Take a building tour",
+            description: "Ask a full-time employee for assistance",
+            subtasks: []
+          },
+          {
+            title: "Get showcase shirts",
+            description: "Ask a full time employee for assistance",
+            subtasks: []
+          },
+          {
+            title: "Request necessary access on COOL Compliance",
+            description: "This deals with HR items and other personal SOCO links",
+            subtasks: [
+              { title: "Request parking access", completed: false },
+              { title: "Recieve internet user and password", completed: false },
+              { title: "Apply for tuition reimbursement", completed: false },
+            ]
+          }
+      ];
+
       this.state = {
-        todos: [],
-        presetTodos: ["Make sure to recieve Laptop and Quest Headset", 
-        "Obtain Badge: The Badging office is on the first floor, as a full-time employee for assistance",
-        "Complete your I-9 form: Call Tracy Gibby (404-925-6357) to complete",
-        "Obtain NTID and Email: Make sure you can sign into your Southern Company Microsoft Email account, if not call HR Direct",
-        "Make sure you can access TO Microsoft Teams Chat and channels: This is VERY important",
-        "Check access to mySOurce: This is for Southern Company Related apps, links, and personal information",
-        "Learn Time Input: Time is entered through Oracle HCM and can be found at the bottom of mySOurce, ask a full time employee",
-        "Complete LearningSOurce training",
-        "Take a building tour: ask a full-time employee to give you a building tour",
-        "Get your showcase shirts: ask a full-time employee to give you your showcase shirt",
-        "Request necessary access on COOL Compliance: parking deck, internet, tuiton reimbursement, etc"],
-        completedTodos: [],
-        newItem: ""
+        todos: presetTodos.map(task => ({ ...task, completed: false })),
+        completedTodos: JSON.parse(localStorage.getItem(`completedTodos-${this.props.user}`)) || [],
+        newItem: "",
+        newDescription: "",
+        newSubtask: "",
+        listId: window.location.href.split('/')[4],
+        author: "",
+        title: "",
       };
       this.populatePreset();
     }
 
+  //allows for descriptions on tasks
+  handleDescriptionChange = (event) => {
+  this.setState({ newDescription: event.target.value });
+  }
+
+  //checks for preset item
+  componentDidMount() {
+    this.populatePreset();
+    console.log(this.state.listId);
+    this.grabList();
+  }
+
+  //checks for updated added task
+  componentDidUpdate() {
+    localStorage.setItem(`completedTodos-${this.props.user}`, JSON.stringify(this.state.completedTodos));
+  }
+
+  // Gets the info for the selected list based on the code in the link
+  grabList = (event) => {
+    fetch('http://localhost:5000/getlist', {
+        method: 'POST',
+        credentials: 'include',
+        dataType: 'json',
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Credentials" : true,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(this.state.listId),
+    }).then(r => {
+        return r.json()})
+        .then(d => {
+            console.log(d);
+            this.setState({author : d.Author})
+            this.setState({title : d.Title})
+        })
+    .catch(e => {
+        console.log(e);
+        return e;
+    })
+}
+
   //add item to list by user
   addItem = () => {
-    const {todos, newItem} = this.state;
+    const { todos, newItem, newDescription } = this.state;
     if (newItem.trim() !== "") {
-      todos.push(newItem);
-      this.setState({ todos, newItem: "" });
+    todos?.push({ title: newItem, description: newDescription, subtasks: [], completed: false });
+    this.setState({ todos, newItem: "", newDescription: "" });
+    this.addTaskGlobal();
     }
   }
 
   //remove item from list of user to-do
   removeItem = (index) => {
-    const {todos, completedTodos} = this.state;
+    const { todos, completedTodos } = this.state;
     const completedTask = todos[index];
     todos.splice(index, 1);
     completedTodos.push(completedTask);
-    this.setState({todos, completedTodos});
+    this.setState({ todos, completedTodos });
   }
 
   //undo completed item from list
   undoItem = (index) => {
-    const {completedTodos} = this.state;
+    const { completedTodos, todos } = this.state;
     const uncompletedTask = completedTodos[index];
     completedTodos.splice(index, 1);
-    this.setState({completedTodos});
-    this.addItemToList(uncompletedTask);
+    todos.push(uncompletedTask);
+    this.setState({ completedTodos, todos });
   }
 
   //add tasks to list from user
   addItemToList = (item) => {
-    const {todos} = this.state;
-    todos.push(item);
-    this.setState({todos});
+    const { todos } = this.state;
+    todos.push({ title: item, subtasks: [], completed: false });
+    this.setState({ todos });
   }
 
   //when click, event happens
   handleChange = (event) => {
     this.setState({newItem: event.target.value});
+  }
+
+  //this handles subtasks completion
+  handleSubtaskChange = (event) => {
+    this.setState({ newSubtask: event.target.value });
   }
 
   //go back to previous screen button
@@ -80,53 +200,141 @@ class Todo extends React.Component {
     this.setState({todos});
   }
 
+  //deletes a completed item
+  deleteCompletedItem = (index) => {
+    const { completedTodos } = this.state;
+    completedTodos.splice(index, 1);
+    this.setState({ completedTodos });
+  }
+
+  //checks if preset task
+  isPresetTask = (task) => {
+    return this.state.presetTodos.includes(task);
+  }
+
+  //adding a subtask
+  addSubtask = (taskIndex, subtask) => {
+    const { todos } = this.state;
+    todos[taskIndex].subtasks.push({ title: subtask, completed: false });
+    this.setState({ todos });
+  }
+
+  //removes a subtask
+  removeSubtask = (taskIndex, subtaskIndex) => {
+    const { todos } = this.state;
+    todos[taskIndex].subtasks.splice(subtaskIndex, 1);
+    this.setState({ todos });
+  }
+
+  //complete subtask
+  completeSubtask = (taskIndex, subtaskIndex) => {
+    const { todos } = this.state;
+    todos[taskIndex].subtasks[subtaskIndex].completed = !todos[taskIndex].subtasks[subtaskIndex].completed;
+    this.setState({ todos });
+  }
+
+  //boolean for if task is complete
+  isTaskComplete = (task) => {
+    return task.subtasks.every(subtask => subtask.completed);
+  }
+
+  //completes the task
+  completeTask = (taskIndex) => {
+    const { todos } = this.state;
+    todos[taskIndex].completed = true;
+    this.setState({ todos });
+  }
+  
+  // Adds task to the selected tasklist
+  // which is connected to the database/the user
+  // who created it.
+  addTaskGlobal = () => {
+    fetch('http://localhost:5000/addnote', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify([this.state.listId, this.state.newItem]), // get listcode from link
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d)
+            })
+        .catch(e => {
+            console.log(e);
+            
+            return e;
+        })
+  }
+
   //render function that has completed and uncompleted tasks under their categories
   render() {
-    const {todos, completedTodos, newItem} = this.state;
+    const { todos, completedTodos, newItem, newDescription, newSubtask } = this.state;
     const { user } = this.props;
   
     return (
-        <div>
-          <h1>To-Do List </h1>
-          <h2> OnBoarding Tasks for: {user}</h2>
-          <input type="text" value={newItem} onChange={this.handleChange} />
-          <button onClick={this.addItem}> Add Task </button>
-          <h3> Uncompleted Tasks: </h3>
-          <button onClick={this.populatePreset}> OnBoarding Tasks </button>
-          <ul>
-            {todos.map((todo, index) => (
-              <li key={index}>
-                {todo}
-                {index >= this.state.presetTodos.length && (
-                  <button onClick={() => this.deleteItem(index)}> Delete </button>
-                )}
-                <button onClick={() => this.removeItem(index)}> Complete </button>
-              </li>
-            ))}
-          </ul>
-          <div>
-            <h3> Completed Tasks: </h3>
-            {completedTodos.length === 0 ? (
-              <p> *No tasks completed* </p>
-            ) : (
-              <ul>
-                {completedTodos.map((todo, index) => (
-                  <li key={index}>
-                    {todo}
-                    <button onClick={() => this.undoItem(index)}> Undo </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <button onClick={this.goBack}> Go Back </button>
-        </div>
-      );
-      
-  }     
+      <div>
+      <h2>{this.state.title}</h2>
+      <h3>Author: {this.state.author}</h3>
+      <input type="text" value={newItem} onChange={this.handleChange} placeholder="Task title" />
+      <input type="text" value={newDescription} onChange={this.handleDescriptionChange} placeholder="Task description" />
+      <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />
+      <button onClick={this.addItem}>Add Task</button>
+        <h3>Uncompleted Tasks:</h3>
+        <button onClick={this.populatePreset}>OnBoarding Tasks</button>
+        <ul>
+          {todos?.map((task, taskIndex) => (
+            <li key={taskIndex}>
+              <strong>{task.title}</strong>
+              {taskIndex >= this.state.todos.length && (
+                <button onClick={() => this.deleteItem(taskIndex)}>Delete</button>
+              )}
+              {!task.completed && (
+                <button onClick={() => this.removeItem(taskIndex)}>Complete</button>
+              )}
+              <p>{task.description}</p>
+              <div>
+                <h4>Subtasks:</h4>
+                <ul>
+                  {task.subtasks?.map((subtask, subtaskIndex) => (
+                    <li key={subtaskIndex}>
+                      {subtask.title}
+                      <button onClick={() => this.completeSubtask(taskIndex, subtaskIndex)}>
+                        {subtask.completed ? "Undo" : "Complete"}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <h3>Completed Tasks:</h3>
+        {completedTodos.length === 0 ? (
+        <p>*No Tasks Completed*</p>
+      ) : (
+        <ul>
+          {completedTodos?.map((task, taskIndex) => (
+            <li key={taskIndex}>
+              {task.title}
+              <button onClick={() => this.deleteCompletedItem(taskIndex)}>Delete</button>
+              <button onClick={() => this.undoItem(taskIndex)}>Undo</button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <button onClick={this.goBack}>Go Back</button>
+    </div>
+  );
+ }       
 } export default Todo
 
-// some issues to fix, delete button isn't working, history is not being held when going to previous page, user is not showing up 'OnBoarding tasks for: ' should have inputted user, cannot
-// permanently delete added task by user. 
+// some issues to fix: user is not showing up 'OnBoarding tasks for: ' should have inputted user 
 
-// things to still add, subtasks for user, ability to see onboarding tasks without having to click button, links to pages
+// things to still add: links to pages

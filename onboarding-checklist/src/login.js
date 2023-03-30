@@ -8,8 +8,9 @@ class Title extends React.Component
   {
     return (
       <div>
-        <h1> Southern Company Onboarding Checklist </h1>
-        <h2> Secure Log In </h2>
+        <h1> Welcome to the Onboarding Checklist! </h1>
+        <h2> Create and share checklists relating to onboarding new hires and interns! </h2>
+        <p>** Admin accounts must use a Southern Company email **</p>
     </div>
     );
   }
@@ -25,6 +26,7 @@ class LoginScreen extends React.Component
       // blanks for user and password, also declaring them for the code
       email: '',
       password: '',
+      code: ''
     };
   }
 
@@ -38,10 +40,12 @@ class LoginScreen extends React.Component
     this.setState({ password: event.target.value });
   }
 
+  handleCodeChange = (event) => {
+    this.setState({ code : event.target.value });
+  }
+
   // click on button entry 
   handleEnterClick = () => {
-    console.log('Email: ', this.state.email);
-    console.log('Password: ', this.state.password);
     let email = this.state.email;
     let password = this.state.password;
     //console.log('server request::')
@@ -72,7 +76,14 @@ class LoginScreen extends React.Component
   }
 
   handleSignUp = (event) => {
-    window.location.pathname = '/signup'
+    window.location.pathname = '/signup';
+  }
+
+  handleCodeEntry = (event) => {
+    event.preventDefault()
+    console.log(this.state.code);
+    let test = window.location.href = '/list/' + this.state.code;
+    console.log(test)
   }
 
 
@@ -92,8 +103,8 @@ class LoginScreen extends React.Component
           <input type="password" value={this.state.password} onChange={this.handlePassChange} />
         </form>
         <br />
-        <button onClick={this.handleEnterClick}>LOG IN</button>
-        <p>Not Registed? <a href='/signup' onClick={this.handleSignUp}>Sign Up Here!</a></p>
+        <button onClick={this.handleEnterClick}>Enter</button>
+        <p>Not registed? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
       </div>
     );
   }
