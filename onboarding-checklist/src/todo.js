@@ -90,8 +90,9 @@ class Todo extends React.Component {
         newSubtask: "",
         listId: window.location.href.split('/')[4],
         author: "",
-        title: ""
+        title: "",
       };
+      this.populatePreset();
     }
 
   //allows for descriptions on tasks
@@ -141,7 +142,7 @@ class Todo extends React.Component {
   addItem = () => {
     const { todos, newItem, newDescription } = this.state;
     if (newItem.trim() !== "") {
-    todos.push({ title: newItem, description: newDescription, subtasks: [], completed: false });
+    todos?.push({ title: newItem, description: newDescription, subtasks: [], completed: false });
     this.setState({ todos, newItem: "", newDescription: "" });
     this.addTaskGlobal();
     }
@@ -287,10 +288,10 @@ class Todo extends React.Component {
         <h3>Uncompleted Tasks:</h3>
         <button onClick={this.populatePreset}>OnBoarding Tasks</button>
         <ul>
-          {todos.map((task, taskIndex) => (
+          {todos?.map((task, taskIndex) => (
             <li key={taskIndex}>
               <strong>{task.title}</strong>
-              {taskIndex >= this.state.presetTodos.length && (
+              {taskIndex >= this.state.todos.length && (
                 <button onClick={() => this.deleteItem(taskIndex)}>Delete</button>
               )}
               {!task.completed && (
@@ -300,7 +301,7 @@ class Todo extends React.Component {
               <div>
                 <h4>Subtasks:</h4>
                 <ul>
-                  {task.subtasks.map((subtask, subtaskIndex) => (
+                  {task.subtasks?.map((subtask, subtaskIndex) => (
                     <li key={subtaskIndex}>
                       {subtask.title}
                       <button onClick={() => this.completeSubtask(taskIndex, subtaskIndex)}>
@@ -318,7 +319,7 @@ class Todo extends React.Component {
         <p>*No Tasks Completed*</p>
       ) : (
         <ul>
-          {completedTodos.map((task, taskIndex) => (
+          {completedTodos?.map((task, taskIndex) => (
             <li key={taskIndex}>
               {task.title}
               <button onClick={() => this.deleteCompletedItem(taskIndex)}>Delete</button>
