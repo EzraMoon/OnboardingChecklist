@@ -154,10 +154,45 @@ class Dashboard extends React.Component {
         })
     }
 
+    /**
+     * Function that puts the list code on the user's clipboard
+     * @param {*} event 
+     * @param {*} code 
+     */
     copyCode(event, code) {
         event.preventDefault();
         navigator.clipboard.writeText(code);
         console.log("Copied list code")
+    }
+
+    /**
+     * Duplicates an existing list
+     * @param {*} event 
+     * @param {*} code 
+     */
+    copyList(event, code) {
+        event.preventDefault();
+        fetch('http://localhost:5000/copy', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(code),
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d);
+                this.listInfo();
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
     }
 
     //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
@@ -171,7 +206,8 @@ class Dashboard extends React.Component {
                 {
                     Object.entries(this.state.dict).map(([key, value]) => <li> <a href={'/list/'+ key}>{value}</a><button onClick={(e) => {
                         this.delList(e, key)}}>Delete</button><button onClick={(e) => {
-                            this.copyCode(e, key)}}>Copy Code</button></li>)
+                            this.copyCode(e, key)}}>Copy Code</button><button onClick={(e) => {
+                                this.copyList(e, key)}}>Duplicate</button></li>)
                 }
                 </ul>
             <form>

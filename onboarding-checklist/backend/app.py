@@ -51,6 +51,26 @@ def create_list():
 
     return  jsonify({"Success" : True})
 
+@app.route('/copy', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def duplicate_list():
+    org_id = request.get_json() # the code of the list we are copying
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"Error" : "User does not exist"})
+
+    cList = TaskList.query.filter_by(id=org_id).first()
+
+    if not cList:
+        return jsonify({"Error" : "List being copied does not exist"})
+    
+    user.tasklists.append(TaskList(title=(cList.title + " copy"), user=user, notes=cList.notes))
+    db.session.commit()
+    return  jsonify({"Success" : True})
+
+
 @app.route('/delete', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def delete_list():
@@ -101,14 +121,19 @@ def add_to_list():
     # I'm asuming by creating a list-specific page
     # list.append(Note(...))
     # db.session.commit() 
-    listID, data = request.get_json()
+    data = request.get_json()
+    listID = data[0]
+    text = data[1]
+    description = data[2]
+    subtask = data[3]
+
     cList = TaskList.query.filter_by(id=listID).first()
 
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
-    cList.notes.append(Note(text=data,tasklist=cList))
-    db.session.commit()
+    cList.notes.append(Note(title=text, tasklist=cList, text=description)) # Subtasks will be another process
+    db.session.commit() # Attributes it to the user
     return jsonify({"data" : data})
 
 @app.route('/deletenote', methods=['POST'])
@@ -141,7 +166,7 @@ def get_list():
     
     noteList = []
     for x in iden_list.notes:
-        noteList.append(x.text)
+        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text})
     
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,

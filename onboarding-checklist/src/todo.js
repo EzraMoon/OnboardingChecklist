@@ -92,6 +92,7 @@ class Todo extends React.Component {
         author: "",
         title: "",
         presetTodos: [],
+        tasks: {},
       };
       this.populatePreset();
     }
@@ -132,6 +133,7 @@ class Todo extends React.Component {
             console.log(d);
             this.setState({author : d.Author})
             this.setState({title : d.Title})
+            this.setState({tasks : d.Data})
         })
     .catch(e => {
         console.log(e);
@@ -265,6 +267,7 @@ class Todo extends React.Component {
             return r.json()})
             .then(d => {
                 console.log(d)
+                console.log(this.state.tasks)
             })
         .catch(e => {
             console.log(e);
@@ -288,6 +291,7 @@ class Todo extends React.Component {
       <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />
       <button onClick={this.addItem}>Add Task</button>
         <h3>Uncompleted Tasks:</h3>
+
         <button onClick={this.populatePreset}>OnBoarding Tasks</button>
         <ul>
           {todos.map((task, taskIndex) => (
