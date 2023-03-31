@@ -269,6 +269,7 @@ class Todo extends React.Component {
             .then(d => {
                 console.log(d)
                 console.log(this.state.tasks)
+                this.grabList()
             })
         .catch(e => {
             console.log(e);
@@ -314,7 +315,7 @@ class Todo extends React.Component {
       <input type="text" value={newItem} onChange={this.handleChange} placeholder="Task title" />
       <input type="text" value={newDescription} onChange={this.handleDescriptionChange} placeholder="Task description" />
       <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />
-      <button onClick={this.addItem}>Add Task</button>
+      <button onClick={this.addTaskGlobal}>Add Task</button>
         <h3>Uncompleted Tasks:</h3>
 
         <button onClick={this.populatePreset}>OnBoarding Tasks</button>
@@ -345,6 +346,7 @@ class Todo extends React.Component {
             </li>
           ))}
         </ul>
+        <div className='Tasks'>
         <ul>
             {this.state.tasks.map((item) =>(
               <div>
@@ -357,6 +359,7 @@ class Todo extends React.Component {
               </div>
             ))}
         </ul>
+        </div>
         <h3>Completed Tasks:</h3>
         {completedTodos.length === 0 ? (
         <p>*No Tasks Completed*</p>
