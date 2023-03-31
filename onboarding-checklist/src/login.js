@@ -105,6 +105,16 @@ class LoginScreen extends React.Component
         <br />
         <button onClick={this.handleEnterClick}>Enter</button>
         <p>Not registed? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
+        <br/>
+        <div className="codeEntry">
+          <h1>Accessing a list?</h1>
+          <p>Enter the six-digit list code you received here:</p>
+          <form>
+            <label>Code: </label>
+            <input type="text" value={this.state.code} onChange={this.handleCodeChange}/>
+            <button onClick={this.handleCodeEntry}>Enter</button>
+          </form>
+        </div>
       </div>
     );
   }

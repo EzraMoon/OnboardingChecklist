@@ -92,7 +92,7 @@ class Todo extends React.Component {
         author: "",
         title: "",
         presetTodos: [],
-        tasks: {},
+        tasks: [],
       };
       this.populatePreset();
     }
@@ -104,6 +104,7 @@ class Todo extends React.Component {
 
   //checks for preset item
   componentDidMount() {
+
     this.populatePreset();
     console.log(this.state.listId);
     this.grabList();
@@ -271,6 +272,30 @@ class Todo extends React.Component {
             })
         .catch(e => {
             console.log(e);
+            return e;
+        })
+  }
+
+  deleteTaskGlobal = (id) => {
+    fetch('http://localhost:5000/deletenote', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify([this.state.listId, id]), // get listcode from link
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d)
+                console.log(this.state.tasks)
+            })
+        .catch(e => {
+            console.log(e);
             
             return e;
         })
@@ -319,6 +344,18 @@ class Todo extends React.Component {
               </div>
             </li>
           ))}
+        </ul>
+        <ul>
+            {this.state.tasks.map((item) =>(
+              <div>
+              <li>
+                <label><input type="checkbox"/> <b> {item.title} </b> </label>
+              </li>
+              <ul>
+                {item.text}
+              </ul>
+              </div>
+            ))}
         </ul>
         <h3>Completed Tasks:</h3>
         {completedTodos.length === 0 ? (

@@ -132,7 +132,7 @@ def add_to_list():
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
-    cList.notes.append(Note(title=text, tasklist=cList, text=description)) # Subtasks will be another process
+    cList.notes.append(Note(title=text, tasklist=cList, text=description, complete=False)) # Subtasks will be another process
     db.session.commit() # Attributes it to the user
     return jsonify({"data" : data})
 
@@ -150,6 +150,7 @@ def remove_from_list():
         return jsonify({"Error" : "Note not found"}, 404)
     
     cList.notes.remove(cNote)
+    db.session.commit() 
     return jsonify({"Success" : True})
 
 
@@ -166,7 +167,7 @@ def get_list():
     
     noteList = []
     for x in iden_list.notes:
-        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text})
+        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete})
     
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,

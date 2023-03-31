@@ -35,6 +35,7 @@ p {
 
 span {
 	font-size: 12px;
+	display: block;
 }
 
 a {
@@ -86,6 +87,13 @@ input {
 	border: none;
 	padding: 12px 15px;
 	margin: 8px 0;
+}
+
+input[type="text"] {
+	width: 100%;
+}
+
+input[type="password"] {
 	width: 100%;
 }
 

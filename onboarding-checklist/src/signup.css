@@ -38,6 +38,7 @@ p {
 
 span {
 	font-size: 14px;
+	display: block;
 }
 
 a {
@@ -91,8 +92,15 @@ input {
 	border: none;
 	padding: 12px 15px;
 	margin: 10px 0;
+}
+
+input[type="text"] {
 	width: 100%;
 }
+
+ul {list-style: none}
+
+ul li {padding: 8px 0}
 
 .container {
 	background-color: #fff;
