@@ -335,7 +335,7 @@ class Todo extends React.Component {
               {!item.completed && (
                 <button onClick={() => this.removeItem(taskIndex)}>Complete</button>
               )}
-              <p>{item.description}</p>
+              <p>{item.text}</p>
             </li>
           ))}
         </ul>
