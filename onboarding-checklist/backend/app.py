@@ -11,20 +11,21 @@ from flask_migrate import Migrate
 
 
 # calling index.js
+# code relating to setting up the session tracker with SQLAlchemy using config.py
 app = Flask(__name__, static_folder= "index.js", static_url_path="/")
-app.config['SECRET_KEY'] = 'secretkey'
+app.secret_key = 'secretkey'
 CORS(app, supports_credentials=True)
 app.config.from_object(ApplicationConfig)
-app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True, use_signer=False)
 
 # Database code
 db.init_app(app)
-bcrypt = Bcrypt(app)
-Session(app)
+bcrypt = Bcrypt(app) # used to encode passwords
+Session(app) # used to store user cookies
 migrate = Migrate(app, db, render_as_batch=True) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
 @app.before_first_request
 def create_tables():
-    db.create_all()
+    db.create_all() # create all databases: tasks, users, sessions, etc.
 
 #incorporating css folder for text font
 @app.route('/')
@@ -51,6 +52,7 @@ def create_list():
 
     return  jsonify({"Success" : True})
 
+# method to copy a list
 @app.route('/copy', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def duplicate_list():
@@ -71,6 +73,7 @@ def duplicate_list():
     return  jsonify({"Success" : True})
 
 
+# method to delete a list
 @app.route('/delete', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def delete_list():
@@ -114,6 +117,7 @@ def list_info():
     # return a list of the names
     return jsonify({"data" : nameList, "dict" : namedict})
 
+# method to add a note to a specified list
 @app.route('/addnote', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def add_to_list():
@@ -132,10 +136,11 @@ def add_to_list():
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
-    cList.notes.append(Note(title=text, tasklist=cList, text=description)) # Subtasks will be another process
+    cList.notes.append(Note(title=text, tasklist=cList, text=description, complete=False)) # Subtasks will be another process
     db.session.commit() # Attributes it to the user
     return jsonify({"data" : data})
 
+# delete a note from a specified list
 @app.route('/deletenote', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def remove_from_list():
@@ -150,6 +155,7 @@ def remove_from_list():
         return jsonify({"Error" : "Note not found"}, 404)
     
     cList.notes.remove(cNote)
+    db.session.commit() 
     return jsonify({"Success" : True})
 
 
@@ -166,7 +172,7 @@ def get_list():
     
     noteList = []
     for x in iden_list.notes:
-        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text})
+        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete})
     
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,
@@ -201,6 +207,7 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
     # Return user info
+
     return jsonify({
         "id" : new_user.id,
         "email" : new_user.username,
@@ -250,11 +257,7 @@ def get_current_user():
         "name" : user.first
     }) 
 
-@app.route('/taskData')
-@cross_origin(supports_credentials=True)
-def get_user_task_data():
-    return True
-
+# Logs a user out of the session
 @app.route('/logout')
 @cross_origin(supports_credentials=True)
 def logout():
@@ -262,6 +265,110 @@ def logout():
     if session.get('user_id'):
         del session['user_id']
     return jsonify({"logout" : True})
+
+# Mark a task as complete
+@app.route('/complete', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def mark_complete():
+    listID, noteID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    cNote.complete = True
+    return jsonify({"Success" : True})
+
+# Mark a task as incomplete
+@app.route('/incomplete', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def mark_incomplete():
+    listID, noteID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    cNote.complete = False
+    return jsonify({"Success" : True})
+    
+
+
+# adds the premade onboarding tasks to a user's list
+# based on the tasks given in todo.js
+@app.route('/premade', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def premade():
+    listID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    dict = [
+          {
+            'title': "Make sure to recieve Laptop and Quest Headset", 
+            'description': "Collect your laptop and VR headset from the IT department.",
+            'subtasks': []
+          },
+          {
+            'title': "Obtain Badge",
+            'description': "The badging office is on the first floor, ask a full time employee for assistance",
+            'subtasks': []
+          },
+          {
+            'title': "Complete your I-9 form",
+            'description': "Have ID and SSN ready",
+            'subtasks': []
+          },
+          {
+            'title': "Obtain NTID and Email",
+            'description': "Call HR direct if needed",
+            'subtasks': []
+          },
+          {
+            'title': "Make sure you can access TO Microsoft Teams Chat and channels",
+            'description': "This is very important, and where all communication occurs",
+            'subtasks': []
+          },
+          {
+            'title': "Check access to mySOurce",
+            'description': "This is for Southern Company Related apps, links, and personal information",
+            'subtasks': []
+          },
+          {
+            'title': "Access Time Input on Oracle HQ on mySOurce",
+            'description': "Time Type (Regular), Project (10120163), Task (19.09)",
+            'subtasks': []
+          },
+          {
+            'title': "Complete LearningSOurce training",
+            'description': "This is due within the first month of employment",
+            'subtasks': []
+          },
+          {
+            'title': "Take a building tour",
+            'description': "Ask a full-time employee for assistance",
+            'subtasks': []
+          },
+          {
+            'title': "Get showcase shirts",
+            'description': "Ask a full time employee for assistance",
+            'subtasks': []
+          },
+          {
+            'title': "Request necessary access on COOL Compliance",
+            'description': "This deals with HR items and other personal SOCO links",
+            'subtasks': []
+          }
+      ]
+    
+    for i in dict:
+        cList.notes.append(Note(title=i['title'], text=i['description'], tasklist=cList, complete=False))
+
+    return jsonify({'Success' : True})
 
 #driver code
 if __name__ == '__main__':
