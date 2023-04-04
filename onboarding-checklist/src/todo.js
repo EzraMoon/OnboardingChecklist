@@ -94,7 +94,6 @@ class Todo extends React.Component {
         presetTodos: [],
         tasks: [],
       };
-      this.populatePreset();
     }
 
   //allows for descriptions on tasks
@@ -104,8 +103,6 @@ class Todo extends React.Component {
 
   //checks for preset item
   componentDidMount() {
-
-    this.populatePreset();
     console.log(this.state.listId);
     this.grabList();
   }
@@ -194,7 +191,26 @@ class Todo extends React.Component {
 
   //populate todos with presetTodos
   populatePreset = () => {
-    this.setState({todos: this.state.presetTodos});
+    fetch('http://localhost:5000/premade', {
+        method: 'POST',
+        credentials: 'include',
+        dataType: 'json',
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Credentials" : true,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(this.state.listId),
+    }).then(r => {
+        return r.json()})
+        .then(d => {
+            console.log(d);
+        })
+    .catch(e => {
+        console.log(e);
+        return e;
+    })
   }
 
   //deletes an item permanently 
@@ -346,20 +362,6 @@ class Todo extends React.Component {
             </li>
           ))}
         </ul>
-        <div className='Tasks'>
-        <ul>
-            {this.state.tasks.map((item) =>(
-              <div>
-              <li>
-                <label><input type="checkbox"/> <b> {item.title} </b> </label>
-              </li>
-              <ul>
-                {item.text}
-              </ul>
-              </div>
-            ))}
-        </ul>
-        </div>
         <h3>Completed Tasks:</h3>
         {completedTodos.length === 0 ? (
         <p>*No Tasks Completed*</p>
