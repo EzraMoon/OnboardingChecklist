@@ -177,6 +177,7 @@ class Todo extends React.Component {
         return r.json()})
         .then(d => {
             console.log(d);
+            this.grabList()
         })
     .catch(e => {
         console.log(e);
