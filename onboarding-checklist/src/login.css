@@ -1,9 +1,7 @@
-
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 * {
 	box-sizing: border-box;
-	overflow-y: auto;
 }
 
 body {
@@ -15,20 +13,15 @@ body {
 	font-family: 'Montserrat', sans-serif;
 	height: 100vh;
 	margin: -20px 0 50px;
-	max-height: 100%;
-	width: 100%;
-    height: 100%;
 }
 
 h1 {
 	font-weight: bold;
 	margin: 0;
-	overflow-y: auto;
 }
 
 h2 {
 	text-align: center;
-	overflow-y: auto;
 }
 
 p {
@@ -41,7 +34,6 @@ p {
 
 span {
 	font-size: 12px;
-	display: block;
 }
 
 a {
@@ -93,17 +85,8 @@ input {
 	border: none;
 	padding: 12px 15px;
 	margin: 8px 0;
-}
-
-input[type="text"] {
 	width: 100%;
 }
-
-input[type="password"] {
-	width: 100%;
-}
-
-
 
 .container {
 	background-color: #fff;
@@ -115,7 +98,6 @@ input[type="password"] {
 	width: 768px;
 	max-width: 100%;
 	min-height: 480px;
-
 }
 
 .form-container {
