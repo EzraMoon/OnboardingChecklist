@@ -12,10 +12,10 @@ from flask_migrate import Migrate
 
 # calling index.js
 app = Flask(__name__, static_folder= "index.js", static_url_path="/")
-app.config['SECRET_KEY'] = 'secretkey'
+app.secret_key = 'secretkey'
 CORS(app, supports_credentials=True)
 app.config.from_object(ApplicationConfig)
-app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True, use_signer=False)
 
 # Database code
 db.init_app(app)
@@ -202,6 +202,7 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
     # Return user info
+
     return jsonify({
         "id" : new_user.id,
         "email" : new_user.username,
