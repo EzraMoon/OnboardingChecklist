@@ -122,11 +122,11 @@ class Todo extends React.Component {
 
   //remove item from list of user to-do
   removeItem = (index) => {
-    const { todos, completedTodos } = this.state;
-    const completedTask = todos[index];
-    todos.splice(index, 1);
+    const { tasks, completedTodos } = this.state;
+    const completedTask = tasks[index];
+    tasks.splice(index, 1);
     completedTodos.push(completedTask);
-    this.setState({ todos, completedTodos });
+    this.setState({ tasks, completedTodos });
   }
 
   //undo completed item from list
@@ -230,10 +230,29 @@ class Todo extends React.Component {
   }
 
   //completes the task
-  completeTask = (taskIndex) => {
-    const { todos } = this.state;
-    todos[taskIndex].completed = true;
-    this.setState({ todos });
+  completeTask = (id) => {
+    fetch('http://localhost:5000/complete', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify([this.state.listId, id]), // get listcode from link
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d)
+                console.log(this.state.tasks)
+                this.grabList()
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
   }
   
   // Adds task to the selected tasklist

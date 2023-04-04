@@ -266,6 +266,36 @@ def logout():
         del session['user_id']
     return jsonify({"logout" : True})
 
+# Mark a task as complete
+@app.route('/complete', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def mark_complete():
+    listID, noteID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    cNote.complete = True
+    return jsonify({"Success" : True})
+
+# Mark a task as incomplete
+@app.route('/incomplete', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def mark_incomplete():
+    listID, noteID = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    cNote.complete = False
+    return jsonify({"Success" : True})
+    
+
+
 # adds the premade onboarding tasks to a user's list
 # based on the tasks given in todo.js
 @app.route('/premade', methods=['POST'])
