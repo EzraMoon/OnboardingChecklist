@@ -7,42 +7,24 @@ class Todo extends React.Component {
       super(props);
       const presetTodos = [
           {
-            title: "Make sure to recieve Laptop and Quest Headset", 
-            description: "Collect your laptop and VR headset from the IT department.",
-            subtasks: [
-              { title: "Setup headset/ META account", completed: false },
-              { title: "Get bag for headset", completed: false },
-              { title: "Get bag for laptop", completed: false },
-            ]
-          },
-          {
             title: "Obtain Badge",
             description: "The badging office is on the first floor, ask a full time employee for assistance",
-            subtasks: [
-              { title: "Make sure badge can access building", completed: false },
-            ]
+            subtasks: []
           },
           {
             title: "Complete your I-9 form",
             description: "Have ID and SSN ready",
-            subtasks: [
-              { title: "Call Tracy Gibby (404-925-6357) to complete", completed: false },
-            ]
+            subtasks: []
           },
           {
             title: "Obtain NTID and Email",
             description: "Call HR direct if needed",
-            subtasks: [
-              { title: "Verify ability to login to SOCO email", completed: false },
-            ]
+            subtasks: []
           },
           {
             title: "Make sure you can access TO Microsoft Teams Chat and channels",
             description: "This is very important, and where all communication occurs",
-            subtasks: [
-              { title: "Join TO Innovations channel", completed: false },
-              { title: "Join Emerging Technologies channel", completed: false },
-            ]
+            subtasks: []
           },
           {
             title: "Check access to mySOurce",
@@ -52,9 +34,7 @@ class Todo extends React.Component {
           {
             title: "Access Time Input on Oracle HQ on mySOurce",
             description: "Time Type (Regular), Project (10120163), Task (19.09)",
-            subtasks: [
-              { title: "Write down information", completed: false },
-            ]
+            subtasks: []
           },
           {
             title: "Complete LearningSOurce training",
@@ -67,23 +47,14 @@ class Todo extends React.Component {
             subtasks: []
           },
           {
-            title: "Get showcase shirts",
-            description: "Ask a full time employee for assistance",
-            subtasks: []
-          },
-          {
             title: "Request necessary access on COOL Compliance",
             description: "This deals with HR items and other personal SOCO links",
-            subtasks: [
-              { title: "Request parking access", completed: false },
-              { title: "Recieve internet user and password", completed: false },
-              { title: "Apply for tuition reimbursement", completed: false },
-            ]
+            subtasks: []
           }
       ];
 
       this.state = {
-        todos: presetTodos.map(task => ({ ...task, completed: false })),
+        todos: [],
         completedTodos: JSON.parse(localStorage.getItem(`completedTodos-${this.props.user}`)) || [],
         newItem: "",
         newDescription: "",
@@ -310,17 +281,17 @@ class Todo extends React.Component {
             .then(d => {
                 console.log(d)
                 console.log(this.state.tasks)
+                this.grabList()
             })
         .catch(e => {
             console.log(e);
-            
             return e;
         })
   }
 
   //render function that has completed and uncompleted tasks under their categories
   render() {
-    const { todos, completedTodos, newItem, newDescription, newSubtask } = this.state;
+    const { tasks, todos, completedTodos, newItem, newDescription, newSubtask } = this.state;
     const { user } = this.props;
   
     return (
@@ -336,29 +307,16 @@ class Todo extends React.Component {
 
         <button onClick={this.populatePreset}>OnBoarding Tasks</button>
         <ul>
-          {todos.map((task, taskIndex) => (
+          {tasks.map((item, taskIndex) => (
             <li key={taskIndex}>
-              <strong>{task.title}</strong>
+              <strong>{item.title}</strong>
               {taskIndex >= this.state.presetTodos.length && (
-                <button onClick={() => this.deleteItem(taskIndex)}>Delete</button>
+                <button onClick={() => this.deleteTaskGlobal(item.id)}>Delete</button>
               )}
-              {!task.completed && (
+              {!item.completed && (
                 <button onClick={() => this.removeItem(taskIndex)}>Complete</button>
               )}
-              <p>{task.description}</p>
-              <div>
-                <h4>Subtasks:</h4>
-                <ul>
-                  {task.subtasks.map((subtask, subtaskIndex) => (
-                    <li key={subtaskIndex}>
-                      {subtask.title}
-                      <button onClick={() => this.completeSubtask(taskIndex, subtaskIndex)}>
-                        {subtask.completed ? "Undo" : "Complete"}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p>{item.description}</p>
             </li>
           ))}
         </ul>

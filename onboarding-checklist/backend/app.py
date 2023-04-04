@@ -336,7 +336,7 @@ def premade():
       ]
     
     for i in dict:
-        cList.notes.append(Note(title=i['title'], text=i['description'], tasklist=cList, complete=True))
+        cList.notes.append(Note(title=i['title'], text=i['description'], tasklist=cList, complete=False))
 
     return jsonify({'Success' : True})
 
