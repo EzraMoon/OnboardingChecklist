@@ -3,69 +3,127 @@ import ReactDOM from 'react-dom';
 
 //to-do screen class with preset functions
 class Todo extends React.Component {
-    constructor(props) {
-      super(props);
-      const presetTodos = [
-          {
-            title: "Obtain Badge",
-            description: "The badging office is on the first floor, ask a full time employee for assistance",
-            subtasks: []
-          },
-          {
-            title: "Complete your I-9 form",
-            description: "Have ID and SSN ready",
-            subtasks: []
-          },
-          {
-            title: "Obtain NTID and Email",
-            description: "Call HR direct if needed",
-            subtasks: []
-          },
-          {
-            title: "Make sure you can access TO Microsoft Teams Chat and channels",
-            description: "This is very important, and where all communication occurs",
-            subtasks: []
-          },
-          {
-            title: "Check access to mySOurce",
-            description: "This is for Southern Company Related apps, links, and personal information",
-            subtasks: []
-          },
-          {
-            title: "Access Time Input on Oracle HQ on mySOurce",
-            description: "Time Type (Regular), Project (10120163), Task (19.09)",
-            subtasks: []
-          },
-          {
-            title: "Complete LearningSOurce training",
-            description: "This is due within the first month of employment",
-            subtasks: []
-          },
-          {
-            title: "Take a building tour",
-            description: "Ask a full-time employee for assistance",
-            subtasks: []
-          },
-          {
-            title: "Request necessary access on COOL Compliance",
-            description: "This deals with HR items and other personal SOCO links",
-            subtasks: []
-          }
-      ];
+  constructor(props) {
+    super(props);
+    const presetTodos = [
+        {
+          title: "Make sure to recieve Laptop and Quest Headset", 
+          description: "Collect your laptop and VR headset from the IT department.",
+          subtasks: [
+            { title: "Setup headset/ META account", completed: false },
+            { title: "Get bag for headset", completed: false },
+            { title: "Get bag for laptop", completed: false },
+          ]
+        },
+        {
+          title: "Obtain Badge",
+          description: "The badging office is on the first floor, ask a full time employee for assistance",
+          subtasks: [
+            { title: "Make sure badge can access building", completed: false },
+          ]
+        },
+        {
+          title: "Complete your I-9 form",
+          description: "Have ID and SSN ready",
+          subtasks: [
+            {
+              title: (
+                <>
+                  Call{" "}
+                  <a href="mailto:ttgibby@southernco.com">Tracy Gibby</a>{" "}
+                  (404-925-6357) to complete
+                </>
+              ),
+              completed: false,
+            },
+          ],
+        },
+        {
+          title: "Obtain NTID and Email",
+          description: "Call HR direct if needed, email should end in '@southernco.com'",
+          subtasks: [
+            { title: "Verify ability to login to SOCO email", completed: false },
+          ]
+        },
+        {
+          title: "Make sure you can access TO Microsoft Teams Chat and channels",
+          description: "This is very important, and where all communication occurs",
+          subtasks: [
+            { title: "Join TO Innovations channel", completed: false },
+            { title: "Join Emerging Technologies channel", completed: false },
+          ]
+        },
+        {
+          title: (
+            <>
+              Check access to{" "}
+              <a href="https://webauth.southernco.com/login.aspx?WL_Type=E&WL_AppId=OracleEmjeErpHcm&WL_ReturnMethod=FV&WL_Expire=1&MFAConfigUnknown=68&MFAExcludeUnknown=7%7cCOOLSECURITY%3aSOCOWEB&WL_ReturnUrl=https%3a%2f%2fwebauthentication.southerncompany.com%2fLogin.aspx%3fReturnUrl%3d%252fHostedRedirect.aspx%253fapp%253dhttps%253a%252f%252fidcs-800659c597c2497788f3ab30e2562a95.identity.oraclecloud.com%253a443%252ffed%2526authRequest%253d1%26app%3dhttps%3a%2f%2fidcs-800659c597c2497788f3ab30e2562a95.identity.oraclecloud.com%3a443%2ffed%26authRequest%3d1" target="_blank" rel="noopener noreferrer">mySOurce</a>
+            </>
+          ),
+          description: "This is for Southern Company Related apps, links, and personal information",
+          subtasks: []
+        },
+        {
+          title: (
+            <>
+              Access Time Input on{" "}
+              <a href="https://emje.fa.us6.oraclecloud.com/hcmUI/faces/FndOverview?macKey=rO8HsAI2n8YvHED0">
+                Oracle HQ
+              </a>{" "}
+              on mySOurce
+            </>
+          ),
+          description: "Time Type (Regular), Project (10120163), Task (19.09)",
+          subtasks: [{ title: "Write down information", completed: false }],
+        },
+        {
+          title: (
+            <>
+              Complete{" "}
+              <a href="https://southernco.sumtotal.host/rcore/c/pillarRedirect?isDeepLink=1&relyingParty=LM&url=https%3A%2F%2FSOUTHERNCO.sumtotal.host%2Flearning%2Fapp%2Fmanagement%2FLMS_TrainRequired.aspx%3FUserMode%3D0">
+                LearningSOurce
+              </a>{" "}
+              training
+            </>
+          ),
+          description: "This is due within the first month of employment",
+          subtasks: []
+        },
+        {
+          title: "Take a building tour",
+          description: "Ask a full-time employee for assistance",
+          subtasks: []
+        },
+        {
+          title: "Get showcase shirts",
+          description: "Ask a full time employee for assistance",
+          subtasks: []
+        },
+        {
+          title: (
+            <>
+              Request necessary access on{" "}
+              <a href="https://coolcompliance.southernco.com/">COOL Compliance</a>
+            </>
+          ),
+          description: "This deals with HR items and other personal SOCO links",
+          subtasks: [
+            { title: "Request parking access", completed: false },
+            { title: "Recieve internet user and password", completed: false },
+            { title: "Apply for tuition reimbursement", completed: false },
+          ]
+        }          
+    ];
 
-      this.state = {
-        todos: [],
-        completedTodos: JSON.parse(localStorage.getItem(`completedTodos-${this.props.user}`)) || [],
-        newItem: "",
-        newDescription: "",
-        newSubtask: "",
-        listId: window.location.href.split('/')[4],
-        author: "",
-        title: "",
-        presetTodos: [],
-        tasks: [],
-      };
-    }
+    this.state = {
+      todos: presetTodos.map(task => ({ ...task, completed: false })),
+      completedTodos: JSON.parse(localStorage.getItem(`completedTodos-${this.props.user}`)) || [],
+      newItem: "",
+      newDescription: "",
+      newSubtask: "",
+      presetTodos
+    };
+  }
 
   //allows for descriptions on tasks
   handleDescriptionChange = (event) => {
