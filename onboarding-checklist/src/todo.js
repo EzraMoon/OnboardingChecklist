@@ -390,11 +390,11 @@ class Todo extends React.Component {
           {tasks.map((item, taskIndex) => (
             <li key={taskIndex}>
               <strong>{item.title}</strong>
+              <p>{item.text}</p>
               <button onClick={() => this.deleteTaskGlobal(item.id)}>Delete</button>
               {!item.completed && (
                 <button onClick={() => this.removeItem(taskIndex)}>Complete</button>
               )}
-              <p>{item.text}</p>
             </li>
           ))}
         </ul>
@@ -406,7 +406,7 @@ class Todo extends React.Component {
           {completedTodos.map((task, taskIndex) => (
             <li key={taskIndex}>
               {task.title}
-              <button onClick={() => this.deleteCompletedItem(taskIndex)}>Delete</button>
+              <button onClick={() => this.deleteTaskGlobal(task.id)}>Delete</button>
               <button onClick={() => this.undoItem(taskIndex)}>Undo</button>
             </li>
           ))}
