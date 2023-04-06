@@ -121,7 +121,9 @@ class Todo extends React.Component {
       newItem: "",
       newDescription: "",
       newSubtask: "",
-      presetTodos
+      presetTodos,
+      listId: window.location.href.split('/')[4],
+      tasks: [],
     };
   }
 
