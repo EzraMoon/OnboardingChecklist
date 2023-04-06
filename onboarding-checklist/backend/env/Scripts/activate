@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Technology Showcase\Desktop\onboardingchecklist\OnboardingChecklist\onboarding-checklist\backend\env"
+VIRTUAL_ENV="C:\Users\jones\wkspaces\OnboardingChecklist\onboarding-checklist\backend\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
