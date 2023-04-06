@@ -53,6 +53,7 @@ class Note(db.Model):
     tasklist_id = db.Column(db.Integer, db.ForeignKey('taskList.id')) # required for the list ownership
     text = db.Column(db.String(250)) # actual content of the item
     title = db.Column(db.String(50)) # title of the task
+    link = db.Column(db.String(150)) # optional link field for relevant links
 
     # Points to parent note
     parentID = db.Column(db.Integer, db.ForeignKey('note.id'))

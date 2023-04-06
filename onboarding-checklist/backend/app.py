@@ -130,13 +130,14 @@ def add_to_list():
     text = data[1]
     description = data[2]
     subtask = data[3]
+    link = data[4]
 
     cList = TaskList.query.filter_by(id=listID).first()
 
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
-    cList.notes.append(Note(title=text, tasklist=cList, text=description, complete=False)) # Subtasks will be another process
+    cList.notes.append(Note(title=text, tasklist=cList, text=description, complete=False, link=link)) # Subtasks will be another process
     db.session.commit() # Attributes it to the user
     return jsonify({"data" : data})
 
@@ -172,13 +173,14 @@ def get_list():
     
     noteList = []
     for x in iden_list.notes:
-        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete})
+        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete, "link" : x.link})
     
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,
                     "Data" : noteList})
 
     
+
 
 # Register func to add new users to the database
 @app.route('/register', methods=['POST'])
@@ -309,64 +311,69 @@ def premade():
     
     dict = [
           {
-            'title': "Make sure to recieve Laptop and Quest Headset", 
-            'description': "Collect your laptop and VR headset from the IT department.",
-            'subtasks': []
+            'title': "Make sure to recieve Laptop and needed equipment", 
+            'description': "Collect your laptop and any other needed equipment from your team.",
+            'subtasks': [],
+            'link' : ''
           },
           {
             'title': "Obtain Badge",
             'description': "The badging office is on the first floor, ask a full time employee for assistance",
-            'subtasks': []
+            'subtasks': [],
+            'link' : ''
           },
           {
             'title': "Complete your I-9 form",
             'description': "Have ID and SSN ready",
-            'subtasks': []
+            'subtasks': [],
+            'link' : ''
           },
           {
             'title': "Obtain NTID and Email",
             'description': "Call HR direct if needed",
-            'subtasks': []
+            'subtasks': [],
+            'link' : ''
           },
           {
             'title': "Make sure you can access TO Microsoft Teams Chat and channels",
             'description': "This is very important, and where all communication occurs",
-            'subtasks': []
+            'subtasks': [],
+            'link' : ''
           },
           {
             'title': "Check access to mySOurce",
             'description': "This is for Southern Company Related apps, links, and personal information",
-            'subtasks': []
+            'subtasks': [],
+            'link' : 'https://mysource.service-now.com/navpage.do'
           },
           {
             'title': "Access Time Input on Oracle HQ on mySOurce",
-            'description': "Time Type (Regular), Project (10120163), Task (19.09)",
-            'subtasks': []
+            'description': "Ask a team member for your time type, project code, and task code",
+            'subtasks': [],
+            'link' : 'https://emje.fa.us6.oraclecloud.com/hcmUI/faces/FndOverview?macKey=rO8HsAI2n8YvHED0'
           },
           {
             'title': "Complete LearningSOurce training",
             'description': "This is due within the first month of employment",
-            'subtasks': []
+            'subtasks': [],
+            'link' : ''
           },
           {
             'title': "Take a building tour",
             'description': "Ask a full-time employee for assistance",
-            'subtasks': []
+            'subtasks': [],
+            'link' : ''
           },
           {
-            'title': "Get showcase shirts",
-            'description': "Ask a full time employee for assistance",
-            'subtasks': []
-          },
-          {
-            'title': "Request necessary access on COOL Compliance",
+            'title':'Request necessary access on CoolCompliance',
             'description': "This deals with HR items and other personal SOCO links",
-            'subtasks': []
+            'subtasks': [],
+            'link' : 'https://coolcompliance.southernco.com/'
           }
       ]
     
     for i in dict:
-        cList.notes.append(Note(title=i['title'], text=i['description'], tasklist=cList, complete=False))
+        cList.notes.append(Note(title=i['title'], text=i['description'], tasklist=cList, complete=False, link=i['link']))
 
     return jsonify({'Success' : True})
 
