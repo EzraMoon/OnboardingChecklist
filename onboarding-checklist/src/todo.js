@@ -390,9 +390,7 @@ class Todo extends React.Component {
           {tasks.map((item, taskIndex) => (
             <li key={taskIndex}>
               <strong>{item.title}</strong>
-              {taskIndex >= this.state.presetTodos.length && (
-                <button onClick={() => this.deleteTaskGlobal(item.id)}>Delete</button>
-              )}
+              <button onClick={() => this.deleteTaskGlobal(item.id)}>Delete</button>
               {!item.completed && (
                 <button onClick={() => this.removeItem(taskIndex)}>Complete</button>
               )}
