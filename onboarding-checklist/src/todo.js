@@ -40,7 +40,7 @@ class Todo extends React.Component {
         },
         {
           title: "Obtain NTID and Email",
-          description: "Call HR direct if needed, email should end in '@southernco.com'",
+          description: "Call HR direct if needed, email should end in '@southernco.com', phone number is: 1-888-678-6787",
           subtasks: [
             { title: "Verify ability to login to SOCO email", completed: false },
           ]
@@ -106,7 +106,7 @@ class Todo extends React.Component {
               <a href="https://coolcompliance.southernco.com/">COOL Compliance</a>
             </>
           ),
-          description: "This deals with HR items and other personal SOCO links",
+          description: "This deals with HR items and other personal SOCO links, phone number for support is: 1-800-999-9110",
           subtasks: [
             { title: "Request parking access", completed: false },
             { title: "Recieve internet user and password", completed: false },
@@ -428,6 +428,3 @@ class Todo extends React.Component {
  }       
 } export default Todo
 
-// some issues to fix: user is not showing up 'OnBoarding tasks for: ' should have inputted user 
-
-// things to still add: links to pages
