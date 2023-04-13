@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 import os
-import redis
 from models import db
 load_dotenv()
 
