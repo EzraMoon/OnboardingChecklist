@@ -3,108 +3,142 @@ import ReactDOM from 'react-dom';
 
 //to-do screen class with preset functions
 class Todo extends React.Component {
-    constructor(props) {
-      super(props);
-      const presetTodos = [
-          {
-            title: "Make sure to recieve Laptop and Quest Headset", 
-            description: "Collect your laptop and VR headset from the IT department.",
-            subtasks: [
-              { title: "Setup headset/ META account", completed: false },
-              { title: "Get bag for headset", completed: false },
-              { title: "Get bag for laptop", completed: false },
-            ]
-          },
-          {
-            title: "Obtain Badge",
-            description: "The badging office is on the first floor, ask a full time employee for assistance",
-            subtasks: [
-              { title: "Make sure badge can access building", completed: false },
-            ]
-          },
-          {
-            title: "Complete your I-9 form",
-            description: "Have ID and SSN ready",
-            subtasks: [
-              { title: "Call Tracy Gibby (404-925-6357) to complete", completed: false },
-            ]
-          },
-          {
-            title: "Obtain NTID and Email",
-            description: "Call HR direct if needed",
-            subtasks: [
-              { title: "Verify ability to login to SOCO email", completed: false },
-            ]
-          },
-          {
-            title: "Make sure you can access TO Microsoft Teams Chat and channels",
-            description: "This is very important, and where all communication occurs",
-            subtasks: [
-              { title: "Join TO Innovations channel", completed: false },
-              { title: "Join Emerging Technologies channel", completed: false },
-            ]
-          },
-          {
-            title: "Check access to mySOurce",
-            description: "This is for Southern Company Related apps, links, and personal information",
-            subtasks: []
-          },
-          {
-            title: "Access Time Input on Oracle HQ on mySOurce",
-            description: "Time Type (Regular), Project (10120163), Task (19.09)",
-            subtasks: [
-              { title: "Write down information", completed: false },
-            ]
-          },
-          {
-            title: "Complete LearningSOurce training",
-            description: "This is due within the first month of employment",
-            subtasks: []
-          },
-          {
-            title: "Take a building tour",
-            description: "Ask a full-time employee for assistance",
-            subtasks: []
-          },
-          {
-            title: "Get showcase shirts",
-            description: "Ask a full time employee for assistance",
-            subtasks: []
-          },
-          {
-            title: "Request necessary access on COOL Compliance",
-            description: "This deals with HR items and other personal SOCO links",
-            subtasks: [
-              { title: "Request parking access", completed: false },
-              { title: "Recieve internet user and password", completed: false },
-              { title: "Apply for tuition reimbursement", completed: false },
-            ]
-          }
-      ];
+  constructor(props) {
+    super(props);
+    const presetTodos = [
+        {
+          title: "Make sure to recieve Laptop", 
+          description: "Collect your laptop.",
+          subtasks: [
+            { title: "Setup headset/ META account", completed: false },
+            { title: "Get bag for headset", completed: false },
+            { title: "Get bag for laptop", completed: false },
+          ]
+        },
+        {
+          title: "Obtain Badge",
+          description: "The badging office is on the first floor, ask a full time employee for assistance",
+          subtasks: [
+            { title: "Make sure badge can access building", completed: false },
+          ]
+        },
+        {
+          title: "Complete your I-9 form",
+          description: "Have ID and SSN ready",
+          subtasks: [
+            {
+              title: (
+                <>
+                  Call{" "}
+                  <a href="mailto:ttgibby@southernco.com">Tracy Gibby</a>{" "}
+                  (404-925-6357) to complete
+                </>
+              ),
+              completed: false,
+            },
+          ],
+        },
+        {
+          title: "Obtain NTID and Email",
+          description: "Call HR direct if needed, email should end in '@southernco.com', phone number is: 1-888-678-6787",
+          subtasks: [
+            { title: "Verify ability to login to SOCO email", completed: false },
+          ]
+        },
+        {
+          title: "Make sure you can access TO Microsoft Teams Chat and channels",
+          description: "This is very important, and where all communication occurs",
+          subtasks: [
+            { title: "Join TO Innovations channel", completed: false },
+            { title: "Join Emerging Technologies channel", completed: false },
+          ]
+        },
+        {
+          title: (
+            <>
+              Check access to{" "}
+              <a href="https://webauth.southernco.com/login.aspx?WL_Type=E&WL_AppId=OracleEmjeErpHcm&WL_ReturnMethod=FV&WL_Expire=1&MFAConfigUnknown=68&MFAExcludeUnknown=7%7cCOOLSECURITY%3aSOCOWEB&WL_ReturnUrl=https%3a%2f%2fwebauthentication.southerncompany.com%2fLogin.aspx%3fReturnUrl%3d%252fHostedRedirect.aspx%253fapp%253dhttps%253a%252f%252fidcs-800659c597c2497788f3ab30e2562a95.identity.oraclecloud.com%253a443%252ffed%2526authRequest%253d1%26app%3dhttps%3a%2f%2fidcs-800659c597c2497788f3ab30e2562a95.identity.oraclecloud.com%3a443%2ffed%26authRequest%3d1" target="_blank" rel="noopener noreferrer">mySOurce</a>
+            </>
+          ),
+          description: "This is for Southern Company Related apps, links, and personal information",
+          subtasks: []
+        },
+        {
+          title: (
+            <>
+              Access Time Input on{" "}
+              <a href="https://emje.fa.us6.oraclecloud.com/hcmUI/faces/FndOverview?macKey=rO8HsAI2n8YvHED0">
+                Oracle HQ
+              </a>{" "}
+              on mySOurce
+            </>
+          ),
+          description: "Time Type (Regular), Project (10120163), Task (19.09)",
+          subtasks: [{ title: "Write down information", completed: false }],
+        },
+        {
+          title: (
+            <>
+              Complete{" "}
+              <a href="https://southernco.sumtotal.host/rcore/c/pillarRedirect?isDeepLink=1&relyingParty=LM&url=https%3A%2F%2FSOUTHERNCO.sumtotal.host%2Flearning%2Fapp%2Fmanagement%2FLMS_TrainRequired.aspx%3FUserMode%3D0">
+                LearningSOurce
+              </a>{" "}
+              training
+            </>
+          ),
+          description: "This is due within the first month of employment",
+          subtasks: []
+        },
+        {
+          title: "Take a building tour",
+          description: "Ask a full-time employee for assistance",
+          subtasks: []
+        },
+        {
+          title: "Get showcase shirts",
+          description: "Ask a full time employee for assistance",
+          subtasks: []
+        },
+        {
+          title: (
+            <>
+              Request necessary access on{" "}
+              <a href="https://coolcompliance.southernco.com/">COOL Compliance</a>
+            </>
+          ),
+          description: "This deals with HR items and other personal SOCO links, phone number for support is: 1-800-999-9110",
+          subtasks: [
+            { title: "Request parking access", completed: false },
+            { title: "Recieve internet user and password", completed: false },
+            { title: "Apply for tuition reimbursement", completed: false },
+          ]
+        }          
+    ];
 
-      this.state = {
-        todos: presetTodos.map(task => ({ ...task, completed: false })),
-        completedTodos: JSON.parse(localStorage.getItem(`completedTodos-${this.props.user}`)) || [],
-        newItem: "",
-        newDescription: "",
-        newSubtask: "",
-        listId: window.location.href.split('/')[4],
-        author: "",
-        title: "",
-        presetTodos: [],
-        tasks: {},
-      };
-      this.populatePreset();
-    }
+    this.state = {
+      todos: presetTodos.map(task => ({ ...task, completed: false })),
+      completedTodos: JSON.parse(localStorage.getItem(`completedTodos-${this.props.user}`)) || [],
+      newItem: "",
+      newDescription: "",
+      newSubtask: "",
+      presetTodos,
+      listId: window.location.href.split('/')[4],
+      tasks: [],
+      newLink: "",
+    };
+  }
 
   //allows for descriptions on tasks
   handleDescriptionChange = (event) => {
   this.setState({ newDescription: event.target.value });
   }
 
+  handleLinkChange = (event) => {
+    this.setState({ newLink: event.target.value });
+  }
+
   //checks for preset item
   componentDidMount() {
-    this.populatePreset();
     console.log(this.state.listId);
     this.grabList();
   }
@@ -153,11 +187,11 @@ class Todo extends React.Component {
 
   //remove item from list of user to-do
   removeItem = (index) => {
-    const { todos, completedTodos } = this.state;
-    const completedTask = todos[index];
-    todos.splice(index, 1);
+    const { tasks, completedTodos } = this.state;
+    const completedTask = tasks[index];
+    tasks.splice(index, 1);
     completedTodos.push(completedTask);
-    this.setState({ todos, completedTodos });
+    this.setState({ tasks, completedTodos });
   }
 
   //undo completed item from list
@@ -193,7 +227,27 @@ class Todo extends React.Component {
 
   //populate todos with presetTodos
   populatePreset = () => {
-    this.setState({todos: this.state.presetTodos});
+    fetch('http://localhost:5000/premade', {
+        method: 'POST',
+        credentials: 'include',
+        dataType: 'json',
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Credentials" : true,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(this.state.listId),
+    }).then(r => {
+        return r.json()})
+        .then(d => {
+            console.log(d);
+            this.grabList()
+        })
+    .catch(e => {
+        console.log(e);
+        return e;
+    })
   }
 
   //deletes an item permanently 
@@ -242,10 +296,29 @@ class Todo extends React.Component {
   }
 
   //completes the task
-  completeTask = (taskIndex) => {
-    const { todos } = this.state;
-    todos[taskIndex].completed = true;
-    this.setState({ todos });
+  completeTask = (id) => {
+    fetch('http://localhost:5000/complete', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify([this.state.listId, id]), // get listcode from link
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d)
+                console.log(this.state.tasks)
+                this.grabList()
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
   }
   
   // Adds task to the selected tasklist
@@ -262,23 +335,48 @@ class Todo extends React.Component {
                 "Access-Control-Allow-Credentials" : true,
                 'Accept': 'application/json'
             },
-            body: JSON.stringify([this.state.listId, this.state.newItem, this.state.newDescription, this.state.newSubtask]), // get listcode from link
+            body: JSON.stringify([this.state.listId, this.state.newItem, this.state.newDescription, this.state.newSubtask, this.state.newLink]), // get listcode from link
         }).then(r => {
             return r.json()})
             .then(d => {
                 console.log(d)
                 console.log(this.state.tasks)
+                this.grabList()
             })
         .catch(e => {
             console.log(e);
-            
+            return e;
+        })
+  }
+
+  deleteTaskGlobal = (id) => {
+    fetch('http://localhost:5000/deletenote', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify([this.state.listId, id]), // get listcode from link
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d)
+                console.log(this.state.tasks)
+                this.grabList()
+            })
+        .catch(e => {
+            console.log(e);
             return e;
         })
   }
 
   //render function that has completed and uncompleted tasks under their categories
   render() {
-    const { todos, completedTodos, newItem, newDescription, newSubtask } = this.state;
+    const { tasks, todos, completedTodos, newItem, newDescription, newSubtask, newLink } = this.state;
     const { user } = this.props;
   
     return (
@@ -289,34 +387,22 @@ class Todo extends React.Component {
       <input type="text" value={newItem} onChange={this.handleChange} placeholder="Task title" />
       <input type="text" value={newDescription} onChange={this.handleDescriptionChange} placeholder="Task description" />
       <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />
-      <button onClick={this.addItem}>Add Task</button>
+      <input type="text" value={newLink} onChange={this.handleLinkChange} placeholder="Relevant Link" />
+      <button onClick={this.addTaskGlobal}>Add Task</button>
         <h3>Uncompleted Tasks:</h3>
 
         <button onClick={this.populatePreset}>OnBoarding Tasks</button>
         <ul>
-          {todos.map((task, taskIndex) => (
+          {tasks.map((item, taskIndex) => (
             <li key={taskIndex}>
-              <strong>{task.title}</strong>
-              {taskIndex >= this.state.presetTodos.length && (
-                <button onClick={() => this.deleteItem(taskIndex)}>Delete</button>
-              )}
-              {!task.completed && (
+              <strong>{item.title}</strong>
+              <p>{item.text}</p>
+              {item.link ? <a href={item.link}>Relevant link</a> : null}
+              <button onClick={() => this.deleteTaskGlobal(item.id)}>Delete</button>
+              {!item.completed && (
                 <button onClick={() => this.removeItem(taskIndex)}>Complete</button>
               )}
-              <p>{task.description}</p>
-              <div>
-                <h4>Subtasks:</h4>
-                <ul>
-                  {task.subtasks.map((subtask, subtaskIndex) => (
-                    <li key={subtaskIndex}>
-                      {subtask.title}
-                      <button onClick={() => this.completeSubtask(taskIndex, subtaskIndex)}>
-                        {subtask.completed ? "Undo" : "Complete"}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              
             </li>
           ))}
         </ul>
@@ -328,6 +414,7 @@ class Todo extends React.Component {
           {completedTodos.map((task, taskIndex) => (
             <li key={taskIndex}>
               {task.title}
+              
               <button onClick={() => this.deleteCompletedItem(taskIndex)}>Delete</button>
               <button onClick={() => this.undoItem(taskIndex)}>Undo</button>
             </li>
@@ -341,6 +428,3 @@ class Todo extends React.Component {
  }       
 } export default Todo
 
-// some issues to fix: user is not showing up 'OnBoarding tasks for: ' should have inputted user 
-
-// things to still add: links to pages

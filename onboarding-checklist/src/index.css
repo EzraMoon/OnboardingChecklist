@@ -3,3 +3,10 @@
   text-align: center;
 }
 
+span {
+  display: block;
+}
+
+.container {
+  max-height: 100%;
+}
