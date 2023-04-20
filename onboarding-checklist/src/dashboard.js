@@ -1,4 +1,5 @@
 import React from 'react';
+import "./dashboard.css"
 // Test
 
 class Dashboard extends React.Component {
@@ -198,7 +199,7 @@ class Dashboard extends React.Component {
     //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
     render() {
         return(
-          <div>
+          <div>           
             <h1> Dashboard </h1>
             <h3>Welcome, {this.state.name}!</h3>
             <p>This is your list dashboard! Create a new to-do list or edit an existing one here.</p>
@@ -209,14 +210,14 @@ class Dashboard extends React.Component {
                             this.copyCode(e, key)}}>Copy Code</button><button onClick={(e) => {
                                 this.copyList(e, key)}}>Duplicate</button></li>)
                 }
-                </ul>
+                </ul>               
             <form>
                 <input type="text" placeholder="Title of list" value={this.state.title} onChange={this.handleTitle}></input>
                 <button onClick={this.listCreate}>Create New List</button>
             </form>
             <br/>
             <button onClick={this.handleLogout}>Logout</button>
-          </div>
+            </div>
         )
       }
 } export default Dashboard

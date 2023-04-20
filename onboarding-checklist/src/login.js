@@ -90,6 +90,7 @@ class LoginScreen extends React.Component
   //printing out the title, text, and other parts of the login screen and implementing them
   render() {
     return (
+      
       <div className="loginUI">
         <div className="title">
           <Title />
