@@ -79,9 +79,9 @@ class SignUp extends React.Component {
     render() {
         return (
             <div>
-                <h1>Sign Up Here!</h1>
+                <h1>Sign Up Here</h1>
                 <p>You must sign up with a Southern Company email.</p>
-                <p>It is reccomended to not use the same credentials as your SO account.</p>
+                <p>It is recommended to not use the same credentials as your Southern Company account.</p>
         <form>
             <label>First Name: </label>
                 <input type="text" value={this.state.first} onChange={this.handleFirstChange} />
