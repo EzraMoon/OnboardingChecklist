@@ -1,42 +1,50 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 * {
-	box-sizing: content-box;
+	box-sizing: border-box;
 }
 
 body {
-	background: #f6f5f7;
+	background: #f5f5f5;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Adelle', sans-serif;
 	height: 100vh;
-	margin: -40px 0 50px;
+	margin: 0px 0 0px;
 }
 
 h1 {
-	font-weight: bold;
+	font-weight: 800;
 	margin: 0;
     text-align: center;
-    
+    font-size: 2rem;
+    color: #333;
+	font-family: 'Adelle', sans-serif;
 }
 
 h2 {
 	text-align: center;
+    font-size: 1.5rem;
+    color: #555;
+	font-family: 'Adelle', sans-serif;
+	font-weight: bold;
 }
 
 p {
-	font-size: px;
-	font-weight: 100;
+	font-size: 16px;
+	font-weight: normal;
 	line-height: 20px;
 	letter-spacing: 0.5px;
-	margin: 20px 0 30px;
+	margin: 15px 0 30px;
 	text-align: center;
+    color: #777;
+	font-family: 'Adelle', sans-serif;
 }
 
 span {
-	font-size: 14px;
+	font-size: 12px;
 }
 
 a {
@@ -44,21 +52,25 @@ a {
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
+	font-family: 'Adelle', sans-serif;
+	font-weight: 600;
 }
 
 button {
 	border-radius: 20px;
-	border: 1px solid #222020;
-	background-color: #FF4B2B;
-	color: #FFFFFF;
+	border: 1px solid #007dba !important;
+	background-color: #007dba !important;
+	color: #f5f5f5;
 	font-size: 12px;
-	font-weight: bold;
+	font-weight: 600;
+	font-family: 'Adelle', sans-serif;
 	padding: 12px 45px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
     display: block; 
-    margin: 0 auto;
+    margin: 10px auto;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
 }
 
 button:active {
@@ -75,12 +87,12 @@ button.ghost {
 }
 
 form {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	padding: 0 50px;
+	padding: 0 80px;
 	height: 100%;
 	text-align: center;
 }
@@ -89,15 +101,17 @@ input {
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
-	margin: 10px 0;
+	margin: 8px 0;
 	width: 100%;
+	line-height: 1.5;
+	font-family: 'Adelle', sans-serif;
 }
 
 .container {
 	background-color: #fff;
 	border-radius: 10px;
-  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-			0 10px 10px rgba(0,0,0,0.22);
+  	box-shadow: 0 14px 28px rgba(0,0,0,0.12), 
+			0 10px 10px rgba(0,0,0,0.08);
 	position: relative;
 	overflow: hidden;
 	width: 768px;
@@ -144,7 +158,7 @@ input {
 	
 	50%, 100% {
 		opacity: 1;
-		z-index: 5;
+		z-index: 5
 	}
 }
 
@@ -165,8 +179,8 @@ input {
 
 .overlay {
 	background: #FF416C;
-	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	background: -webkit-linear-gradient(to right, #b2d235, #007dba);
+	background: linear-gradient(to right, #b2d235, #007dba);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
@@ -177,7 +191,6 @@ input {
 	width: 200%;
   	transform: translateX(0);
 	transition: transform 0.6s ease-in-out;
-    
 }
 
 .container.right-panel-active .overlay {
@@ -217,7 +230,10 @@ input {
 }
 
 .social-container {
-	margin: 20px 0;
+	border: 1px solid #636466;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
 }
 
 .social-container a {
@@ -227,8 +243,8 @@ input {
 	justify-content: center;
 	align-items: center;
 	margin: 0 5px;
-	height: 100px;
-	width: 100px;
+	height: 40px;
+	width: 40px;
 }
 
 footer {
@@ -248,7 +264,7 @@ footer p {
 }
 
 footer i {
-    color: red;
+    color: rgb(236, 227, 227);
 }
 
 footer a {
