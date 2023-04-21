@@ -13,6 +13,8 @@ body {
 	flex-direction: column;
 	font-family: 'Adelle', sans-serif;
 	margin: 0px 0 0px;
+	padding-top: 5%;
+	padding-bottom: 5%;
 }
 
 h1 {
@@ -59,7 +61,6 @@ button {
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
-	padding: 12px 45px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
