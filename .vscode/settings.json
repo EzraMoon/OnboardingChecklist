@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/4e8912bb-d926-4eb0-acea-8ce185e631b9/resourceGroups/sc-aivision-sb-rg/providers/Microsoft.Web/sites/innovationhosting2",
+    "appService.deploySubpath": "onboarding-checklist\\build"
+}

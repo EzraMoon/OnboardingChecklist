@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 * {
-	box-sizing: content-box;
+	box-sizing: border-box;
 }
 
 body {
@@ -10,33 +10,42 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 160vh;
-	margin: -40px 0 50px;
+	font-family: 'Adelle', sans-serif;
+	margin: 0px 0 0px;
+	padding-top: 5%;
+	padding-bottom: 5%;
 }
 
 h1 {
-	font-weight: bold;
+	font-weight: 800;
 	margin: 0;
     text-align: center;
-    
+    font-size: 2rem;
+    color: #333;
+	font-family: 'Adelle', sans-serif;
 }
 
 h2 {
 	text-align: center;
+    font-size: 1.5rem;
+    color: #555;
+	font-family: 'Adelle', sans-serif;
+	font-weight: bold;
 }
 
 p {
-	font-size: px;
-	font-weight: 100;
+	font-size: 16px;
+	font-weight: normal;
 	line-height: 20px;
 	letter-spacing: 0.5px;
-	margin: 20px 0 30px;
+	margin: 15px 0 30px;
 	text-align: center;
+    color: #777;
+	font-family: 'Adelle', sans-serif;
 }
 
 span {
-	font-size: 14px;
+	font-size: 12px;
 }
 
 a {
@@ -44,6 +53,8 @@ a {
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
+	font-family: 'Adelle', sans-serif;
+	font-weight: 600;
 }
 
 button {
@@ -52,13 +63,15 @@ button {
 	background-color: #326a91;
 	color: #FAF9F6;
 	font-size: 12px;
-	font-weight: bold;
+	font-weight: 600;
+	font-family: 'Adelle', sans-serif;
 	padding: 12px 45px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
     display: block; 
-    margin: 0 auto;
+    margin: 10px auto;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
 }
 
 button:active {
@@ -80,7 +93,7 @@ form {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	padding: 0 50px;
+	padding: 0 80px;
 	height: 100%;
 	text-align: center;
 }
@@ -89,17 +102,19 @@ input {
 	background-color: #FAF9F6;
 	border: 1.5px solid #313639;
 	padding: 12px 15px;
-	margin: 10px 0;
+	margin: 8px 0;
 	width: 100%;
+	line-height: 1.5;
+	font-family: 'Adelle', sans-serif;
 }
 
 .container {
 	background-color: #FAF9F6;
 	border-radius: 10px;
-  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-			0 10px 10px rgba(0,0,0,0.22);
+  	box-shadow: 0 14px 28px rgba(0,0,0,0.12), 
+			0 10px 10px rgba(0,0,0,0.08);
 	position: relative;
-	overflow: hidden;
+	overflow: auto;
 	width: 768px;
 	max-width: 100%;
 	min-height: 480px;
@@ -110,6 +125,7 @@ input {
 	top: 0;
 	height: 100%;
 	transition: all 0.6s ease-in-out;
+	overflow: auto;
 }
 
 .sign-in-container {
@@ -144,7 +160,7 @@ input {
 	
 	50%, 100% {
 		opacity: 1;
-		z-index: 5;
+		z-index: 5
 	}
 }
 
@@ -154,7 +170,7 @@ input {
 	left: 50%;
 	width: 50%;
 	height: 100%;
-	overflow: hidden;
+	overflow: auto;
 	transition: transform 0.6s ease-in-out;
 	z-index: 100;
 }
@@ -177,7 +193,6 @@ input {
 	width: 200%;
   	transform: translateX(0);
 	transition: transform 0.6s ease-in-out;
-    
 }
 
 .container.right-panel-active .overlay {
@@ -217,7 +232,10 @@ input {
 }
 
 .social-container {
-	margin: 20px 0;
+	border: 1px solid #636466;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
 }
 
 .social-container a {
@@ -227,8 +245,8 @@ input {
 	justify-content: center;
 	align-items: center;
 	margin: 0 5px;
-	height: 100px;
-	width: 100px;
+	height: 40px;
+	width: 40px;
 }
 
 footer {
