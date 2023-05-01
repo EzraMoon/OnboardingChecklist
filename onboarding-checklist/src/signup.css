@@ -14,33 +14,48 @@ body {
 	margin: 0px 0 0px;
 	padding-top: 5%;
 	padding-bottom: 5%;
+	
 }
 
 h1 {
+	text-align: center;
 	font-weight: 800;
 	margin: 0;
     text-align: center;
-    font-size: 2rem;
-    color: #333;
+    font-size: 2.5rem;
+    color:#2b2b2b;
 	font-family: 'Adelle', sans-serif;
+	position: relative;
 }
+
 
 h2 {
 	text-align: center;
-    font-size: 1.5rem;
-    color: #555;
+    font-size: 1.8rem;
+    color:#2b2b2b;
 	font-family: 'Adelle', sans-serif;
 	font-weight: bold;
 }
 
+h3 {
+	text-align: center;
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
 p {
 	font-size: 16px;
-	font-weight: normal;
+	font-weight: 100;
 	line-height: 20px;
 	letter-spacing: 0.5px;
-	margin: 15px 0 30px;
+	margin: 25px 0 30px;
 	text-align: center;
-    color: #777;
+    color: #333;
 	font-family: 'Adelle', sans-serif;
 }
 
@@ -55,6 +70,14 @@ a {
 	margin: 15px 0;
 	font-family: 'Adelle', sans-serif;
 	font-weight: 600;
+	padding: 2px 6px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a:hover {
+    background-color: #007dba;
+    color: #fff;
 }
 
 button {
@@ -63,14 +86,14 @@ button {
 	background-color: #007dba !important;
 	color: #f5f5f5;
 	font-size: 12px;
-	font-weight: 600;
+	font-weight: bold;
 	font-family: 'Adelle', sans-serif;
 	padding: 12px 45px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
     display: block; 
-    margin: 10px auto;
+    margin: 15px auto;
 	box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
 }
 
@@ -80,6 +103,12 @@ button:active {
 
 button:focus {
 	outline: none;
+}
+
+button:hover {
+    background-color: #005a8c;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2),
+        0 8px 8px rgba(0, 0, 0, 0.15);
 }
 
 button.ghost {
@@ -93,16 +122,17 @@ form {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	padding: 0 80px;
-	height: 100%;
+	padding: 20px 80px;
+	height: 80%;
 	text-align: center;
 }
 
 input {
+	text-align: center;
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
-	margin: 8px 0;
+	margin: 25x 0;
 	width: 100%;
 	line-height: 1.5;
 	font-family: 'Adelle', sans-serif;
@@ -272,4 +302,26 @@ footer i {
 footer a {
     color: #3c97bf;
     text-decoration: none;
+}
+
+.dashboard-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 50px;
+}
+  
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }

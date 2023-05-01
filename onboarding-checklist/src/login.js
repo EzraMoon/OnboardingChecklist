@@ -92,6 +92,7 @@ class LoginScreen extends React.Component
     return (
       <div className="loginUI">
         <div className="title">
+        <img src="https://logodownload.org/wp-content/uploads/2021/12/southern-company-logo-1.png" alt="Southern Company Logo" className="logo" />
           <Title />
         </div>
         <form>
@@ -104,14 +105,13 @@ class LoginScreen extends React.Component
         </form>
         <br />
         <button onClick={this.handleEnterClick}>Enter</button>
-        <p>Not registed? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
+        <p>Not registered? <a href='/signup' onClick={this.handleSignUp}>Sign up here</a></p>
         <br/>
         <div className="codeEntry">
           <h1>Accessing a list?</h1>
           <p>Enter the six-digit list code you received here:</p>
           <form>
-            <label>Code: </label>
-            <input type="text" value={this.state.code} onChange={this.handleCodeChange}/>
+            <input type="text" placeholder="Six-Digit Code" value={this.state.title} onChange={this.handleTitle}></input>
             <button onClick={this.handleCodeEntry}>Enter</button>
           </form>
         </div>
