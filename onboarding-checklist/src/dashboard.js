@@ -1,5 +1,5 @@
 import React from 'react';
-// Test
+import './signup.css';
 
 class Dashboard extends React.Component {
 
@@ -198,10 +198,11 @@ class Dashboard extends React.Component {
     //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
     render() {
         return(
-          <div>
+          <div className="dashboard-container">
+            <img src="https://logodownload.org/wp-content/uploads/2021/12/southern-company-logo-1.png" alt="Southern Company Logo" className="logo" />
             <h1> Dashboard </h1>
             <h3>Welcome, {this.state.name}!</h3>
-            <p>This is your list dashboard! Create a new to-do list or edit an existing one here.</p>
+            <p>This is your list dashboard(s), create a new to-do list or edit an existing one below.</p>
                 <ul>
                 {
                     Object.entries(this.state.dict).map(([key, value]) => <li> <a href={'/list/'+ key}>{value}</a><button onClick={(e) => {
@@ -212,7 +213,7 @@ class Dashboard extends React.Component {
                 </ul>
             <form>
                 <input type="text" placeholder="Title of list" value={this.state.title} onChange={this.handleTitle}></input>
-                <button onClick={this.listCreate}>Create New List</button>
+                <button onClick={this.listCreate}>Create</button>
             </form>
             <br/>
             <button onClick={this.handleLogout}>Logout</button>
