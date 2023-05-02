@@ -55,8 +55,13 @@ class Note(db.Model):
     title = db.Column(db.String(50)) # title of the task
     link = db.Column(db.String(150)) # optional link field for relevant links
 
-    # Points to parent note
-    parentID = db.Column(db.Integer, db.ForeignKey('note.id'))
-    parent = db.relationship('Note', remote_side=[id]) # the note that is a parent of this one
+    subs = db.relationship("Subtask", back_populates="parent")
 
     complete = db.Column(db.Boolean, unique=False, default=False) # whether or not the task is complete
+
+class Subtask(db.Model):
+    __tablename__ = "subtask"
+    id = db.Column(db.Integer, primary_key=True, unique=True) # id used to identify
+    text = db.Column(db.String(250))
+    parent = db.relationship("Note", back_populates="subs")
+    parent_id = db.Column(db.Integer, db.ForeignKey('note.id'))

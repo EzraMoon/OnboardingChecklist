@@ -350,6 +350,31 @@ class Todo extends React.Component {
         })
   }
 
+  addSubtaskGlobal = (id) => {
+    fetch('http://localhost:5000/addsubtask', {
+            method: 'POST',
+            credentials: 'include',
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Credentials" : true,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify([this.state.listId, id]), // get listcode from link
+        }).then(r => {
+            return r.json()})
+            .then(d => {
+                console.log(d)
+                console.log(this.state.tasks)
+                this.grabList()
+            })
+        .catch(e => {
+            console.log(e);
+            return e;
+        })
+  }
+
   deleteTaskGlobal = (id) => {
     fetch('http://localhost:5000/deletenote', {
             method: 'POST',
@@ -390,15 +415,27 @@ class Todo extends React.Component {
       <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />
       <input type="text" value={newLink} onChange={this.handleLinkChange} placeholder="Relevant Link" />
       <button onClick={this.addTaskGlobal}>Add Task</button>
-        <h3>Uncompleted Tasks:</h3>
-
-        <button onClick={this.populatePreset}>OnBoarding Tasks</button>
+        <div>
+          <button onClick={this.populatePreset}>Add Premade OnBoarding Tasks</button>
+          <br/>
+        </div>
+        
+        <h2>Uncompleted Tasks:</h2>
+        <br/>
         <ul>
           {tasks.map((item, taskIndex) => (
             <li key={taskIndex}>
-              <strong>{item.title}</strong>
+              <h3>{item.title}</h3>
               <p>{item.text}</p>
-              {item.link ? <a href={item.link}>Relevant link</a> : null}
+              {item.link ? <a href={item.link}>Link</a> : null}
+              <div className='subtask_list'>
+                {item.subtasks.map((item) =>
+                    <div className='check'>
+                      <label><input type="checkbox"/>{item}</label>
+                    </div>
+                    
+                  )}
+              </div>
               <button onClick={() => this.deleteTaskGlobal(item.id)}>Delete</button>
               {!item.completed && (
                 <button onClick={() => this.removeItem(taskIndex)}>Complete</button>

@@ -3,7 +3,7 @@ from json import *
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 from flask_login import *
-from models import db, User, TaskList, Note
+from models import db, User, TaskList, Note, Subtask
 from config import ApplicationConfig
 from flask_bcrypt import Bcrypt
 from flask_session import Session
@@ -137,9 +137,31 @@ def add_to_list():
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
-    cList.notes.append(Note(title=text, tasklist=cList, text=description, complete=False, link=link)) # Subtasks will be another process
+    new_note = Note(title=text, tasklist=cList, text=description, complete=False, link=link)
+    cList.notes.append(new_note)
+    if subtask:
+        new_note.subs.append(Subtask(text=subtask, parent=new_note))
+
     db.session.commit() # Attributes it to the user
     return jsonify({"data" : data})
+
+@app.route('/addsubtask', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def add_subtask():
+    listID, noteID, subtask = request.get_json()
+    cList = TaskList.query.filter_by(id=listID).first()
+    cNote = Note.query.filter_by(id=noteID).first()
+
+    if not cList:
+        return jsonify({"Error" : "List not found"}, 404)
+    
+    if not cNote:
+        return jsonify({"Error" : "Note not found"}, 404)
+    
+    cNote.subs.append(Subtask(text=subtask, parent=cNote))
+    db.session.commit()
+    return jsonify({"subtasks" : cNote.subtasks})
+
 
 # delete a note from a specified list
 @app.route('/deletenote', methods=['POST'])
@@ -172,15 +194,17 @@ def get_list():
         return jsonify({"Error" : "List does not exist"}, 404)
     
     noteList = []
+    subList = []
     for x in iden_list.notes:
-        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete, "link" : x.link})
+        for i in x.subs:
+            subList.append(i.text)
+        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete, "link" : x.link, "subtasks" : subList})
+        subList = []
     
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,
                     "Data" : noteList})
-
     
-
 
 # Register func to add new users to the database
 @app.route('/register', methods=['POST'])
@@ -373,7 +397,8 @@ def premade():
       ]
     
     for i in dict:
-        cList.notes.append(Note(title=i['title'], text=i['description'], tasklist=cList, complete=False, link=i['link']))
+        parentNode = Note(title=i['title'], text=i['description'], tasklist=cList, complete=False, link=i['link'], subs=i["subtasks"])
+        cList.notes.append(parentNode)
 
     return jsonify({'Success' : True})
 

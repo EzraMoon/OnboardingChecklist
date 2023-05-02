@@ -69,7 +69,6 @@ button {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
-    display: block; 
     margin: 10px auto;
 	box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
 }
@@ -92,7 +91,7 @@ form {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
+
 	padding: 0 80px;
 	height: 100%;
 	text-align: center;
@@ -103,9 +102,23 @@ input {
 	border: 1.5px solid #313639;
 	padding: 12px 15px;
 	margin: 8px 0;
-	width: 100%;
 	line-height: 1.5;
 	font-family: 'Adelle', sans-serif;
+}
+
+input[type="checkbox"] {
+	display: flex;
+	text-align: left;
+	align-items: left;
+}
+
+label {
+	display: inline-flex;
+	align-items: center;
+}
+
+.subtask_list {
+	display: inline-flex;
 }
 
 .container {

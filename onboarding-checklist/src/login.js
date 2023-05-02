@@ -66,7 +66,6 @@ class LoginScreen extends React.Component
       // this needs to be fixed to print out 'success: True' not 'success: False'
       return response.json()})
     .then(data => {
-      console.log(data)
       if (data.id != null) {
         window.location.pathname = '/dashboard';
       } else {
