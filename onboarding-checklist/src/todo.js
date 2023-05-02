@@ -375,6 +375,8 @@ class Todo extends React.Component {
                 console.log(d)
                 console.log(this.state.tasks)
                 this.grabList()
+                this.state.showAddList.pop()
+                console.log(this.state.showAddList)
             })
         .catch(e => {
             console.log(e);
