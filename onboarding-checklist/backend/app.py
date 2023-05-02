@@ -159,8 +159,12 @@ def add_subtask():
         return jsonify({"Error" : "Note not found"}, 404)
     
     cNote.subs.append(Subtask(text=subtask, parent=cNote))
+    sublist = []
     db.session.commit()
-    return jsonify({"subtasks" : cNote.subtasks})
+    for i in cNote.subs:
+        sublist.append(i.text)
+
+    return jsonify({"subtasks" : sublist})
 
 
 # delete a note from a specified list
@@ -198,7 +202,7 @@ def get_list():
     for x in iden_list.notes:
         for i in x.subs:
             subList.append(i.text)
-        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete, "link" : x.link, "subtasks" : subList})
+        noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete, "link" : x.link, "subtasks" : subList, "add" : False})
         subList = []
     
     return jsonify({"Title" : iden_list.title,

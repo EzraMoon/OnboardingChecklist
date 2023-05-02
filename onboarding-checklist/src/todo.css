@@ -112,13 +112,20 @@ input[type="checkbox"] {
 	align-items: left;
 }
 
+.handleSubtask {
+	display: inline-flex;
+	align-items: center;
+	text-align: center;
+	
+}
+
 label {
 	display: inline-flex;
 	align-items: center;
 }
 
 .subtask_list {
-	display: inline-flex;
+	display: block;
 }
 
 .container {

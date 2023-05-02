@@ -122,9 +122,12 @@ class Todo extends React.Component {
       newItem: "",
       newDescription: "",
       newSubtask: "",
+      newSubtask2: "",
+      showAdd: false,
       presetTodos,
       listId: window.location.href.split('/')[4],
       tasks: [],
+      showAddList: [],
       newLink: "",
     };
   }
@@ -142,6 +145,10 @@ class Todo extends React.Component {
   componentDidMount() {
     console.log(this.state.listId);
     this.grabList();
+  }
+
+  handleSubtask2Change = (event) => {
+    this.setState({newSubtask2 : event.target.value})
   }
 
   //checks for updated added task
@@ -361,7 +368,7 @@ class Todo extends React.Component {
                 "Access-Control-Allow-Credentials" : true,
                 'Accept': 'application/json'
             },
-            body: JSON.stringify([this.state.listId, id]), // get listcode from link
+            body: JSON.stringify([this.state.listId, id, this.state.newSubtask2]), // get listcode from link
         }).then(r => {
             return r.json()})
             .then(d => {
@@ -373,6 +380,12 @@ class Todo extends React.Component {
             console.log(e);
             return e;
         })
+  }
+
+  showAddButton = (id) => {
+    this.setState({showAdd: true});
+    this.state.showAddList.push(id)
+    console.log(this.state.showAddList)
   }
 
   deleteTaskGlobal = (id) => {
@@ -402,7 +415,7 @@ class Todo extends React.Component {
 
   //render function that has completed and uncompleted tasks under their categories
   render() {
-    const { tasks, todos, completedTodos, newItem, newDescription, newSubtask, newLink } = this.state;
+    const { tasks, todos, completedTodos, newItem, newDescription, newSubtask, newLink, newSubtask2 } = this.state;
     const { user } = this.props;
   
     return (
@@ -413,7 +426,7 @@ class Todo extends React.Component {
       <input type="text" value={newItem} onChange={this.handleChange} placeholder="Task title" />
       <input type="text" value={newDescription} onChange={this.handleDescriptionChange} placeholder="Task description" />
       <input type="text" value={newSubtask} onChange={this.handleSubtaskChange} placeholder="Subtask" />
-      <input type="text" value={newLink} onChange={this.handleLinkChange} placeholder="Relevant Link" />
+      <input type='url' value={newLink} onChange={this.handleLinkChange} placeholder="Relevant Link" />
       <button onClick={this.addTaskGlobal}>Add Task</button>
         <div>
           <button onClick={this.populatePreset}>Add Premade OnBoarding Tasks</button>
@@ -430,12 +443,21 @@ class Todo extends React.Component {
               {item.link ? <a href={item.link}>Link</a> : null}
               <div className='subtask_list'>
                 {item.subtasks.map((item) =>
+                  <ul>
                     <div className='check'>
                       <label><input type="checkbox"/>{item}</label>
                     </div>
-                    
+                    </ul>
                   )}
+                  
               </div>
+              <br/>
+              {this.state.showAdd && this.state.showAddList.indexOf(item.id) > -1 ? <div className='handleSubtask'>
+                <input type='text' value={newSubtask2} onChange={this.handleSubtask2Change}></input>
+                <button onClick={() => this.addSubtaskGlobal(item.id)}>Add</button>
+              </div> : null }
+              
+              <button onClick={() => this.showAddButton(item.id)}>Add Subtask</button>
               <button onClick={() => this.deleteTaskGlobal(item.id)}>Delete</button>
               {!item.completed && (
                 <button onClick={() => this.removeItem(taskIndex)}>Complete</button>
