@@ -1,5 +1,5 @@
 import React from 'react';
-import './signup.css';
+import './dashboard.css';
 
 class Dashboard extends React.Component {
 
@@ -198,7 +198,7 @@ class Dashboard extends React.Component {
     //if click on logout, goees to login screen, if clicked on to-do list goes to to-do screen
     render() {
         return(
-          <div className="dashboard-container">
+          <div>
             <img src="https://logodownload.org/wp-content/uploads/2021/12/southern-company-logo-1.png" alt="Southern Company Logo" className="logo" />
             <h1> Dashboard </h1>
             <h3>Welcome, {this.state.name}!</h3>
@@ -210,14 +210,14 @@ class Dashboard extends React.Component {
                             this.copyCode(e, key)}}>Copy Code</button><button onClick={(e) => {
                                 this.copyList(e, key)}}>Duplicate</button></li>)
                 }
-                </ul>
+                </ul>               
             <form>
                 <input type="text" placeholder="Title of list" value={this.state.title} onChange={this.handleTitle}></input>
                 <button onClick={this.listCreate}>Create</button>
             </form>
             <br/>
             <button onClick={this.handleLogout}>Logout</button>
-          </div>
+            </div>
         )
       }
 } export default Dashboard
