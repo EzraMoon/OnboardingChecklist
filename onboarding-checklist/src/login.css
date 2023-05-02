@@ -21,7 +21,7 @@ h1 {
 	font-family: 'Adelle', sans-serif;
     font-weight: bold;
     margin: 0;
-    font-size: 2rem;
+    font-size: 2.5rem;
 }
 
 h2 {
@@ -90,6 +90,10 @@ form {
 	padding: 0 50px;
 	height: 100%;
 	text-align: center;
+	background-image: url('https://www.bing.com/images/search?view=detailV2&ccid=fYnlyD1U&id=8DE9CA2CA1DAB322CC509E528EEC3F952255BB9F&thid=OIP.fYnlyD1Uc6VTTSdea-0pdgHaHW&mediaurl=https%3a%2f%2flogodownload.org%2fwp-content%2fuploads%2f2021%2f12%2fsouthern-company-logo-1.png&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.7d89e5c83d5473a5534d275e6bed2976%3frik%3dn7tVIpU%252f7I5Sng%26pid%3dImgRaw%26r%3d0&exph=4068&expw=4096&q=southern+company+logo+official&simid=608012059247192267&FORM=IRPRST&ck=F07B817D1A11587987FC96911A8A0AA6&selectedIndex=0&ajaxhist=0&ajaxserp=0');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 input {
@@ -255,4 +259,19 @@ footer i {
 footer a {
     color: #326a91;
     text-decoration: none;
+}
+
+.dashboard-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 50px;
 }

@@ -79,9 +79,10 @@ class SignUp extends React.Component {
     render() {
         return (
             <div>
+                <img src="https://logodownload.org/wp-content/uploads/2021/12/southern-company-logo-1.png" alt="Southern Company Logo" className="logo" />
                 <h1>Sign Up Here</h1>
-                <p>You must sign up with a Southern Company email.</p>
-                <p>It is recommended to not use the same credentials as your Southern Company account.</p>
+                <p>*You must sign up with a Southern Company email*</p>
+                <p>It is recommended to not use the same credentials as your Southern Company account</p>
         <form>
             <label>First Name: </label>
                 <input type="text" value={this.state.first} onChange={this.handleFirstChange} />
