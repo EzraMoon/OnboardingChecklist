@@ -447,7 +447,7 @@ class Todo extends React.Component {
                 {item.subtasks.map((item) =>
                   <ul>
                     <div className='check'>
-                      <label><input type="checkbox"/>{item}</label>
+                      <label><input type="checkbox"/>&nbsp;{item}</label>
                     </div>
                     </ul>
                   )}

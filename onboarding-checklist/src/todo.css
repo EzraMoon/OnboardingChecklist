@@ -113,15 +113,18 @@ input[type="checkbox"] {
 }
 
 .handleSubtask {
-	display: inline-flex;
+	width: 50%;
+	display: flex;
 	align-items: center;
 	text-align: center;
-	
 }
 
 label {
 	display: inline-flex;
 	align-items: center;
+	text-align: left;
+	color: #777;
+	white-space: nowrap;
 }
 
 .subtask_list {
