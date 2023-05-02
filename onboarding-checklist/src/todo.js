@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import "./todo.css"
 
 //to-do screen class with preset functions
 class Todo extends React.Component {

@@ -90,6 +90,7 @@ class LoginScreen extends React.Component
   //printing out the title, text, and other parts of the login screen and implementing them
   render() {
     return (
+      
       <div className="loginUI">
         <div className="title">
         <img src="https://logodownload.org/wp-content/uploads/2021/12/southern-company-logo-1.png" alt="Southern Company Logo" className="logo" />

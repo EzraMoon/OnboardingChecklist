@@ -5,7 +5,7 @@
 }
 
 body {
-	background: #f5f5f5;
+	background: #FAF9F6;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -64,7 +64,7 @@ span {
 }
 
 a {
-	color: #333;
+	color: #313639;
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
@@ -82,9 +82,9 @@ a:hover {
 
 button {
 	border-radius: 20px;
-	border: 1px solid #007dba !important;
-	background-color: #007dba !important;
-	color: #f5f5f5;
+	border: 1px solid #313639;
+	background-color: #326a91;
+	color: #FAF9F6;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: 'Adelle', sans-serif;
@@ -113,11 +113,11 @@ button:hover {
 
 button.ghost {
 	background-color: transparent;
-	border-color: #FFFFFF;
+	border-color: #FAF9F6;
 }
 
 form {
-	background-color: #ffffff;
+	background-color: #FAF9F6;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -128,9 +128,14 @@ form {
 }
 
 input {
+<<<<<<< HEAD
+	background-color: #FAF9F6;
+	border: 1.5px solid #313639;
+=======
 	text-align: center;
 	background-color: #eee;
 	border: none;
+>>>>>>> main
 	padding: 12px 15px;
 	margin: 25x 0;
 	width: 100%;
@@ -139,7 +144,7 @@ input {
 }
 
 .container {
-	background-color: #fff;
+	background-color: #FAF9F6;
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.12), 
 			0 10px 10px rgba(0,0,0,0.08);
@@ -210,13 +215,13 @@ input {
 }
 
 .overlay {
-	background: #FF416C;
-	background: -webkit-linear-gradient(to right, #b2d235, #007dba);
-	background: linear-gradient(to right, #b2d235, #007dba);
+	background: #326a91;
+	background: -webkit-linear-gradient(to right, #326a91, #326a91);
+	background: linear-gradient(to right, #326a91, #326a91);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
-	color: #FFFFFF;
+	color: #FAF9F6;
 	position: relative;
 	left: -100%;
 	height: 100%;
@@ -269,7 +274,7 @@ input {
 }
 
 .social-container a {
-	border: 1px solid #DDDDDD;
+	border: 1px solid #FAF9F6;
 	border-radius: 50%;
 	display: inline-flex;
 	justify-content: center;
@@ -280,8 +285,8 @@ input {
 }
 
 footer {
-    background-color: #222;
-    color: #fff;
+    background-color: #313639;
+    color: #FAF9F6;
     font-size: 14px;
     bottom: 0;
     position: fixed;
@@ -296,11 +301,11 @@ footer p {
 }
 
 footer i {
-    color: rgb(236, 227, 227);
+    color: #326a91;
 }
 
 footer a {
-    color: #3c97bf;
+    color: #326a91;
     text-decoration: none;
 }
 

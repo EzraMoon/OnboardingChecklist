@@ -1,5 +1,6 @@
 import React from 'react';
-import './signup.css';
+import "./dashboard.css"
+// Test
 
 class Dashboard extends React.Component {
 
@@ -210,14 +211,14 @@ class Dashboard extends React.Component {
                             this.copyCode(e, key)}}>Copy Code</button><button onClick={(e) => {
                                 this.copyList(e, key)}}>Duplicate</button></li>)
                 }
-                </ul>
+                </ul>               
             <form>
                 <input type="text" placeholder="Title of list" value={this.state.title} onChange={this.handleTitle}></input>
                 <button onClick={this.listCreate}>Create</button>
             </form>
             <br/>
             <button onClick={this.handleLogout}>Logout</button>
-          </div>
+            </div>
         )
       }
 } export default Dashboard
