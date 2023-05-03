@@ -111,7 +111,7 @@ class LoginScreen extends React.Component
           <h1>Accessing a list?</h1>
           <p>Enter the six-digit list code you received here:</p>
           <form>
-            <input type="text" placeholder="Six-Digit Code" value={this.state.title} onChange={this.handleTitle}></input>
+            <input type="text" placeholder="Six-Digit Code" value={this.state.code} onChange={this.handleCodeChange}></input>
             <button onClick={this.handleCodeEntry}>Enter</button>
           </form>
         </div>
