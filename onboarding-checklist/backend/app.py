@@ -34,7 +34,7 @@ def index():
     return app.send_static_file('index.css')
 
 # Function to create a new task list attributed to the user
-@app.route('/create', methods=['POST'])
+@app.route('/api/create', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def create_list():
     data = request.get_json()
@@ -53,7 +53,7 @@ def create_list():
     return  jsonify({"Success" : True})
 
 # method to copy a list
-@app.route('/copy', methods=['POST'])
+@app.route('/api/copy', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def duplicate_list():
     org_id = request.get_json() # the code of the list we are copying
@@ -74,7 +74,7 @@ def duplicate_list():
 
 
 # method to delete a list
-@app.route('/delete', methods=['POST'])
+@app.route('/api/delete', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def delete_list():
     listid = request.get_json()
@@ -96,7 +96,7 @@ def delete_list():
 
 
 # Function to return all the names of the existing tasklists
-@app.route('/listdata', methods=['GET'])
+@app.route('/api/listdata', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def list_info():
     # get the current user based on the session
@@ -118,7 +118,7 @@ def list_info():
     return jsonify({"data" : nameList, "dict" : namedict})
 
 # method to add a note to a specified list
-@app.route('/addnote', methods=['POST'])
+@app.route('/api/addnote', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def add_to_list():
     # somehow choose which list we are selecting
@@ -145,7 +145,7 @@ def add_to_list():
     db.session.commit() # Attributes it to the user
     return jsonify({"data" : data})
 
-@app.route('/addsubtask', methods=['POST'])
+@app.route('/api/addsubtask', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def add_subtask():
     listID, noteID, subtask = request.get_json()
@@ -168,7 +168,7 @@ def add_subtask():
 
 
 # delete a note from a specified list
-@app.route('/deletenote', methods=['POST'])
+@app.route('/api/deletenote', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def remove_from_list():
     listID, noteID = request.get_json()
@@ -188,7 +188,7 @@ def remove_from_list():
 
 # Grabs the info from a specific list
 # identififed by the corresponding list code 
-@app.route('/getlist', methods=['POST'])
+@app.route('/api/getlist', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def get_list():
     id = request.get_json()
@@ -211,7 +211,7 @@ def get_list():
     
 
 # Register func to add new users to the database
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def register_user():
     data = request.get_json()
@@ -245,7 +245,7 @@ def register_user():
     })
 
 # Login func to validate credentials using the database
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def login_user():
     # Get username and password entry
@@ -270,7 +270,7 @@ def login_user():
     })
 
 # Profile Data func
-@app.route("/@me")
+@app.route("/api/@me")
 @cross_origin(supports_credentials=True)
 def get_current_user():
     # Gets the current user id based on session
@@ -288,7 +288,7 @@ def get_current_user():
     }) 
 
 # Logs a user out of the session
-@app.route('/logout')
+@app.route('/api/logout')
 @cross_origin(supports_credentials=True)
 def logout():
     logout_user()
@@ -297,7 +297,7 @@ def logout():
     return jsonify({"logout" : True})
 
 # Mark a task as complete
-@app.route('/complete', methods=['POST'])
+@app.route('/api/complete', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def mark_complete():
     listID, noteID = request.get_json()
@@ -311,7 +311,7 @@ def mark_complete():
     return jsonify({"Success" : True})
 
 # Mark a task as incomplete
-@app.route('/incomplete', methods=['POST'])
+@app.route('/api/incomplete', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def mark_incomplete():
     listID, noteID = request.get_json()
@@ -328,7 +328,7 @@ def mark_incomplete():
 
 # adds the premade onboarding tasks to a user's list
 # based on the tasks given in todo.js
-@app.route('/premade', methods=['POST'])
+@app.route('/api/premade', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def premade():
     listID = request.get_json()
@@ -408,5 +408,5 @@ def premade():
 
 #driver code
 if __name__ == '__main__':
-    app.run(debug=True, port=3003)
+    app.run(debug=True, port=8080)
 

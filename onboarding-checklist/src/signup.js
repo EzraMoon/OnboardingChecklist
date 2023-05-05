@@ -45,7 +45,7 @@ class SignUp extends React.Component {
     console.log(JSON.stringify([email, password, first, last]))
 
     // validating frontend and backend connection
-    fetch('http://localhost:5000/register', {
+    fetch('http://localhost:5000/api/register', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

@@ -158,7 +158,7 @@ class Todo extends React.Component {
 
   // Gets the info for the selected list based on the code in the link
   grabList = (event) => {
-    fetch('http://localhost:5000/getlist', {
+    fetch('http://localhost:5000/api/getlist', {
         method: 'POST',
         credentials: 'include',
         dataType: 'json',
@@ -235,7 +235,7 @@ class Todo extends React.Component {
 
   //populate todos with presetTodos
   populatePreset = () => {
-    fetch('http://localhost:5000/premade', {
+    fetch('http://localhost:5000/api/premade', {
         method: 'POST',
         credentials: 'include',
         dataType: 'json',
@@ -305,7 +305,7 @@ class Todo extends React.Component {
 
   //completes the task
   completeTask = (id) => {
-    fetch('http://localhost:5000/complete', {
+    fetch('http://localhost:5000/api/complete', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -333,7 +333,7 @@ class Todo extends React.Component {
   // which is connected to the database/the user
   // who created it.
   addTaskGlobal = () => {
-    fetch('http://localhost:5000/addnote', {
+    fetch('http://localhost:5000/api/addnote', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -358,7 +358,7 @@ class Todo extends React.Component {
   }
 
   addSubtaskGlobal = (id) => {
-    fetch('http://localhost:5000/addsubtask', {
+    fetch('http://localhost:5000/api/addsubtask', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -391,7 +391,7 @@ class Todo extends React.Component {
   }
 
   deleteTaskGlobal = (id) => {
-    fetch('http://localhost:5000/deletenote', {
+    fetch('http://localhost:5000/api/deletenote', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',

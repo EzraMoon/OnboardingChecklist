@@ -1,6 +1,0 @@
-FLASK_APP=app.py
-FLASK_ENV=development
-flask
-Flask-SQLAlchemy
-flask-login
-SECRET_KEY=sldjkbfslgbkjv83sdfjkweuih2bkfjg80

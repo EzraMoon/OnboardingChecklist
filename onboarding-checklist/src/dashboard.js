@@ -20,7 +20,7 @@ class Dashboard extends React.Component {
     }
 
     handleLogout = () => { // logs the user out
-        fetch('http://localhost:5000/logout', {
+        fetch('http://localhost:5000/api/logout', {
             method: 'GET',
             credentials: 'include',
             dataType: 'json',
@@ -48,7 +48,7 @@ class Dashboard extends React.Component {
 
     fetchUserData = () => { // connects with the backend to receive user data
         console.log("Getting user data from flask...")
-        fetch('http://localhost:5000/@me', {
+        fetch('http://localhost:5000/api/@me', {
             method: 'GET',
             credentials: 'include',
             dataType: 'json',
@@ -83,7 +83,7 @@ class Dashboard extends React.Component {
         let title = this.state.title;
         let name = this.state.name;
 
-        fetch('http://localhost:5000/create', {
+        fetch('http://localhost:5000/api/create', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -106,7 +106,7 @@ class Dashboard extends React.Component {
     }
 
     listInfo = (event) => {
-        fetch('http://localhost:5000/listdata', {
+        fetch('http://localhost:5000/api/listdata', {
             method: 'GET',
             credentials: 'include',
             dataType: 'json',
@@ -132,7 +132,7 @@ class Dashboard extends React.Component {
 
     delList(event, code) {
         event.preventDefault()
-        fetch('http://localhost:5000/delete', {
+        fetch('http://localhost:5000/api/delete', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -173,7 +173,7 @@ class Dashboard extends React.Component {
      */
     copyList(event, code) {
         event.preventDefault();
-        fetch('http://localhost:5000/copy', {
+        fetch('http://localhost:5000/api/copy', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
