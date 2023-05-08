@@ -5,15 +5,18 @@ from flask_cors import CORS, cross_origin
 from flask_login import *
 from models import db, User, TaskList, Note, Subtask
 from config import ApplicationConfig
+import os
 from flask_bcrypt import Bcrypt
-from flask_session import Session
+from flask_sessionstore import Session
 from flask_migrate import Migrate
 
 
 # calling index.js
 # code relating to setting up the session tracker with SQLAlchemy using config.py
 app = Flask(__name__, static_folder= "index.js", static_url_path="/")
-app.secret_key = 'secretkey'
+app.config["SESSION_TYPE"] = 'sqlalchemy'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.secret_key = os.environ.get('SECRET_KEY')
 CORS(app, supports_credentials=True)
 app.config.from_object(ApplicationConfig)
 app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True, use_signer=False)
@@ -23,6 +26,7 @@ db.init_app(app)
 bcrypt = Bcrypt(app) # used to encode passwords
 Session(app) # used to store user cookies
 migrate = Migrate(app, db, render_as_batch=True) # Needed for every time we change the database https://flask-migrate.readthedocs.io/en/latest/
+
 @app.before_first_request
 def create_tables():
     db.create_all() # create all databases: tasks, users, sessions, etc.
@@ -408,5 +412,5 @@ def premade():
 
 #driver code
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run()
 
