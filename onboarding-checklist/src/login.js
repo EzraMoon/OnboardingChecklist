@@ -52,7 +52,7 @@ class LoginScreen extends React.Component
     console.log(JSON.stringify([email, password]))
 
     // validating frontend and backend connection
-    fetch('http://localhost:5000/api/login', {
+    fetch('http://onboarding-checklist-env.eba-zmqvvmki.us-east-1.elasticbeanstalk.com/api/login', {
       method: 'POST',
       credentials: 'include',
       headers: {

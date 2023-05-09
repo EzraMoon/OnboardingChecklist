@@ -158,7 +158,7 @@ class Todo extends React.Component {
 
   // Gets the info for the selected list based on the code in the link
   grabList = (event) => {
-    fetch('http://localhost:5000/api/getlist', {
+    fetch('http://onboarding-checklist-env.eba-zmqvvmki.us-east-1.elasticbeanstalk.com/api/getlist', {
         method: 'POST',
         credentials: 'include',
         dataType: 'json',
@@ -235,7 +235,7 @@ class Todo extends React.Component {
 
   //populate todos with presetTodos
   populatePreset = () => {
-    fetch('http://localhost:5000/api/premade', {
+    fetch('http://onboarding-checklist-env.eba-zmqvvmki.us-east-1.elasticbeanstalk.com/api/premade', {
         method: 'POST',
         credentials: 'include',
         dataType: 'json',
@@ -305,7 +305,7 @@ class Todo extends React.Component {
 
   //completes the task
   completeTask = (id) => {
-    fetch('http://localhost:5000/api/complete', {
+    fetch('http://onboarding-checklist-env.eba-zmqvvmki.us-east-1.elasticbeanstalk.com/api/complete', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -333,7 +333,7 @@ class Todo extends React.Component {
   // which is connected to the database/the user
   // who created it.
   addTaskGlobal = () => {
-    fetch('http://localhost:5000/api/addnote', {
+    fetch('http://onboarding-checklist-env.eba-zmqvvmki.us-east-1.elasticbeanstalk.com/api/addnote', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -358,7 +358,7 @@ class Todo extends React.Component {
   }
 
   addSubtaskGlobal = (id) => {
-    fetch('http://localhost:5000/api/addsubtask', {
+    fetch('http://onboarding-checklist-env.eba-zmqvvmki.us-east-1.elasticbeanstalk.com/api/addsubtask', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
@@ -391,7 +391,7 @@ class Todo extends React.Component {
   }
 
   deleteTaskGlobal = (id) => {
-    fetch('http://localhost:5000/api/deletenote', {
+    fetch('http://onboarding-checklist-env.eba-zmqvvmki.us-east-1.elasticbeanstalk.com/api/deletenote', {
             method: 'POST',
             credentials: 'include',
             dataType: 'json',
