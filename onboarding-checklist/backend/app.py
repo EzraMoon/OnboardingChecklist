@@ -62,17 +62,20 @@ def create_list():
 def duplicate_list():
     org_id = request.get_json() # the code of the list we are copying
 
-    user_id = session.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user_id = session.get("user_id") # user that is currently having a session
+    user = User.query.filter_by(id=user_id).first() # get the user
     if not user:
         return jsonify({"Error" : "User does not exist"})
 
+    # Identify the list we are duplicating
     cList = TaskList.query.filter_by(id=org_id).first()
 
     if not cList:
         return jsonify({"Error" : "List being copied does not exist"})
     
+    # copy this list, and add it to the list of user's owned lists
     user.tasklists.append(TaskList(title=(cList.title + " copy"), user=user, notes=cList.notes))
+    # VERY IMPORTANT. MUST COMMIT CHANGES FOR IT TO SAVE BETWEEN SESSIONS
     db.session.commit()
     return  jsonify({"Success" : True})
 
@@ -81,30 +84,37 @@ def duplicate_list():
 @app.route('/api/delete', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def delete_list():
+    # List ID is sent by the frontend using 'FETCH' function
     listid = request.get_json()
 
+    # getting the user id based on session
     user_id = session.get("user_id")
+    # finding user in the database
     user = User.query.filter_by(id=user_id).first()
 
     if not user:
         return jsonify({"Error" : "User does not exist"})
     
+    # finding the list we want to delete
     cList = TaskList.query.filter_by(id=listid).first()
 
     if not cList:
         return jsonify({"Error" : "List does not exist"})
     
+    # removing the list from the user's owned lists 
     user.tasklists.remove(cList)
     db.session.commit()
     return jsonify({"Success" : True})
 
 
 # Function to return all the names of the existing tasklists
+# this is used in Dashboard.js and is what loads that page.
 @app.route('/api/listdata', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def list_info():
     # get the current user based on the session
     user_id = session.get("user_id")
+    # find user in database
     user = User.query.filter_by(id=user_id).first()
     if not user:
         return
@@ -113,7 +123,7 @@ def list_info():
     nameList = []
     namedict = {list_of_lists[i].id : list_of_lists[i].title for i in range(0, len(list_of_lists))}
 
-
+    # since we cannot return a list of list items, we create one just with the names
     for x in list_of_lists:
         nameList.append((x.title))
 
@@ -130,30 +140,42 @@ def add_to_list():
     # list.append(Note(...))
     # db.session.commit() 
     data = request.get_json()
+
+    # decoding what we've received from FETCH from the frontend
     listID = data[0]
     text = data[1]
     description = data[2]
     subtask = data[3]
     link = data[4]
 
+    # finding the list in the database with the listID
     cList = TaskList.query.filter_by(id=listID).first()
 
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
+    # creating a new note with the information received from fetch
     new_note = Note(title=text, tasklist=cList, text=description, complete=False, link=link)
+
+    # adding this note to the chosen list
     cList.notes.append(new_note)
+
+    # if the user entered a subtask, create a new subtask
     if subtask:
         new_note.subs.append(Subtask(text=subtask, parent=new_note))
 
-    db.session.commit() # Attributes it to the user
+    db.session.commit() # Attributes it to the user, VERY IMPORTANT!!
     return jsonify({"data" : data})
 
+# Adds a new subtask to the chosen task
 @app.route('/api/addsubtask', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def add_subtask():
+    # decode what we've received from FETCH
     listID, noteID, subtask = request.get_json()
+    # Find list in database
     cList = TaskList.query.filter_by(id=listID).first()
+    # Find note in database
     cNote = Note.query.filter_by(id=noteID).first()
 
     if not cList:
@@ -162,9 +184,12 @@ def add_subtask():
     if not cNote:
         return jsonify({"Error" : "Note not found"}, 404)
     
+    # Add the new subtask to the Note's 'sub' list
     cNote.subs.append(Subtask(text=subtask, parent=cNote))
     sublist = []
     db.session.commit()
+
+    # create a temporary list we can return with the text of each subtask for rendering
     for i in cNote.subs:
         sublist.append(i.text)
 
@@ -175,7 +200,10 @@ def add_subtask():
 @app.route('/api/deletenote', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def remove_from_list():
+    # decode what we've received from FETCH
     listID, noteID = request.get_json()
+
+    # find list and note in the database
     cList = TaskList.query.filter_by(id=listID).first()
     cNote = Note.query.filter_by(id=noteID).first()
 
@@ -185,7 +213,10 @@ def remove_from_list():
     if not cNote:
         return jsonify({"Error" : "Note not found"}, 404)
     
+    # delete the note from the list
     cList.notes.remove(cNote)
+
+    # commits it, which saves this change between sessions.
     db.session.commit() 
     return jsonify({"Success" : True})
 
@@ -195,20 +226,26 @@ def remove_from_list():
 @app.route('/api/getlist', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def get_list():
+    # decode the information we've received from FETCH
     id = request.get_json()
+    # find the list in the database
     iden_list = TaskList.query.filter_by(id=id).first()
 
     if not iden_list:
         return jsonify({"Error" : "List does not exist"}, 404)
     
+    # find the information from the list, and write it in a way the frontend can use to render it
     noteList = []
     subList = []
+    # iterate through the list's notes
     for x in iden_list.notes:
+        # iterate through the note's subtasks
         for i in x.subs:
             subList.append(i.text)
         noteList.append({"id" : x.id, "title" : x.title, "text" : x.text, "complete" : x.complete, "link" : x.link, "subtasks" : subList, "add" : False})
         subList = []
-    
+
+    # return it in a way we can use for render()
     return jsonify({"Title" : iden_list.title,
                     "Author" : iden_list.user.first,
                     "Data" : noteList})
@@ -304,14 +341,18 @@ def logout():
 @app.route('/api/complete', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def mark_complete():
+    # decode what we've received from FETCH
     listID, noteID = request.get_json()
+    # Find the identified List and Note
     cList = TaskList.query.filter_by(id=listID).first()
     cNote = Note.query.filter_by(id=noteID).first()
 
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
+    # mark note as complete!
     cNote.complete = True
+    db.session.commit()
     return jsonify({"Success" : True})
 
 # Mark a task as incomplete
@@ -326,6 +367,7 @@ def mark_incomplete():
         return jsonify({"Error" : "List not found"}, 404)
     
     cNote.complete = False
+    db.session.commit()
     return jsonify({"Success" : True})
     
 
@@ -341,6 +383,7 @@ def premade():
     if not cList:
         return jsonify({"Error" : "List not found"}, 404)
     
+    # this is the premade task list
     dict = [
           {
             'title': "Make sure to recieve Laptop and needed equipment", 
